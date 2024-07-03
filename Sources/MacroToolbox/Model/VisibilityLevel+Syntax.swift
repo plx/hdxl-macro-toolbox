@@ -34,6 +34,27 @@ extension VisibilityLevel {
     }
   }
   
+  /// Constructs from the corresponding keyword.
+  @inlinable
+  public init?(keywordRepresentation: Keyword) {
+    switch keywordRepresentation {
+    case .private:
+      self = .private
+    case .fileprivate:
+      self = .fileprivate
+    case .internal:
+      self = .internal
+    case .package:
+      self = .package
+    case .public:
+      self = .public
+    case .open:
+      self = .open
+    default:
+      return nil
+    }
+  }
+  
   /// Provides equivalent `TokenKind` representation.
   @inlinable
   public var tokenKindRepresentation: TokenKind {

@@ -44,12 +44,14 @@ extension TypeDeclarationArchetype: CustomDebugStringConvertible { }
 
 extension TypeDeclarationArchetype {
   
+  @usableFromInline
+  package static let setOfAllCases = Set(allCases)
+  
   @inlinable
   public var isNotAProtocol: Bool {
     self != .protocol
   }
   
-
   @inlinable
   public var isEnumClassOrStruct: Bool {
     switch self {

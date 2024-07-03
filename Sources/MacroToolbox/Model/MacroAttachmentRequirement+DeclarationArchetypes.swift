@@ -18,7 +18,11 @@ extension MacroAttachmentRequirement<TypeDeclarationArchetype> {
         DeclarationArchetype
           .setOfAllCases
           .subtracting(
-            excludedTypes.lazy.map(\.declarationArchetype)
+            TypeDeclarationArchetype
+              .setOfAllCases
+              .subtracting(excludedTypes)
+              .lazy
+              .map(\.declarationArchetype)
           )
       )
     }
