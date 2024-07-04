@@ -7,10 +7,10 @@ public enum TypedExpressionSyntaxTransflectionError: Sendable, Error, LocalizedE
   case extractionFromWrongExpression(String)
 }
 
-public protocol TransflectableViaExpressionSyntax<ExpressionSyntax> : TransflectableViaExprSyntax {
-  associatedtype ExpressionSyntax: ExprSyntaxProtocol
+public protocol TransflectableViaExpressionSyntax<TransflectionExpressionSyntax> : TransflectableViaExprSyntax {
+  associatedtype TransflectionExpressionSyntax: ExprSyntaxProtocol
     
-  init(expressionSyntax: ExpressionSyntax) throws
+  init(expressionSyntax: TransflectionExpressionSyntax) throws
   
 }
 
@@ -19,14 +19,14 @@ extension TransflectableViaExprSyntax where Self: TransflectableViaExpressionSyn
   @inlinable
   public init(exprSyntax: ExprSyntax) throws {
     guard
-      let expressionSyntax = exprSyntax.as(ExpressionSyntax.self) 
+      let expressionSyntax = exprSyntax.as(TransflectionExpressionSyntax.self) 
     else {
       throw TypedExpressionSyntaxTransflectionError.extractionFromWrongExpression(
         """
         Couldn't convert `exprSyntax` to preferred-type:
         
         - `exprSyntax`: \(exprSyntax)
-        - `ExpressionSyntax`: \(ExpressionSyntax.self)
+        - `ExpressionSyntax`: \(TransflectionExpressionSyntax.self)
         """
       )
     }

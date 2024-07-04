@@ -1,20 +1,53 @@
 import Testing
 @testable import MacroToolbox
 
-@Test(
-  "`TypeDeclarationArchetype.caseNameWithoutLeadingDot` uniqueness."
-)
-func testTypeDeclarationArchetypeCaseNameWithoutLeadingDotUniqueness() {
+@Test("`TypeDeclarationArchetype.description` uniqueness")
+func testTypeDeclarationArchetypeDescriptionUniqueness() {
   #expect(
-    Set(TypeDeclarationArchetype
+    TypeDeclarationArchetype
       .allCases
-      .map(\.caseNameWithoutLeadingDot)
-    ).count
+      .count
     ==
-    TypeDeclarationArchetype.allCases.count
+    Set(
+      TypeDeclarationArchetype
+        .allCases
+        .lazy
+        .map(\.description)
+    ).count
   )
 }
 
+@Test("`TypeDeclarationArchetype.debugDescription` uniqueness")
+func testTypeDeclarationArchetypeDebugDescriptionUniqueness() {
+  #expect(
+    TypeDeclarationArchetype
+      .allCases
+      .count
+    ==
+    Set(
+      TypeDeclarationArchetype
+        .allCases
+        .lazy
+        .map(\.debugDescription)
+    ).count
+  )
+}
+
+@Test("`TypeDeclarationArchetype.caseNameWithoutLeadingDot` uniqueness")
+func testTypeDeclarationArchetypeCaseNameWithoutLeadingDotUniqueness() {
+  #expect(
+    TypeDeclarationArchetype
+      .allCases
+      .count
+    ==
+    Set(
+      TypeDeclarationArchetype
+        .allCases
+        .lazy
+        .map(\.caseNameWithoutLeadingDot)
+    ).count
+  )
+}
 
 @Test(
   "`TypeDeclarationArchetype.declarationArchetype`"

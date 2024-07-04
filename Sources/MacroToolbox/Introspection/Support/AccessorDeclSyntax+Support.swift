@@ -4,27 +4,27 @@ extension AccessorDeclSyntax {
   
   @inlinable
   public var isWillSet: Bool {
-    accessorSpecifier.tokenKind == .keyword(.willSet)
+    accessorSpecifier.isWillSet
   }
 
   @inlinable
   public var isDidSet: Bool {
-    accessorSpecifier.tokenKind == .keyword(.didSet)
+    accessorSpecifier.isDidSet
   }
   
   @inlinable
   public var isGet: Bool {
-    accessorSpecifier.tokenKind == .keyword(.get)
+    accessorSpecifier.isGet
   }
 
   @inlinable
   public var isSet: Bool {
-    accessorSpecifier.tokenKind == .keyword(.set)
+    accessorSpecifier.isSet
   }
 
   @inlinable
   public var isModify: Bool {
-    accessorSpecifier.tokenKind == .keyword(._modify)
+    accessorSpecifier.isModify
   }
   
   @inlinable

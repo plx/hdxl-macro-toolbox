@@ -1,6 +1,5 @@
 import SwiftSyntax
 
-
 extension InlinabilityDisposition {
 
   /// Obtains the disposition's textual representation (e.g. suitable for `"\(raw: )"` interpolation).

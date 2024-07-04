@@ -18,29 +18,36 @@ extension AttributeSyntax {
   
   @inlinable
   public var inlinabilityDisposition: InlinabilityDisposition? {
-    guard
-      let identifier = attributeName.as(IdentifierTypeSyntax.self)
-    else {
-      return nil
+    switch attributeName.as(IdentifierTypeSyntax.self) {
+    case .some(let identifier):
+      InlinabilityDisposition(tokenSyntax: identifier.name)
+    case .none:
+      nil
     }
-    
-    return InlinabilityDisposition(tokenSyntax: identifier.name)
   }
   
   @inlinable
   public func isIdentifier(named name: String) -> Bool {
-    guard
-      let identifier = attributeName.as(IdentifierTypeSyntax.self)
-    else {
-      return false
+    switch attributeName.as(IdentifierTypeSyntax.self) {
+    case .some(let identifier):
+      identifier.name.text == name
+    case .none:
+      false
     }
-    
-    return identifier.name.text == name
   }
   
   @inlinable
   public var isPreferredMemberwiseInitializer: Bool {
     isIdentifier(named: "PreferredMemberwiseInitializer")
+  }
+  
+  @inlinable
+  public var argumentList: LabeledExprListSyntax? {
+    guard case .argumentList(let argumentList) = arguments else {
+      return nil
+    }
+    
+    return argumentList
   }
   
 }

@@ -82,13 +82,22 @@ extension TokenKind {
   /// Constructs a `Token` from `visibilityLevel`.
   ///
   /// - seealso: ``VisibilityLevel``
-  /// - seealso: ``VisibilityLevel.toenKindRepresentation``
+  /// - seealso: ``VisibilityLevel.tokenKindRepresentation``
   ///
   @inlinable
   public init(visibilityLevel: VisibilityLevel) {
     self = visibilityLevel.tokenKindRepresentation
   }
   
+  @inlinable
+  public var visibilityLevel: VisibilityLevel? {
+    guard case .keyword(let keyword) = self else {
+      return nil
+    }
+    
+    return keyword.visibilityLevel
+  }
+
 }
 
 extension TokenSyntax {
