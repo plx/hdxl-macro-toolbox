@@ -6,10 +6,18 @@ import SwiftSyntax
 @Test("`BooleanLiteralExprSyntax.representedBooleanLiteralValue`")
 func testBooleanLiteralExprSyntaxRepresentedBooleanLiteralValue() {
   #expect(
-    true == BooleanLiteralExprSyntax(literal: .keyword(.true)).representedBooleanLiteralValue
+    true
+    ==
+    BooleanLiteralExprSyntax(
+      literal: .keyword(.true)
+    ).representedBooleanLiteralValue
   )
   
   #expect(
-    false == BooleanLiteralExprSyntax(literal: .keyword(.false)).representedBooleanLiteralValue
+    false 
+    ==
+    BooleanLiteralExprSyntax(
+      literal: .keyword(.false)
+    ).representedBooleanLiteralValue
   )
 }

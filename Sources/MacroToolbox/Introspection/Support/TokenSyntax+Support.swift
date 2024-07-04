@@ -15,6 +15,12 @@ extension TokenSyntax {
 
 extension TokenSyntax {
   
+  
+  
+}
+
+extension TokenSyntax {
+  
   @inlinable
   public var isWillSet: Bool {
     tokenKind == .keyword(.willSet)

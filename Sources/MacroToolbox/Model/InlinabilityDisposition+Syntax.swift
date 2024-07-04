@@ -28,6 +28,19 @@ extension InlinabilityDisposition {
       return nil
     }
   }
-  
+
+  @inlinable
+  public init?(attributeSyntax: AttributeSyntax) {
+    guard 
+      attributeSyntax.hasAtSign,
+      attributeSyntax.hasNoArguments,
+      let identifier = attributeSyntax.attributeName.as(IdentifierTypeSyntax.self)
+    else {
+      return nil
+    }
+    
+    self.init(tokenSyntax: identifier.name)
+  }
+
 }
 
