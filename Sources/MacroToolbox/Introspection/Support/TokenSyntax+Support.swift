@@ -15,8 +15,31 @@ extension TokenSyntax {
 
 extension TokenSyntax {
   
+  @inlinable
+  public func isPrefixOperator(_ operatorSymbol: String) -> Bool {
+    tokenKind.isPrefixOperator(operatorSymbol)
+  }
+
+  @inlinable
+  public func isPostfixOperator(_ operatorSymbol: String) -> Bool {
+    tokenKind.isPostfixOperator(operatorSymbol)
+  }
+
+  @inlinable
+  public func isInfixOperator(_ operatorSymbol: String) -> Bool {
+    tokenKind.isInfixOperator(operatorSymbol)
+  }
   
-  
+  @inlinable
+  public var isPrefixMinusSign: Bool {
+    tokenKind.isPrefixMinusSign
+  }
+
+  @inlinable
+  public var isPrefixPlusSign: Bool {
+    tokenKind.isPrefixPlusSign
+  }
+
 }
 
 extension TokenSyntax {

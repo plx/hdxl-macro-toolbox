@@ -11,28 +11,28 @@ public protocol TransflectableViaFloatLiteralValue {
   ///
   /// - note:
   ///
-  /// This protocol has some subtlety around `.nan` and `.infinity` (etc.) that's a bit
-  /// unintuitive and, thus, worth documenting in case it presents some future issue.
+  /// For this type, we're using "literal value" in a sense that's at odds with that of Swift's formal grammar,
+  /// but IMHO also correct-and-intuitive for our intended use case.
   ///
-  /// The subtlety arises in two parts.
+  /// When writing Swift code, both of these look like literal floating point values:
   ///
-  /// The first half is that, per Swift's grammar, a symbol like `.infinity` isn't a float literal:
-  ///
-  /// ```swift
-  /// let foo: Double = 0.124125 // <- float literal
-  /// let bar: Double = .infinity // <- "member access" (e.g. of `Double`'s static member `.nan`)
+  /// ```
+  /// let foo: Double = 0.124125
+  /// let bar: Double = .nan
   /// ```
   ///
-  /// ...which might make it tempting to conclude that float literalys will only ever be "finite" and "numeric."
+  /// ...but that's actually incorrect.
   ///
-  /// That's tempting, but wrong—let's see why.
+  /// The truth is, although `foo` is a floating-point literal, `bar` is what's called a member-access expression,
+  /// the same as e.g. `object.description` or `Enum.case` (etc.); what makes `.nan` special here is
+  /// just that it's such a well-known value that it "feels" like a literal.
   ///
-  /// The other half is that in addition to numerical float literals, Swift also allows hexadecimal float literals.
+  /// If we were strictly aligning ourselves with Swift's formal grammar, the sensible thing here would be to stipulate
+  /// that `literalValue` would always be finite and numeric.
   ///
-  /// Allowing hexadecimal literals means that one could, in principle, "spell out" any specific `Double` value,
-  /// including e.g. `.nan` or `.infinity` (etc.).
-  ///
-  /// As such, this protocol requires handling even those non-numeric floating-point literals.
+  /// Since we're trying to "transflect" values source annotations into the macro-expansion environment, however,
+  /// IMHO it makes sense to try to handle those special values like `.nan` (etc.)...and that's why, tl;dr, you are
+  /// expected to handle `.nan` and `.infinity` here, too.
   init(transflectingFloatLiteralValue floatLiteralValue: Double) throws
   
 }
