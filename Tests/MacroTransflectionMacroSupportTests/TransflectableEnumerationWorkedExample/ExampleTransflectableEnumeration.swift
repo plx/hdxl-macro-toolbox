@@ -31,7 +31,4 @@ extension ExampleTransflectableEnumeration: TransflectableViaSourceCodeIdentifie
   
 }
 
-extension ExampleTransflectableEnumeration: TransflectableViaExpressionSyntax {
-  
-  typealias TransflectionExpressionSyntax = MemberAccessExprSyntax
-}
+extension ExampleTransflectableEnumeration: TransflectableViaExprSyntax { }

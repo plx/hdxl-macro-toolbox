@@ -29,5 +29,18 @@ extension MemberAccessExprSyntax {
     )
   }
   
+  @inlinable
+  public var isExplicitNone: Bool {
+    guard
+      declName.argumentNames == nil,
+      period.tokenKind == .period,
+      case .identifier(let identifier) = declName.baseName.tokenKind,
+      identifier == "none"
+    else {
+      return false
+    }
+    
+    return true
+  }
   
 }

@@ -1,14 +1,40 @@
+import Foundation
 import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+
+// MARK: Conformances
+
+extension Float16: TransflectableViaExprSyntax { }
+extension Float: TransflectableViaExprSyntax { }
+extension Double: TransflectableViaExprSyntax { }
+
+// MARK: - FloatExprTransflectionError
+
+public enum FloatExprTransflectionError: Error, LocalizedError {
+  case noIdentifiableFloatLiteral(String)
+  case incompatibleBaseType(String)
+  case noLeadingPeriod(String)
+  case symbolCannotHaveArguments(String)
+  case notASimpleIdentifier(String)
+  case unsupportedSymbolicConstant(String)
+  case unsupportedPrefixOperatorExpression(String)
+  case unsupportedExprSyntax(String)
+}
+
+// MARK: - Conformance Implementation
 
 extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: TransflectableViaFloatLiteralValue {
   
   @inlinable
   package init(transflectingFloatLiteralExprSyntax floatLiteralExprSyntax: FloatLiteralExprSyntax) throws {
     guard let representedFloatLiteralValue = floatLiteralExprSyntax.representedFloatLiteralValue else {
-      fatalError() // TODO: real errors!
+      throw FloatExprTransflectionError.noIdentifiableFloatLiteral(
+        """
+        No identifiable float-literal-value identified within `\(floatLiteralExprSyntax)`!
+        """
+      )
     }
     
     try self.init(transflectingFloatLiteralValue: representedFloatLiteralValue)
@@ -17,17 +43,41 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
   @inlinable
   package init(transflectingMemberAccessExprSyntax memberAccessSyntax: MemberAccessExprSyntax) throws {
     guard memberAccessSyntax.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self) else {
-      fatalError()
+      throw FloatExprTransflectionError.incompatibleBaseType(
+        """
+        Found base-type incompatible-with `\(Self.self)` in \(memberAccessSyntax)!
+        """
+      )
     }
     
     guard
       memberAccessSyntax.period.tokenKind == .period // have to have a leading period!
     else {
-      fatalError()
+      throw FloatExprTransflectionError.noLeadingPeriod(
+        """
+        No leading-period identified in `\(memberAccessSyntax)`!
+        """
+      )
     }
     
-    guard case .identifier(let symbolName) = memberAccessSyntax.declName.baseName.tokenKind else {
-      fatalError() // TODO: real errors
+    guard
+      memberAccessSyntax.declName.argumentNames == nil
+    else {
+      throw FloatExprTransflectionError.symbolCannotHaveArguments(
+        """
+        We do not support symbols-with-arguments, but transflection target appeared to have arguments: `\(memberAccessSyntax.declName)`!
+        """
+      )
+    }
+    
+    guard
+      case .identifier(let symbolName) = memberAccessSyntax.declName.baseName.tokenKind
+    else {
+      throw FloatExprTransflectionError.notASimpleIdentifier(
+        """
+        We only support identifier-type member-access expressions, but this declaration was something else: `\(memberAccessSyntax.declName)`!
+        """
+      )
     }
     
     switch symbolName {
@@ -50,8 +100,27 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
     case "pi":
       self = .pi
     default:
-      fatalError() //
+      throw FloatExprTransflectionError.unsupportedSymbolicConstant(
+        """
+        The symbol `\(memberAccessSyntax.declName.baseName)` was not one of the symbols we support, which are: [ \(Self.supportedSymbolicLiterals.joined(separator: ", ")) ]
+        """
+      )
     }
+  }
+  
+  @inlinable
+  package static var supportedSymbolicLiterals: [String] {
+    [
+      "zero",
+      "nan",
+      "signalingNan",
+      "infinity",
+      "leastNormalMagnitude",
+      "leastNonzeroMagnitude",
+      "greatestFiniteMagnitude",
+      "ulpOfOne",
+      "pi"
+    ]
   }
 
   @inlinable
@@ -62,7 +131,11 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
       try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
       self = -self
     } else {
-      fatalError() // TODO: real errors
+      throw FloatExprTransflectionError.unsupportedPrefixOperatorExpression(
+        """
+        Unable to transflect unsupported prefix-operator-expression \(prefixOperatorExprSyntax)!
+        """
+      )
     }
   }
 
@@ -75,13 +148,13 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
     } else if let prefixOperatorSyntax = exprSyntax.as(PrefixOperatorExprSyntax.self) {
       try self.init(transflectingPrefixOperatorExprSyntax: prefixOperatorSyntax)
     } else {
-      fatalError() // TODO: real errors
+      throw FloatExprTransflectionError.unsupportedExprSyntax(
+        """
+        Unable to transflect unsupported expr-syntax \(exprSyntax)!
+        """
+      )
     }
   }
 
 }
-
-extension Float16: TransflectableViaExprSyntax { }
-extension Float: TransflectableViaExprSyntax { }
-extension Double: TransflectableViaExprSyntax { }
 
