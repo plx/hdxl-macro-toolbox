@@ -1,6 +1,7 @@
 
-public protocol TransflectableViaIntegerLiteralValue {
+public protocol TransflectableViaIntegerLiteralValue<TransflectionIntegerValue> {
+  associatedtype TransflectionIntegerValue: FixedWidthInteger
   
-  init(transflectingIntegerLiteralValue integerLiteralValue: Int) throws
+  init(transflectingIntegerLiteralValue integerLiteralValue: TransflectionIntegerValue) throws
   
 }

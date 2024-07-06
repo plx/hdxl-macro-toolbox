@@ -33,7 +33,7 @@ extension Bool {
   }
     
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let booleanLiteralSynax = exprSyntax.as(BooleanLiteralExprSyntax.self) {
       try self.init(transflectingBooleanLiteralExprSyntax: booleanLiteralSynax)
     } else {

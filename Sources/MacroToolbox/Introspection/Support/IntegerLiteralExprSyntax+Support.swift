@@ -13,5 +13,19 @@ extension IntegerLiteralExprSyntax {
     
     return integerValue
   }
-  
+
+  @inlinable
+  public func representedValue<T>(
+    ofType type: T.Type
+  ) -> T? where T: FixedWidthInteger {
+    guard
+      case .integerLiteral(let stringRepresentation) = literal.tokenKind,
+      let integerValue = T(stringRepresentation)
+    else {
+      return nil
+    }
+    
+    return integerValue
+  }
+
 }

@@ -45,12 +45,12 @@ extension Optional: TransflectableViaExprSyntax where Wrapped: TransflectableVia
     }
     
     self = .some(
-      try Wrapped(exprSyntax: onlyArgument.expression)
+      try Wrapped(transflectingExprSyntax: onlyArgument.expression)
     )
   }
   
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if exprSyntax.is(NilLiteralExprSyntax.self) {
       try self.init(transflectingNilLiteralValue: ())
       return
@@ -69,7 +69,7 @@ extension Optional: TransflectableViaExprSyntax where Wrapped: TransflectableVia
     }
     
     self = .some(
-      try Wrapped.init(exprSyntax: exprSyntax)
+      try Wrapped.init(transflectingExprSyntax: exprSyntax)
     )
   }
 

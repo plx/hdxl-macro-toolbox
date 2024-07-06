@@ -67,7 +67,7 @@ extension TransflectableViaExprSyntax where Self: TransflectableViaSourceCodeIde
   }
 
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let memberAccessExprSyntax = exprSyntax.as(MemberAccessExprSyntax.self) {
       try self.init(transflectingMemberAccessExprSyntax: memberAccessExprSyntax)
     } else {

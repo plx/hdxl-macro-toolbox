@@ -18,8 +18,10 @@ extension BinaryFloatingPoint where Self: TransflectableViaFloatLiteralValue {
       self = .infinity
     } else if floatLiteralValue == -.infinity {
       self = -.infinity
-    } else if let value = Self(exactly: floatLiteralValue) {
-      self = value
+    } else if let exactConversion = Self(exactly: floatLiteralValue) {
+      self = exactConversion
+    } else if abs(Double(Self(floatLiteralValue)) - floatLiteralValue) < abs(floatLiteralValue * 0.01) {
+      self = Self(floatLiteralValue)
     } else {
       throw FloatLiteralTransflectionError.unrepresentableFloatLiteral(
         """

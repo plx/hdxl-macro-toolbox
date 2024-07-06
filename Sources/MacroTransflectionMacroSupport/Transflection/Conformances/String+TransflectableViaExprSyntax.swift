@@ -46,7 +46,7 @@ extension String {
   }
 
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let simpleStringLiteralExprSyntax = exprSyntax.as(SimpleStringLiteralExprSyntax.self) {
       try self.init(transflectingSimpleStringLiteralExprSyntax: simpleStringLiteralExprSyntax)
     } else if let stringLiteralExprSynax = exprSyntax.as(StringLiteralExprSyntax.self) {

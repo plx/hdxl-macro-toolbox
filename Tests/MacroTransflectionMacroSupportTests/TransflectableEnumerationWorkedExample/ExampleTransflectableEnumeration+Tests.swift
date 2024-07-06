@@ -32,15 +32,15 @@ func testWeCanReflectSourceCodesymbolTransflectableArguments() throws {
   #expect(name == "FakeAttribute")
   
   let transmogrify = try ExampleTransflectableEnumeration(
-    exprSyntax: argumentList[0].expression
+    transflectingExprSyntax: argumentList[0].expression
   )
   
   let frobulate = try ExampleTransflectableEnumeration(
-    exprSyntax: argumentList[1].expression
+    transflectingExprSyntax: argumentList[1].expression
   )
   
   let transmogrifyAndFrobulate = try ExampleTransflectableEnumeration(
-    exprSyntax: argumentList[2].expression
+    transflectingExprSyntax: argumentList[2].expression
   )
   
   #expect(transmogrify == .transmogrify)

@@ -14,6 +14,8 @@ extension Double: TransflectableViaExprSyntax { }
 
 public enum FloatExprTransflectionError: Error, LocalizedError {
   case noIdentifiableFloatLiteral(String)
+  case noIdentifiableIntegerLiteral(String)
+  case unrepresentableIntegerLiteral(String)
   case incompatibleBaseType(String)
   case noLeadingPeriod(String)
   case symbolCannotHaveArguments(String)
@@ -29,7 +31,9 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
   
   @inlinable
   package init(transflectingFloatLiteralExprSyntax floatLiteralExprSyntax: FloatLiteralExprSyntax) throws {
-    guard let representedFloatLiteralValue = floatLiteralExprSyntax.representedFloatLiteralValue else {
+    guard 
+      let representedFloatLiteralValue = floatLiteralExprSyntax.representedFloatLiteralValue
+    else {
       throw FloatExprTransflectionError.noIdentifiableFloatLiteral(
         """
         No identifiable float-literal-value identified within `\(floatLiteralExprSyntax)`!
@@ -39,10 +43,37 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
     
     try self.init(transflectingFloatLiteralValue: representedFloatLiteralValue)
   }
-  
+
+  @inlinable
+  package init(transflectingIntegerLiteralExprSyntax integerLiteralExprSyntax: IntegerLiteralExprSyntax) throws {
+    guard 
+      let representedIntegerLiteralValue = integerLiteralExprSyntax.representedIntegerLiteralValue
+    else {
+      throw FloatExprTransflectionError.noIdentifiableIntegerLiteral(
+        """
+        No identifiable integer-literal-value identified within `\(integerLiteralExprSyntax)`!
+        """
+      )
+    }
+    
+    guard
+      let floatLiteralValue = Double(exactly: representedIntegerLiteralValue)
+    else {
+      throw FloatExprTransflectionError.unrepresentableIntegerLiteral(
+        """
+        The integer-literal-value \(representedIntegerLiteralValue) could not be converted into a `Double`!
+        """
+      )
+    }
+    
+    try self.init(transflectingFloatLiteralValue: floatLiteralValue)
+  }
+
   @inlinable
   package init(transflectingMemberAccessExprSyntax memberAccessSyntax: MemberAccessExprSyntax) throws {
-    guard memberAccessSyntax.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self) else {
+    guard 
+      memberAccessSyntax.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self)
+    else {
       throw FloatExprTransflectionError.incompatibleBaseType(
         """
         Found base-type incompatible-with `\(Self.self)` in \(memberAccessSyntax)!
@@ -85,7 +116,7 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
       self = .zero
     case "nan":
       self = .nan
-    case "signalingNan":
+    case "signalingNaN":
       self = .signalingNaN
     case "infinity":
       self = .infinity
@@ -113,7 +144,7 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
     [
       "zero",
       "nan",
-      "signalingNan",
+      "signalingNaN",
       "infinity",
       "leastNormalMagnitude",
       "leastNonzeroMagnitude",
@@ -126,9 +157,9 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
   @inlinable
   package init(transflectingPrefixOperatorExprSyntax prefixOperatorExprSyntax: PrefixOperatorExprSyntax) throws {
     if prefixOperatorExprSyntax.operator.isPrefixPlusSign {
-      try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
+      try self.init(transflectingExprSyntax: prefixOperatorExprSyntax.expression)
     } else if prefixOperatorExprSyntax.operator.isPrefixMinusSign {
-      try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
+      try self.init(transflectingExprSyntax: prefixOperatorExprSyntax.expression)
       self = -self
     } else {
       throw FloatExprTransflectionError.unsupportedPrefixOperatorExpression(
@@ -140,9 +171,11 @@ extension FloatingPoint where Self: TransflectableViaExprSyntax, Self: Transflec
   }
 
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let floatLiteralSynax = exprSyntax.as(FloatLiteralExprSyntax.self) {
       try self.init(transflectingFloatLiteralExprSyntax: floatLiteralSynax)
+    } else if let integerLiteralSyntax = exprSyntax.as(IntegerLiteralExprSyntax.self) {
+      try self.init(transflectingIntegerLiteralExprSyntax: integerLiteralSyntax)
     } else if let memberAccessSyntax = exprSyntax.as(MemberAccessExprSyntax.self) {
       try self.init(transflectingMemberAccessExprSyntax: memberAccessSyntax)
     } else if let prefixOperatorSyntax = exprSyntax.as(PrefixOperatorExprSyntax.self) {

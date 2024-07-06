@@ -34,11 +34,20 @@ public enum IntegerExprTransflectionError: Error, LocalizedError {
 
 // MARK: - Conformance Implementation
 
-extension FixedWidthInteger where Self: BinaryInteger, Self: TransflectableViaExprSyntax, Self: TransflectableViaIntegerLiteralValue {
+extension FixedWidthInteger
+where
+Self: BinaryInteger,
+Self: TransflectableViaExprSyntax,
+Self: TransflectableViaIntegerLiteralValue
+{
   
   @inlinable
   package init(transflectingIntegerLiteralExprSyntax integerLiteralExprSyntax: IntegerLiteralExprSyntax) throws {
-    guard let representedIntegerLiteralValue = integerLiteralExprSyntax.representedIntegerLiteralValue else {
+    guard
+      let representedIntegerLiteralValue = integerLiteralExprSyntax.representedValue(
+        ofType: TransflectionIntegerValue.self
+      )
+    else {
       throw IntegerExprTransflectionError.noIdentifiableIntLiteral(
         """
         No identifiable int-literal-value identified within `\(integerLiteralExprSyntax)`!
@@ -51,7 +60,9 @@ extension FixedWidthInteger where Self: BinaryInteger, Self: TransflectableViaEx
   
   @inlinable
   package init(transflectingMemberAccessExprSyntax memberAccessSyntax: MemberAccessExprSyntax) throws {
-    guard memberAccessSyntax.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self) else {
+    guard
+      memberAccessSyntax.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self) 
+    else {
       throw IntegerExprTransflectionError.incompatibleBaseType(
         """
         Found base-type incompatible-with `\(Self.self)` in \(memberAccessSyntax)!
@@ -116,14 +127,19 @@ extension FixedWidthInteger where Self: BinaryInteger, Self: TransflectableViaEx
   
 }
 
-extension FixedWidthInteger where Self: BinaryInteger, Self: SignedInteger, Self: TransflectableViaExprSyntax, Self: TransflectableViaIntegerLiteralValue {
+extension FixedWidthInteger where 
+Self: BinaryInteger,
+Self: SignedInteger,
+Self: TransflectableViaExprSyntax,
+Self: TransflectableViaIntegerLiteralValue
+{
 
   @inlinable
   package init(transflectingPrefixOperatorExprSyntax prefixOperatorExprSyntax: PrefixOperatorExprSyntax) throws {
     if prefixOperatorExprSyntax.operator.isPrefixPlusSign {
-      try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
+      try self.init(transflectingExprSyntax: prefixOperatorExprSyntax.expression)
     } else if prefixOperatorExprSyntax.operator.isPrefixMinusSign {
-      try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
+      try self.init(transflectingExprSyntax: prefixOperatorExprSyntax.expression)
       self = -self
     } else {
       throw IntegerExprTransflectionError.unsupportedPrefixOperatorExpression(
@@ -135,7 +151,7 @@ extension FixedWidthInteger where Self: BinaryInteger, Self: SignedInteger, Self
   }
 
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let integerLiteralSynax = exprSyntax.as(IntegerLiteralExprSyntax.self) {
       try self.init(transflectingIntegerLiteralExprSyntax: integerLiteralSynax)
     } else if let memberAccessSyntax = exprSyntax.as(MemberAccessExprSyntax.self) {
@@ -153,12 +169,18 @@ extension FixedWidthInteger where Self: BinaryInteger, Self: SignedInteger, Self
 
 }
 
-extension FixedWidthInteger where Self: BinaryInteger, Self: UnsignedInteger, Self: TransflectableViaExprSyntax, Self: TransflectableViaIntegerLiteralValue {
+extension FixedWidthInteger 
+where
+Self: BinaryInteger,
+Self: UnsignedInteger,
+Self: TransflectableViaExprSyntax,
+Self: TransflectableViaIntegerLiteralValue
+{
   
   @inlinable
   package init(transflectingPrefixOperatorExprSyntax prefixOperatorExprSyntax: PrefixOperatorExprSyntax) throws {
     if prefixOperatorExprSyntax.operator.isPrefixPlusSign {
-      try self.init(exprSyntax: prefixOperatorExprSyntax.expression)
+      try self.init(transflectingExprSyntax: prefixOperatorExprSyntax.expression)
     } else if prefixOperatorExprSyntax.operator.isPrefixMinusSign {
       throw IntegerExprTransflectionError.unsupportedNegativeLiteralForUnsignedType(
         """
@@ -175,7 +197,7 @@ extension FixedWidthInteger where Self: BinaryInteger, Self: UnsignedInteger, Se
   }
   
   @inlinable
-  public init(exprSyntax: ExprSyntax) throws {
+  public init(transflectingExprSyntax exprSyntax: ExprSyntax) throws {
     if let integerLiteralSynax = exprSyntax.as(IntegerLiteralExprSyntax.self) {
       try self.init(transflectingIntegerLiteralExprSyntax: integerLiteralSynax)
     } else if let memberAccessSyntax = exprSyntax.as(MemberAccessExprSyntax.self) {

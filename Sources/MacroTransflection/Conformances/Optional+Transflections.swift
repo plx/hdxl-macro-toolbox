@@ -20,9 +20,10 @@ extension Optional: TransflectableViaBooleanLiteralValue where Wrapped: Transfle
 }
 
 extension Optional: TransflectableViaIntegerLiteralValue where Wrapped: TransflectableViaIntegerLiteralValue {
+  public typealias TransflectionIntegerValue = Wrapped.TransflectionIntegerValue
   
   @inlinable
-  public init(transflectingIntegerLiteralValue integerLiteralValue: Int) throws {
+  public init(transflectingIntegerLiteralValue integerLiteralValue: TransflectionIntegerValue) throws {
     self = .some(
       try Wrapped(transflectingIntegerLiteralValue: integerLiteralValue)
     )
