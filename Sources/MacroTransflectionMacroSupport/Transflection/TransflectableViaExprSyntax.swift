@@ -27,4 +27,25 @@ public protocol TransflectableViaExprSyntax {
   /// reintroduce any kind of more-strongly-typed refinement of this concept.
   init(transflectingExprSyntax exprSyntax: ExprSyntax) throws
   
+  /// Type-level property listing the set of explicit type names recognized for transflection.
+  ///
+  /// - note:
+  ///
+  /// For many types we want to support transflecting at least some predefined set of static properties,
+  /// e.g. `.pi` or `.zero` (etc.). The challenge, there, is twofold:
+  ///
+  /// 1. such properties can be written in multiple ways (`.pi` and `Double.pi`)
+  /// 2. some types have syntactic-sugar variants (e.g. `[T]` and `Array<T>`, etc.)
+  ///
+  /// ...whence the existence of this property: it gives us a way to customize the set of explicit type-name
+  /// spellings a particular transflectable type should recognize.
+  static var translectionTypeNamesForStaticMemberAccessSyntax: Set<String> { get }
+  
+}
+
+extension TransflectableViaExprSyntax {
+
+  public static var translectionTypeNamesForStaticMemberAccessSyntax: Set<String> {
+    [String(describing: self)]
+  }
 }

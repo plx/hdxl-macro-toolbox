@@ -4,35 +4,82 @@ import SwiftParser
 import MacroToolbox
 import MacroTransflection
 
-// MARK: Conformances
+// MARK: - OptionalExprTransflectionError
+
+public enum OptionalExprTransflectionError: Error, LocalizedError {
+  case invalidExplicitSomeExpression(String)
+  case unableToTransflectWrappedValue(any Error)
+}
 
 extension Optional: TransflectableViaExprSyntax where Wrapped: TransflectableViaExprSyntax {
   
+  @inlinable
+  public static var translectionTypeNamesForStaticMemberAccessSyntax: Set<String> {
+    Set<String>(
+      Wrapped
+        .translectionTypeNamesForStaticMemberAccessSyntax
+        .lazy
+        .flatMap { explicitWrappedTypeName in
+          [
+            "Optional<\(explicitWrappedTypeName)>",
+            "\(explicitWrappedTypeName)?"
+          ]
+        }
+    )
+  }
   
   @inlinable
   package init(transflectingFunctionCallExprSyntaxIfExplicitSome functionCallExprSyntax: FunctionCallExprSyntax) throws {
     guard
       let memberAccessExpression = functionCallExprSyntax.calledExpression.as(MemberAccessExprSyntax.self)
     else {
-      fatalError()
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        We can only handle something like `.some(_)`, but got \(functionCallExprSyntax.trimmed)!
+        """
+      )
     }
     
     guard
-      memberAccessExpression.isCompatibleWithTypeLevelPropertyAccess(forBaseType: Self.self)
+      memberAccessExpression.isCompatibleWithTypeLevelPropertyAccess(
+        forBaseTypeNames: Self.translectionTypeNamesForStaticMemberAccessSyntax
+      )
     else {
-      fatalError()
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        This expression appears to have an incompatible explicit-type annotation: \(functionCallExprSyntax.trimmed)!
+        """
+      )
     }
       
     guard
       memberAccessExpression.period.tokenKind == .period
     else {
-      fatalError()
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        This expression appears to have an incompatible explicit-type annotation: \(functionCallExprSyntax.trimmed)!
+        """
+      )
     }
-    
+
+    guard
+      .identifier("some") == memberAccessExpression.declName.baseName.tokenKind
+    else {
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        We can only handle the explicit-some statement here, but got \(functionCallExprSyntax.trimmed)
+        """
+      )
+    }
+
     guard
       memberAccessExpression.declName.argumentNames == nil
     else {
-      fatalError()
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        We can only handle something like `.some(_)`, but got \(functionCallExprSyntax.trimmed)!
+        """
+      )
     }
     
     guard
@@ -41,7 +88,11 @@ extension Optional: TransflectableViaExprSyntax where Wrapped: TransflectableVia
       onlyArgument.label == nil,
       onlyArgument.colon == nil
     else {
-      fatalError()
+      throw OptionalExprTransflectionError.invalidExplicitSomeExpression(
+        """
+        We can only handle something like `.some(_)`, but got \(functionCallExprSyntax.trimmed)!
+        """
+      )
     }
     
     self = .some(
@@ -68,15 +119,14 @@ extension Optional: TransflectableViaExprSyntax where Wrapped: TransflectableVia
       return
     }
     
-    self = .some(
-      try Wrapped.init(transflectingExprSyntax: exprSyntax)
-    )
+    do {
+      self = .some(
+        try Wrapped.init(transflectingExprSyntax: exprSyntax)
+      )
+    }
+    catch let error {
+      throw OptionalExprTransflectionError.unableToTransflectWrappedValue(error)
+    }
   }
 
-}
-
-// MARK: - IntegerExprTransflectionError
-
-public enum OptionalExprTransflectionError: Error, LocalizedError {
-  case unsupportedExprSyntax(String)
 }

@@ -5,7 +5,7 @@ import MacroToolbox
 import MacroTransflection
 @testable import MacroTransflectionMacroSupport
 
-// MARK: Positive Tests - Signed
+// MARK: - Tests
 
 @Test(
   "`Int.init(transflectingExprSyntax:)` (positive examples)",
@@ -57,128 +57,69 @@ func testInt64InitTransflectingExprSyntax_positiveExamples(
   try validatePositiveExample(example: example)
 }
 
-// MARK: Positive Tests - Unsigned
+// MARK: - Tests - Optional
 
 @Test(
-  "`UInt.init(transflectingExprSyntax:)` (positive examples)",
-  arguments: positiveExamples(forType: UInt.self)
+  "`Int?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Int.self
+  ).map(\.optionalized)
 )
-func testUIntInitTransflectingExprSyntax_positiveExamples(
-  example: PositiveTransflectionExample<UInt>
+func testOptionalIntInitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Int?>
 ) throws {
   try validatePositiveExample(example: example)
 }
 
 @Test(
-  "`UInt8.init(transflectingExprSyntax:)` (positive examples)",
-  arguments: positiveExamples(forType: UInt8.self)
+  "`Int8?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Int8.self
+  ).map(\.optionalized)
 )
-func testUInt8InitTransflectingExprSyntax_positiveExamples(
-  example: PositiveTransflectionExample<UInt8>
+func testOptionalInt8InitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Int8?>
 ) throws {
   try validatePositiveExample(example: example)
 }
 
 @Test(
-  "`UInt16.init(transflectingExprSyntax:)` (positive examples)",
-  arguments: positiveExamples(forType: UInt16.self)
+  "`Int16?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Int16.self
+  ).map(\.optionalized)
 )
-func testUInt16InitTransflectingExprSyntax_positiveExamples(
-  example: PositiveTransflectionExample<UInt16>
+func testOptionalInt16InitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Int16?>
 ) throws {
   try validatePositiveExample(example: example)
 }
 
 @Test(
-  "`UInt32.init(transflectingExprSyntax:)` (positive examples)",
-  arguments: positiveExamples(forType: UInt32.self)
+  "`Int32?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Int32.self
+  ).map(\.optionalized)
 )
-func testUInt32InitTransflectingExprSyntax_positiveExamples(
-  example: PositiveTransflectionExample<UInt32>
+func testOptionalInt32InitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Int32?>
 ) throws {
   try validatePositiveExample(example: example)
 }
 
 @Test(
-  "`UInt64.init(transflectingExprSyntax:)` (positive examples)",
-  arguments: positiveExamples(forType: UInt64.self)
+  "`Int64.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Int64.self
+  ).map(\.optionalized)
 )
-func testUInt64InitTransflectingExprSyntax_positiveExamples(
-  example: PositiveTransflectionExample<UInt64>
+func testOptionalInt64InitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Int64?>
 ) throws {
   try validatePositiveExample(example: example)
 }
 
-// MARK: Setup Tests
-
-@Test("Test `\"\\(type)\" produces clean type names")
-func testTypeValueStringInterpolationProducesCleanTypeNames() {
-  verifyStringification(
-    type: Int.self,
-    expectation: "Int"
-  )
-  verifyStringification(
-    type: Int8.self,
-    expectation: "Int8"
-  )
-  verifyStringification(
-    type: Int16.self,
-    expectation: "Int16"
-  )
-  verifyStringification(
-    type: Int32.self,
-    expectation: "Int32"
-  )
-  verifyStringification(
-    type: Int64.self,
-    expectation: "Int64"
-  )
-  
-  verifyStringification(
-    type: UInt.self,
-    expectation: "UInt"
-  )
-  verifyStringification(
-    type: UInt8.self,
-    expectation: "UInt8"
-  )
-  verifyStringification(
-    type: UInt16.self,
-    expectation: "UInt16"
-  )
-  verifyStringification(
-    type: UInt32.self,
-    expectation: "UInt32"
-  )
-  verifyStringification(
-    type: UInt64.self,
-    expectation: "UInt64"
-  )
-}
-
-fileprivate func verifyStringification<T>(
-  type: T.Type,
-  expectation: String,
-  function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation()
-) {
-  #expect(
-    expectation == "\(type)",
-    """
-    Expected `"\\(type)"` to be `"\(expectation)"`, but got `"\(type)"` instead!
-    
-    - `type`: \(type)
-    - `expectation`: \(expectation)
-    - `function`: \(function)
-    - `fileID`: \(sourceLocation.fileID)
-    - `line`: \(sourceLocation.line)
-    - `column`: \(sourceLocation.column)
-    """,
-    sourceLocation: sourceLocation
-  )
-}
-
-// MARK: Universal Examples
+// MARK: Test Examples
 
 fileprivate func positiveExamples<T>(
   forType type: T.Type

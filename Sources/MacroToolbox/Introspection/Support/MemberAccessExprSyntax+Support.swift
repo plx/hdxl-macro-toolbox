@@ -28,7 +28,30 @@ extension MemberAccessExprSyntax {
       baseTypeIdentifier == String(reflecting: baseType)
     )
   }
-  
+
+  @inlinable
+  public func isCompatibleWithTypeLevelPropertyAccess(
+    forBaseTypeNames baseTypeNames: Set<String>
+  ) -> Bool {
+    guard let base else {
+      return true
+    }
+    
+    guard let baseTypeExpression = base.as(DeclReferenceExprSyntax.self) else {
+      return false
+    }
+    
+    guard baseTypeExpression.argumentNames == nil else {
+      return false
+    }
+    
+    guard case .identifier(let baseTypeIdentifier) = baseTypeExpression.baseName.tokenKind else {
+      return false
+    }
+    
+    return baseTypeNames.contains(baseTypeIdentifier)
+  }
+
   @inlinable
   public var isExplicitNone: Bool {
     guard

@@ -5,7 +5,7 @@ import MacroToolbox
 import MacroTransflection
 @testable import MacroTransflectionMacroSupport
 
-// MARK: Positive Tests
+// MARK: - Tests
 
 @Test(
   "`Float16.init(transflectingExprSyntax:)` (positive examples)",
@@ -37,7 +37,45 @@ func testDoubleInitTransflectingExprSyntax_positiveExamples(
   try validatePositiveFloatingPointExample(example: example)
 }
 
-// MARK: Universal Examples
+// MARK: - Tests - Optional
+
+@Test(
+  "`Float16?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Float16.self
+  ).map(\.optionalized)
+)
+func testOptionalFloat16InitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Float16?>
+) throws {
+  try validatePositiveFloatingPointExample(example: example)
+}
+
+@Test(
+  "`Float?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Float.self
+  ).map(\.optionalized)
+)
+func testOptionalFloatInitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Float?>
+) throws {
+  try validatePositiveFloatingPointExample(example: example)
+}
+
+@Test(
+  "`Double?.init(transflectingExprSyntax:)` (positive examples)",
+  arguments: positiveExamples(
+    forType: Double.self
+  ).map(\.optionalized)
+)
+func testOptionalDoubleInitTransflectingExprSyntax_positiveExamples(
+  example: PositiveTransflectionExample<Double?>
+) throws {
+  try validatePositiveFloatingPointExample(example: example)
+}
+
+// MARK: - Examples
 
 fileprivate func positiveExamples<T>(
   forType type: T.Type
