@@ -42,7 +42,7 @@ extension AttributeSyntax {
   }
   
   @inlinable
-  public var argumentList: LabeledExprListSyntax? {
+  public var argumentListAsLabeledExprList: LabeledExprListSyntax? {
     guard case .argumentList(let argumentList) = arguments else {
       return nil
     }

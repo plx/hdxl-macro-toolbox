@@ -12,7 +12,7 @@ func testFakeAttributeForTransflectionTestingParsesOk() throws {
     "@FakeAttribute(.transmogrify, .frobulate, .transmogrifyAndFrobulate)"
   ).validated()
   
-  let argumentList = try #require(syntax.argumentList)
+  let argumentList = try #require(syntax.argumentListAsLabeledExprList)
   try #require(argumentList.count == 3)
   
   let name = "\(syntax.attributeName.trimmed)"
@@ -25,7 +25,7 @@ func testWeCanReflectSourceCodesymbolTransflectableArguments() throws {
     "@FakeAttribute(.transmogrify, .frobulate, .transmogrifyAndFrobulate)"
   ).validated()
   
-  let argumentList = Array(try #require(syntax.argumentList))
+  let argumentList = Array(try #require(syntax.argumentListAsLabeledExprList))
   try #require(argumentList.count == 3)
   
   let name = "\(syntax.attributeName.trimmed)"
