@@ -30,7 +30,7 @@ extension ContextualizedAccessorMacro {
     in context: ExpansionContext,
     _ closure: (AccessorMacroContext<Declaration, ExpansionContext>) throws -> R
   ) throws -> R {
-    let expansionContext = AccessorMacroContext(
+    let attachmentContext = AccessorMacroContext(
       macroInvocationNode: node,
       declaration: declaration,
       expansionContext: context,
@@ -38,10 +38,11 @@ extension ContextualizedAccessorMacro {
     )
     
     try validateMacroInvocationNode(node)
-    try validateDeclarationArchetype(for: expansionContext)
-    try validateExpansionContext(expansionContext)
+    try validateDeclarationArchetype(for: attachmentContext)
+    try validateDeclarationDetails(for: attachmentContext)
+    try validateExpansionContext(attachmentContext)
 
-    return try closure(expansionContext)
+    return try closure(attachmentContext)
   }
 
   public static func expansion(

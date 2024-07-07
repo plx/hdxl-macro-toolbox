@@ -41,6 +41,7 @@ extension ContextualizedMemberMacro {
     
     try validateDeclarationArchetype(for: attachmentContext)
     try validateMacroInvocationNode(attachmentContext.macroInvocationNode)
+    try validateDeclarationDetails(for: attachmentContext)
     try validateAttachmentContext(attachmentContext)
 
     return try closure(attachmentContext)

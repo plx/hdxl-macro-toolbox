@@ -26,7 +26,20 @@ public protocol ContextualizedAttachedMacro: AttachedMacro, DiagnosticDomainAwar
   static func validateMacroInvocationNode(
     _ attributeSyntax: AttributeSyntax
   ) throws
-  
+ 
+  /// This method is a hook *solely* meant to give you a way to do finer-grained validation of macro's attachment site.
+  ///
+  /// The supplied default is a no-op.
+  ///
+  /// - note: 
+  ///
+  /// This method's validation is considered both (a) independent-of and also (b) subsequent-to the validation
+  /// being done within ``validateDeclarationArchetype(in:)``; overriding this method will not
+  /// impact that method's validation *and* there's no reason to call that method from this one.
+  static func validateDeclarationDetails(
+    for attachmentContext: some AttachedMacroContextProtocol
+  ) throws
+
 }
 
 extension ContextualizedAttachedMacro {
@@ -62,6 +75,13 @@ extension ContextualizedAttachedMacro {
     _ attributeSyntax: AttributeSyntax
   ) throws {
     return // default: allow everything
+  }
+
+  @inlinable
+  public static func validateDeclarationDetails(
+    for attachmentContext: some AttachedMacroContextProtocol
+  ) throws {
+    return // default: no validation!
   }
 
 }

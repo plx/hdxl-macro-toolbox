@@ -27,7 +27,7 @@ extension AttributeSyntax {
   }
   
   @inlinable
-  public func isIdentifier(named name: String) -> Bool {
+  public func hasName(_ name: String) -> Bool {
     switch attributeName.as(IdentifierTypeSyntax.self) {
     case .some(let identifier):
       identifier.name.text == name
@@ -38,7 +38,7 @@ extension AttributeSyntax {
   
   @inlinable
   public var isPreferredMemberwiseInitializer: Bool {
-    isIdentifier(named: "PreferredMemberwiseInitializer")
+    hasName("PreferredMemberwiseInitializer")
   }
   
   @inlinable

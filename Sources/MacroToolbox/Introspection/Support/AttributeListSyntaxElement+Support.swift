@@ -20,4 +20,13 @@ extension AttributeListSyntax.Element {
     return attributeSyntax.isPreferredMemberwiseInitializer
   }
   
+  @inlinable
+  public func isAttribute(named name: String) -> Bool {
+    guard case .attribute(let attributeSyntax) = self else {
+      return false
+    }
+
+    return attributeSyntax.hasName(name)
+  }
+  
 }
