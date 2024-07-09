@@ -60,7 +60,7 @@ extension NegativeTransflectionExample {
   
   func validateTransflectionFailure(
     function: StaticString = #function,
-    sourceLocation: Testing.SourceLocation = Testing.SourceLocation()
+    sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
   ) throws {
     try storage.validateTransflectionFailure(
       function: function,
@@ -85,7 +85,7 @@ fileprivate class NegativeTransflectionExampleStorage<T>: @unchecked Sendable, C
   
   func validateTransflectionFailure(
     function: StaticString = #function,
-    sourceLocation: Testing.SourceLocation = Testing.SourceLocation()
+    sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
   ) throws {
     // deliberately minimal -- goal is just "better than `fatalError`"
     throw AbstractMethodOverrideError.failedToOverrideAbstractMethod(
@@ -132,7 +132,7 @@ F: Error
   
   override func validateTransflectionFailure(
     function: StaticString = #function,
-    sourceLocation: Testing.SourceLocation = Testing.SourceLocation()
+    sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
   ) throws {
     let expression = try expression.validated()
     #expect(

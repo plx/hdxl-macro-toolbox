@@ -3,7 +3,7 @@ extension InlinabilityDisposition {
   
   /// Determines the "strongest-available" inlinability disposition that could be applied for the provided context.
   /// - Parameters:
-  ///   - declarationType: The general *type*  of the declaration **to-which** you want to apply an inlinability attribute.
+  ///   - attachmentSite: The general *type*  of the declaration **to-which** you want to apply an inlinability attribute.
   ///   - visibilityLevel: The visibility level of the declaration **to-which** you want to apply an inlinability attribute.
   ///   - dispositionHint: A "hint" as to the intended inlinability-disposition.
   /// - Returns: The "strongest" inlinability you could apply, or `nil` if no inlinability couple be applied.
@@ -41,11 +41,11 @@ extension InlinabilityDisposition {
   ///
   @inlinable
   public static func strongestAvailableDisposition(
-    declarationType: InlinabilityAnnotableDeclarationType,
+    attachmentSite: PerformanceAnnotationAttachmentSite,
     declarationVisibility: VisibilityLevel,
     dispositionHint: InlinabilityDisposition?
   ) -> InlinabilityDisposition? {
-    switch declarationType {
+    switch attachmentSite {
     case .typeDeclaration:
       strongestAvailableTypeDeclarationInlinability(
         declarationVisibility: declarationVisibility,

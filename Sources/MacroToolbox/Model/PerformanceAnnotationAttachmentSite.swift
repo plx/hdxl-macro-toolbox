@@ -1,8 +1,8 @@
 
-/// ``InlinabilityAnnotableDeclarationType`` corresponds to the distinct declaration-types to-which one of the inlinability attributes may be applied.
+/// ``PerformanceAnnotationAttachmentSite`` corresponds to the distinct declaration-types to-which the "performance annotations" could be attached.
 ///
 /// - note: These contexts are an ad-hoc characterization and, as such, may need additional refinement over time.
-public enum InlinabilityAnnotableDeclarationType {
+public enum PerformanceAnnotationAttachmentSite {
   
   /// Corresponds to type-level declarations (including typealiases, too).
   ///
@@ -41,15 +41,15 @@ public enum InlinabilityAnnotableDeclarationType {
   case functionOrMethodDeclaration
 }
 
-extension InlinabilityAnnotableDeclarationType: Sendable {}
-extension InlinabilityAnnotableDeclarationType: Equatable {}
-extension InlinabilityAnnotableDeclarationType: Hashable {}
-extension InlinabilityAnnotableDeclarationType: CaseIterable {}
-extension InlinabilityAnnotableDeclarationType: Codable {}
-extension InlinabilityAnnotableDeclarationType: CustomStringConvertible { }
-extension InlinabilityAnnotableDeclarationType: CustomDebugStringConvertible { }
+extension PerformanceAnnotationAttachmentSite: Sendable {}
+extension PerformanceAnnotationAttachmentSite: Equatable {}
+extension PerformanceAnnotationAttachmentSite: Hashable {}
+extension PerformanceAnnotationAttachmentSite: CaseIterable {}
+extension PerformanceAnnotationAttachmentSite: Codable {}
+extension PerformanceAnnotationAttachmentSite: CustomStringConvertible { }
+extension PerformanceAnnotationAttachmentSite: CustomDebugStringConvertible { }
 
-extension InlinabilityAnnotableDeclarationType: MacroToolboxCaseNameAwareEnumeration {
+extension PerformanceAnnotationAttachmentSite: MacroToolboxCaseNameAwareEnumeration {
   
   @inlinable
   public var caseNameWithoutLeadingDot: String {

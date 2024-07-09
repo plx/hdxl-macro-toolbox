@@ -64,7 +64,7 @@ fileprivate func probeValues<T>(
   stride: T = 0.1,
   includeNaNs: Bool = true,
   includeInfinities: Bool = true
-) -> some Sendable & Collection<T> where T: BinaryFloatingPoint, T.Stride == T {
+) -> some Sendable & Collection<T> where T: BinaryFloatingPoint, T.Stride == T, T: Sendable {
   var numericExamples: [T] = []
   numericExamples.append(
     contentsOf: Swift.stride(
@@ -108,7 +108,7 @@ extension BinaryFloatingPoint where Self: TransflectableViaFloatLiteralValue {
   
   fileprivate func validateTransflection(
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = SourceLocation()
+    _ sourceLocation: SourceLocation = .__here()
   ) throws {
     try validateFloatingPointTransflectionRoundTrip(
       original: self,
@@ -140,7 +140,7 @@ extension Double {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = SourceLocation()
+    _ sourceLocation: SourceLocation = .__here()
   ) throws where T: TransflectableViaFloatLiteralValue {
     #expect(
       throws: FloatLiteralTransflectionError.self,

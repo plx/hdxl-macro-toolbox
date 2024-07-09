@@ -1,6 +1,5 @@
 import SwiftSyntax
 
-
 public enum InlinabilityDisposition {
   case usableFromInline
   case inlinable

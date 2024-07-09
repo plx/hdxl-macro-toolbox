@@ -51,7 +51,7 @@ fileprivate func verifyStringification<T>(
   type: T.Type,
   expectation: String,
   function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation()
+  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
 ) {
   #expect(
     expectation == "\(type)",

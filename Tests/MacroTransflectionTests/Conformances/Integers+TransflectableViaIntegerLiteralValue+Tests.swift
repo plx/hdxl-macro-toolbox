@@ -213,7 +213,7 @@ fileprivate func probeRange<T>(
   type: T.Type,
   lowerBound: T = -4,
   upperBound: T = 5
-) -> some Sendable & Collection<T> where T: SignedInteger, T.Stride: SignedInteger {
+) -> some Sendable & Collection<T> where T: SignedInteger, T.Stride: SignedInteger, T: Sendable {
   lowerBound..<upperBound
 }
 
@@ -221,7 +221,7 @@ fileprivate func probeRange<T>(
   type: T.Type,
   lowerBound: T = 0,
   upperBound: T = 5
-) -> some Sendable & Collection<T> where T: UnsignedInteger, T.Stride: SignedInteger {
+) -> some Sendable & Collection<T> where T: UnsignedInteger, T.Stride: SignedInteger, T: Sendable {
   lowerBound..<upperBound
 }
 
@@ -235,7 +235,7 @@ extension BinaryInteger where Self: TransflectableViaIntegerLiteralValue {
   
   fileprivate func validateTransflection(
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = SourceLocation()
+    _ sourceLocation: SourceLocation = .__here()
   ) throws {
     try validateTransflectionRoundTrip(
       original: self,
@@ -253,7 +253,7 @@ extension Int64 {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = SourceLocation()
+    _ sourceLocation: SourceLocation = .__here()
   ) throws where T: TransflectableViaIntegerLiteralValue {
     #expect(
       throws: IntegerLiteralTransflectionError.self,
@@ -283,7 +283,7 @@ extension UInt64 {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = SourceLocation()
+    _ sourceLocation: SourceLocation = .__here()
   ) throws where T: TransflectableViaIntegerLiteralValue {
     #expect(
       throws: IntegerLiteralTransflectionError.self,
