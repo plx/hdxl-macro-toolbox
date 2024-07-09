@@ -5,12 +5,20 @@ import SwiftSyntaxBuilder
 import SwiftDiagnostics
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`UInt.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uintTransflection
+  ),
   arguments: negativeExamples(forType: UInt.self)
 )
 func testUIntInitTransflectingExprSyntax_negativeExamples(
@@ -21,6 +29,12 @@ func testUIntInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt8.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint8Transflection
+  ),
   arguments: negativeExamples(forType: UInt8.self)
 )
 func testUInt8InitTransflectingExprSyntax_negativeExamples(
@@ -31,6 +45,12 @@ func testUInt8InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt16.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint16Transflection
+  ),
   arguments: negativeExamples(forType: UInt16.self)
 )
 func testUInt16InitTransflectingExprSyntax_negativeExamples(
@@ -41,6 +61,12 @@ func testUInt16InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt32.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint32Transflection
+  ),
   arguments: negativeExamples(forType: UInt32.self)
 )
 func testUInt32InitTransflectingExprSyntax_negativeExamples(
@@ -51,6 +77,12 @@ func testUInt32InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt64.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint64Transflection
+  ),
   arguments: negativeExamples(forType: UInt64.self)
 )
 func testUInt64InitTransflectingExprSyntax_negativeExamples(
@@ -63,6 +95,13 @@ func testUInt64InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uintTransflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: UInt.self
   ).map(\.optionalized)
@@ -75,6 +114,13 @@ func testOptionalUIntInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt8?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint8Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: UInt8.self
   ).map(\.optionalized)
@@ -87,6 +133,13 @@ func testOptionalUInt8InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt16?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint16Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: UInt16.self
   ).map(\.optionalized)
@@ -99,6 +152,13 @@ func testOptionalUInt16InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt32?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint32Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: UInt32.self
   ).map(\.optionalized)
@@ -111,6 +171,13 @@ func testOptionalUInt32InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`UInt64?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .unsignedIntegerTransflections,
+    .uint64Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: UInt64.self
   ).map(\.optionalized)

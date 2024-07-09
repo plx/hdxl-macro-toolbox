@@ -3,12 +3,19 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`Bool.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .booleanTransflections
+  ),
   arguments: negativeBooleanExamples()
 )
 func testBoolInitTransflectingExprSyntax_negativeExamples(
@@ -21,6 +28,12 @@ func testBoolInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Bool?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .booleanTransflections,
+    .optionalTransflections
+  ),
   arguments: negativeBooleanExamples().map(\.optionalized)
 )
 func testOptionalBoolInitTransflectingExprSyntax_negativeExamples(

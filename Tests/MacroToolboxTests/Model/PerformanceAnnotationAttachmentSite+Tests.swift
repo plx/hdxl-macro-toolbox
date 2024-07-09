@@ -1,7 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`PerformanceAnnotationAttachmentSite.description` uniqueness")
+@Test(
+  "`PerformanceAnnotationAttachmentSite.description` uniqueness",
+  .tags(.performanceAnnotationAttachmentSite)
+)
 func testPerformanceAnnotationAttachmentSiteDescriptionUniqueness() {
   #expect(
     PerformanceAnnotationAttachmentSite
@@ -17,7 +21,10 @@ func testPerformanceAnnotationAttachmentSiteDescriptionUniqueness() {
   )
 }
 
-@Test("`PerformanceAnnotationAttachmentSite.debugDescription` uniqueness")
+@Test(
+  "`PerformanceAnnotationAttachmentSite.debugDescription` uniqueness",
+  .tags(.performanceAnnotationAttachmentSite)
+)
 func testPerformanceAnnotationAttachmentSiteDebugDescriptionUniqueness() {
   #expect(
     PerformanceAnnotationAttachmentSite
@@ -33,7 +40,10 @@ func testPerformanceAnnotationAttachmentSiteDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`PerformanceAnnotationAttachmentSite.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`PerformanceAnnotationAttachmentSite.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.performanceAnnotationAttachmentSite)
+)
 func testPerformanceAnnotationAttachmentSiteCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     PerformanceAnnotationAttachmentSite

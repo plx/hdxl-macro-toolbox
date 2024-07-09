@@ -1,8 +1,13 @@
 import Testing
-import MacroTransflection
+import MacroToolboxTestSupport
+@testable import MacroTransflection
 
 @Test(
   "`Bool` transflection",
+  .tags(
+    .transflection,
+    .booleanTransflections
+  ),
   arguments: [true, false]
 )
 func testBooleanTransflectionConformance(

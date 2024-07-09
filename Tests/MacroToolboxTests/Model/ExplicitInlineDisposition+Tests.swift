@@ -1,7 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`ExplicitInlineDisposition.description` uniqueness")
+@Test(
+  "`ExplicitInlineDisposition.description` uniqueness",
+  .tags(.explicitInlineDisposition)
+)
 func testExplicitInlineDispositionDescriptionUniqueness() {
   #expect(
     ExplicitInlineDisposition
@@ -17,7 +21,10 @@ func testExplicitInlineDispositionDescriptionUniqueness() {
   )
 }
 
-@Test("`ExplicitInlineDisposition.debugDescription` uniqueness")
+@Test(
+  "`ExplicitInlineDisposition.debugDescription` uniqueness",
+  .tags(.explicitInlineDisposition)
+)
 func testExplicitInlineDispositionDebugDescriptionUniqueness() {
   #expect(
     ExplicitInlineDisposition
@@ -33,7 +40,10 @@ func testExplicitInlineDispositionDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`ExplicitInlineDisposition.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`ExplicitInlineDisposition.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.explicitInlineDisposition)
+)
 func testExplicitInlineDispositionCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     ExplicitInlineDisposition

@@ -31,29 +31,36 @@ extension ExplicitInlineDisposition {
     
   @inlinable
   public init?(attributeSyntax: AttributeSyntax) {
-    guard
-      attributeSyntax.hasAtSign,
-      let identifier = attributeSyntax.attributeName.as(IdentifierTypeSyntax.self),
-      identifier.name.tokenKind == .identifier("inline")
-    else {
+    switch "\(attributeSyntax._syntaxNode)" {
+    case "@inline(__always)":
+      self = .always
+    case "@inline(never)":
+      self = .never
+    default:
       return nil
     }
-    
-    print("attributeSyntax.arguments: \(String(describing: attributeSyntax.arguments))")
-    if case .token(let token) = attributeSyntax.arguments {
-      self.init(attributeArgument: "\(token.text)")
-    } else if
-      case .argumentList(let arguments) = attributeSyntax.arguments,
-      arguments.count == 1,
-      let firstArgument = arguments.first,
-      firstArgument.label == nil {
-      self.init(attributeArgument: "\(firstArgument.expression)")
-    } else {
-      return nil
-    }
-              
-    
-    return nil
+    //    guard
+    //      attributeSyntax.hasAtSign,
+    //      let identifier = attributeSyntax.attributeName.as(IdentifierTypeSyntax.self),
+    //      identifier.name.tokenKind == .identifier("inline")
+    //    else {
+    //      return nil
+    //    }
+    //    
+    //    if case .token(let token) = attributeSyntax.arguments {
+    //      self.init(attributeArgument: "\(token.text)")
+    //    } else if
+    //      case .argumentList(let arguments) = attributeSyntax.arguments,
+    //      arguments.count == 1,
+    //      let firstArgument = arguments.first,
+    //      firstArgument.label == nil {
+    //      self.init(attributeArgument: "\(firstArgument.expression)")
+    //    } else {
+    //      return nil
+    //    }
+    //              
+    //    
+    //    return nil
   }
   
 }

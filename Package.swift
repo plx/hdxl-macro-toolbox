@@ -150,7 +150,8 @@ let package = Package(
     .testTarget(
       name: "MacroTransflectionTests",
       dependencies: [
-        "MacroTransflection"
+        "MacroTransflection",
+        "MacroToolboxTestSupport"
       ]
     ),
     
@@ -175,7 +176,8 @@ let package = Package(
       dependencies: [
         "MacroToolbox",
         "MacroTransflection",
-        "MacroTransflectionMacros"
+        "MacroTransflectionMacros",
+        "MacroToolboxTestSupport"
       ]
     ),
     .executableTarget(
@@ -197,7 +199,8 @@ let package = Package(
     .testTarget(
       name: "MacroTransflectionMacroSupportTests",
       dependencies: [
-        "MacroTransflectionMacroSupport"
+        "MacroTransflectionMacroSupport",
+        "MacroToolboxTestSupport"
       ]
     ),
 
@@ -211,7 +214,8 @@ let package = Package(
     .testTarget(
       name: "MacroToolboxTests",
       dependencies: [
-        "MacroToolbox"
+        "MacroToolbox",
+        "MacroToolboxTestSupport"
       ]
     ),
 
@@ -236,6 +240,12 @@ let package = Package(
         "MacroToolboxMacros"
       ]
     ),
+    
+    // common test-tags
+    .target(
+      name: "MacroToolboxTestSupport",
+      dependencies: [ ]
+    )
   ],
   swiftLanguageVersions: [
     .v6

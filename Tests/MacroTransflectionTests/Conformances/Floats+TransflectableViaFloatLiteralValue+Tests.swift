@@ -1,10 +1,16 @@
 import Testing
-import MacroTransflection
+import MacroToolboxTestSupport
+@testable import MacroTransflection
 
 // MARK: Conformance Basics
 
 @Test(
   "`Float16` transflection",
+  .tags(
+    .transflection,
+    .floatingPointTransflections,
+    .float16Transflection
+  ),
   arguments: probeValues(type: Float16.self)
 )
 func testFloat16TransflectionConformance(
@@ -15,6 +21,11 @@ func testFloat16TransflectionConformance(
 
 @Test(
   "`Float` transflection",
+  .tags(
+    .transflection,
+    .floatingPointTransflections,
+    .floatTransflection
+  ),
   arguments: probeValues(type: Float.self)
 )
 func testFloatTransflectionConformance(
@@ -25,6 +36,11 @@ func testFloatTransflectionConformance(
 
 @Test(
   "`Double` transflection",
+  .tags(
+    .transflection,
+    .floatingPointTransflections,
+    .doubleTransflection
+  ),
   arguments: probeValues(type: Double.self)
 )
 func testDoubleTransflectionConformance(
@@ -37,6 +53,13 @@ func testDoubleTransflectionConformance(
 
 @Test(
   "`Float16` transflection throws on unrepresentable values",
+  .tags(
+    .transflection,
+    .floatingPointTransflections,
+    .float16Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: Float16.self)
 )
 func testFloat16TransflectionThrowsOnUnrepresentableValues(
@@ -47,6 +70,13 @@ func testFloat16TransflectionThrowsOnUnrepresentableValues(
 
 @Test(
   "`Float` transflection throws on unrepresentable values",
+  .tags(
+    .transflection,
+    .floatingPointTransflections,
+    .floatTransflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: Float.self)
 )
 func testFloatTransflectionThrowsOnUnrepresentableValues(
@@ -108,7 +138,7 @@ extension BinaryFloatingPoint where Self: TransflectableViaFloatLiteralValue {
   
   fileprivate func validateTransflection(
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = .__here()
+    _ sourceLocation: SourceLocation = .automatic()
   ) throws {
     try validateFloatingPointTransflectionRoundTrip(
       original: self,
@@ -140,7 +170,7 @@ extension Double {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = .__here()
+    _ sourceLocation: SourceLocation = .automatic()
   ) throws where T: TransflectableViaFloatLiteralValue {
     #expect(
       throws: FloatLiteralTransflectionError.self,

@@ -3,12 +3,19 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`String.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .stringTransflections
+  ),
   arguments: negativeExamples(forType: String.self)
 )
 func testStringInitTransflectingExprSyntax_negativeExamples(
@@ -21,6 +28,12 @@ func testStringInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`String?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .stringTransflections,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: String.self
   ).map(\.optionalized)

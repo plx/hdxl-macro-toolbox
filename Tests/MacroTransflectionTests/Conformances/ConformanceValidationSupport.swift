@@ -4,7 +4,7 @@ func validateTransflectionRoundTrip<Probe, Literal>(
   original: Probe,
   literal: Literal,
   function: StaticString = #function,
-  sourceLocation: SourceLocation = .__here(),
+  sourceLocation: SourceLocation = .automatic(),
   transflection transflectionOperation: (Literal) throws -> Probe
 ) throws where Probe: Equatable {
   let transflected = try transflectionOperation(literal)
@@ -29,7 +29,7 @@ func validateFloatingPointTransflectionRoundTrip<Probe, Literal>(
   original: Probe,
   literal: Literal,
   function: StaticString = #function,
-  sourceLocation: SourceLocation = .__here(),
+  sourceLocation: SourceLocation = .automatic(),
   transflection transflectionOperation: (Literal) throws -> Probe
 ) throws where Probe: Equatable, Probe: FloatingPoint, Literal: FloatingPoint {
   let transflected = try transflectionOperation(literal)

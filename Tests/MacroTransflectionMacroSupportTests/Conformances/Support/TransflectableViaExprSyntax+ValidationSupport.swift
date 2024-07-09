@@ -2,12 +2,14 @@ import Testing
 import SwiftSyntax
 import SwiftParser
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 func validatePositiveExample<T>(
   example: PositiveTransflectionExample<T>,
   function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
+  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.automatic()
 ) throws where T: Sendable, T: Equatable, T: TransflectableViaExprSyntax {
   let expectedValue = example.value
   let expression = try example.expression.validated()
@@ -32,7 +34,7 @@ func validatePositiveExample<T>(
 func validatePositiveFloatingPointExample<T>(
   example: PositiveTransflectionExample<T>,
   function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
+  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.automatic()
 ) throws where T: Sendable, T: Equatable, T: TransflectableViaExprSyntax, T: BinaryFloatingPoint {
   let expectedValue = example.value
   let expression = try example.expression.validated()
@@ -63,7 +65,7 @@ func validatePositiveFloatingPointExample<T>(
 func validatePositiveFloatingPointExample<T>(
   example: PositiveTransflectionExample<T?>,
   function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
+  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.automatic()
 ) throws where T: Sendable, T: Equatable, T: TransflectableViaExprSyntax, T: BinaryFloatingPoint {
   let _expectedValue = example.value
   let expression = try example.expression.validated()

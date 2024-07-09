@@ -3,12 +3,18 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
 
 // MARK: - Tests
 
 @Test(
   "`Float16.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections
+  ),
   arguments: positiveExamples(forType: Float16.self)
 )
 func testFloat16InitTransflectingExprSyntax_positiveExamples(
@@ -19,6 +25,11 @@ func testFloat16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Float.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections
+  ),
   arguments: positiveExamples(forType: Float.self)
 )
 func testFloatInitTransflectingExprSyntax_positiveExamples(
@@ -29,6 +40,11 @@ func testFloatInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Double.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections
+  ),
   arguments: positiveExamples(forType: Double.self)
 )
 func testDoubleInitTransflectingExprSyntax_positiveExamples(
@@ -41,6 +57,13 @@ func testDoubleInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Float16?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections,
+    .float16Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Float16.self
   ).map(\.optionalized)
@@ -53,6 +76,13 @@ func testOptionalFloat16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Float?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections,
+    .floatTransflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Float.self
   ).map(\.optionalized)
@@ -65,6 +95,13 @@ func testOptionalFloatInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Double?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .floatingPointTransflections,
+    .doubleTransflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Double.self
   ).map(\.optionalized)

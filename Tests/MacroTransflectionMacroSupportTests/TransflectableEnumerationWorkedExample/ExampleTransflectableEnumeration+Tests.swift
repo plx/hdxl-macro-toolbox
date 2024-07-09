@@ -4,9 +4,17 @@ import SwiftParser
 import SwiftSyntaxBuilder
 import MacroToolbox
 import MacroTransflection
-import MacroTransflectionMacroSupport
+import MacroToolboxTestSupport
+@testable import MacroTransflectionMacroSupport
 
-@Test("Verify fake-attribute parses ok.")
+@Test(
+  "Verify fake-attribute parses ok.",
+  .tags(
+    .attributeSyntax,
+    .transflection,
+    .enumerationTransflections
+  )
+)
 func testFakeAttributeForTransflectionTestingParsesOk() throws {
   let syntax = try AttributeSyntax(
     "@FakeAttribute(.transmogrify, .frobulate, .transmogrifyAndFrobulate)"
@@ -19,7 +27,14 @@ func testFakeAttributeForTransflectionTestingParsesOk() throws {
   #expect(name == "FakeAttribute")
 }
 
-@Test("Verify we can transflect source-code-symbol-transflectable arguments.")
+@Test(
+  "Verify we can transflect source-code-symbol-transflectable arguments.",
+  .tags(
+    .attributeSyntax,
+    .transflection,
+    .enumerationTransflections
+  )
+)
 func testWeCanReflectSourceCodesymbolTransflectableArguments() throws {
   let syntax = try AttributeSyntax(
     "@FakeAttribute(.transmogrify, .frobulate, .transmogrifyAndFrobulate)"

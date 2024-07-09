@@ -3,12 +3,20 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`Int.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .intTransflection
+  ),
   arguments: positiveExamples(forType: Int.self)
 )
 func testIntInitTransflectingExprSyntax_positiveExamples(
@@ -19,6 +27,12 @@ func testIntInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int8.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int8Transflection
+  ),
   arguments: positiveExamples(forType: Int8.self)
 )
 func testInt8InitTransflectingExprSyntax_positiveExamples(
@@ -29,6 +43,12 @@ func testInt8InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int16.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int16Transflection
+  ),
   arguments: positiveExamples(forType: Int16.self)
 )
 func testInt16InitTransflectingExprSyntax_positiveExamples(
@@ -39,6 +59,12 @@ func testInt16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int32.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int32Transflection
+  ),
   arguments: positiveExamples(forType: Int32.self)
 )
 func testInt32InitTransflectingExprSyntax_positiveExamples(
@@ -49,6 +75,12 @@ func testInt32InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int64.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int64Transflection
+  ),
   arguments: positiveExamples(forType: Int64.self)
 )
 func testInt64InitTransflectingExprSyntax_positiveExamples(
@@ -61,6 +93,13 @@ func testInt64InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .intTransflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Int.self
   ).map(\.optionalized)
@@ -73,6 +112,13 @@ func testOptionalIntInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int8?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int8Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Int8.self
   ).map(\.optionalized)
@@ -85,6 +131,13 @@ func testOptionalInt8InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int16?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int16Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Int16.self
   ).map(\.optionalized)
@@ -97,6 +150,13 @@ func testOptionalInt16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`Int32?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int32Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Int32.self
   ).map(\.optionalized)
@@ -108,7 +168,14 @@ func testOptionalInt32InitTransflectingExprSyntax_positiveExamples(
 }
 
 @Test(
-  "`Int64.init(transflectingExprSyntax:)` (positive examples)",
+  "`Int64?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .signedIntegerTransflections,
+    .int64Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: Int64.self
   ).map(\.optionalized)

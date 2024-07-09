@@ -1,6 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
+@testable import MacroTransflectionMacroSupport
 
-@Test("Test `\"\\(type)\" produces clean type names")
+@Test(
+  "Test `\"\\(type)\" produces clean type names",
+  .tags(.testInfrastructure)
+)
 func testTypeValueStringInterpolationProducesCleanTypeNames() {
   verifyStringification(
     type: Int.self,
@@ -51,7 +56,7 @@ fileprivate func verifyStringification<T>(
   type: T.Type,
   expectation: String,
   function: StaticString = #function,
-  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.__here()
+  sourceLocation: Testing.SourceLocation = Testing.SourceLocation.automatic()
 ) {
   #expect(
     expectation == "\(type)",

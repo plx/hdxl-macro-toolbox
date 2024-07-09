@@ -1,9 +1,16 @@
 import SwiftSyntax
 import SwiftParser
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`ExplicitInlineDisposition.sourceCodeStringRepresentation` (.always)")
+@Test(
+  "`ExplicitInlineDisposition.sourceCodeStringRepresentation` (.always)",
+  .tags(
+    .explicitInlineDisposition,
+    .syntaxInteroperation
+  )
+)
 func testExplicitInlineDispositionSourceCodeStringRepresentation_inlinable() {
   #expect(
     "@inline(__always)"
@@ -12,7 +19,13 @@ func testExplicitInlineDispositionSourceCodeStringRepresentation_inlinable() {
   )
 }
 
-@Test("`ExplicitInlineDisposition.sourceCodeStringRepresentation`  (.never)")
+@Test(
+  "`ExplicitInlineDisposition.sourceCodeStringRepresentation`  (.never)",
+  .tags(
+    .explicitInlineDisposition,
+    .syntaxInteroperation
+  )
+)
 func testExplicitInlineDispositionSourceCodeStringRepresentation() {
   #expect(
     "@inline(never)"
@@ -21,7 +34,14 @@ func testExplicitInlineDispositionSourceCodeStringRepresentation() {
   )
 }
 
-@Test("`ExplicitInlineDisposition(attributeSyntax:)` (@inline(__always))")
+@Test(
+  "`ExplicitInlineDisposition(attributeSyntax:)` (@inline(__always))",
+  .tags(
+    .explicitInlineDisposition,
+    .syntaxInteroperation,
+    .attributeSyntax
+  )
+)
 func testExplicitInlineDispositionAttributeTokenSyntax_inlinable() throws {
   let always = try #require(
     ExplicitInlineDisposition(attributeSyntax: AttributeSyntax("@inline(__always)"))
@@ -29,7 +49,14 @@ func testExplicitInlineDispositionAttributeTokenSyntax_inlinable() throws {
   #expect(always == .always)
 }
 
-@Test("`ExplicitInlineDisposition(attributeSyntax:)` (@inline(never))")
+@Test(
+  "`ExplicitInlineDisposition(attributeSyntax:)` (@inline(never))",
+  .tags(
+    .explicitInlineDisposition,
+    .syntaxInteroperation,
+    .attributeSyntax
+  )
+)
 func testExplicitInlineDispositionInitAttributeSyntax_usableFromInline() throws {
   let never = try #require(
     ExplicitInlineDisposition(attributeSyntax: AttributeSyntax("@inline(never)"))

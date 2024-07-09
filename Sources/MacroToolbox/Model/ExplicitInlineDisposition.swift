@@ -25,5 +25,17 @@ extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
       "never"
     }
   }
-  
+ 
+  func appropriateDisposition(
+    forAttachmentSite attachmentSite: PerformanceAnnotationAttachmentSite
+  ) -> Self? {
+    switch attachmentSite {
+    case .typeDeclaration:
+      nil
+    case .storedPropertyDeclaration:
+      nil
+    case .functionOrMethodDeclaration:
+      self
+    }
+  }
 }

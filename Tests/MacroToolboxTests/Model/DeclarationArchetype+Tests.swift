@@ -1,7 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`DeclarationArchetype.description` uniqueness")
+@Test(
+  "`DeclarationArchetype.description` uniqueness",
+  .tags(.declarationArchetype)
+)
 func testDeclarationArchetypeDescriptionUniqueness() {
   #expect(
     DeclarationArchetype
@@ -17,7 +21,10 @@ func testDeclarationArchetypeDescriptionUniqueness() {
   )
 }
 
-@Test("`DeclarationArchetype.debugDescription` uniqueness")
+@Test(
+  "`DeclarationArchetype.debugDescription` uniqueness",
+  .tags(.declarationArchetype)
+)
 func testDeclarationArchetypeDebugDescriptionUniqueness() {
   #expect(
     DeclarationArchetype
@@ -33,7 +40,10 @@ func testDeclarationArchetypeDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`DeclarationArchetype.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`DeclarationArchetype.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.declarationArchetype)
+)
 func testDeclarationArchetypeCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     DeclarationArchetype

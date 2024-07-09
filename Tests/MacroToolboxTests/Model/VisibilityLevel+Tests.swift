@@ -1,7 +1,12 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`VisibilityLevel.description` uniqueness")
+
+@Test(
+  "`VisibilityLevel.description` uniqueness",
+  .tags(.visibilityLevel)
+)
 func testVisibilityLevelDescriptionUniqueness() {
   #expect(
     VisibilityLevel
@@ -17,7 +22,10 @@ func testVisibilityLevelDescriptionUniqueness() {
   )
 }
 
-@Test("`VisibilityLevel.debugDescription` uniqueness")
+@Test(
+  "`VisibilityLevel.debugDescription` uniqueness",
+  .tags(.visibilityLevel)
+)
 func testVisibilityLevelDebugDescriptionUniqueness() {
   #expect(
     VisibilityLevel
@@ -33,7 +41,10 @@ func testVisibilityLevelDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`VisibilityLevel.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`VisibilityLevel.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.visibilityLevel)
+)
 func testVisibilityLevelCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     VisibilityLevel

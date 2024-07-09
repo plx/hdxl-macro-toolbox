@@ -3,12 +3,20 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`UInt.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uintTransflection
+  ),
   arguments: positiveExamples(forType: UInt.self)
 )
 func testUIntInitTransflectingExprSyntax_positiveExamples(
@@ -19,6 +27,12 @@ func testUIntInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt8.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint8Transflection
+  ),
   arguments: positiveExamples(forType: UInt8.self)
 )
 func testUInt8InitTransflectingExprSyntax_positiveExamples(
@@ -29,6 +43,12 @@ func testUInt8InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt16.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint16Transflection
+  ),
   arguments: positiveExamples(forType: UInt16.self)
 )
 func testUInt16InitTransflectingExprSyntax_positiveExamples(
@@ -39,6 +59,12 @@ func testUInt16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt32.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint32Transflection
+  ),
   arguments: positiveExamples(forType: UInt32.self)
 )
 func testUInt32InitTransflectingExprSyntax_positiveExamples(
@@ -49,6 +75,12 @@ func testUInt32InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt64.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint64Transflection
+  ),
   arguments: positiveExamples(forType: UInt64.self)
 )
 func testUInt64InitTransflectingExprSyntax_positiveExamples(
@@ -61,6 +93,13 @@ func testUInt64InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uintTransflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: UInt.self
   ).map(\.optionalized)
@@ -73,6 +112,13 @@ func testOptionalUIntInitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt8?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint8Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: UInt8.self
   ).map(\.optionalized)
@@ -85,6 +131,13 @@ func testOptionalUInt8InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt16?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint16Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: UInt16.self
   ).map(\.optionalized)
@@ -97,6 +150,13 @@ func testOptionalUInt16InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt32?.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint32Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: UInt32.self
   ).map(\.optionalized)
@@ -109,6 +169,13 @@ func testOptionalUInt32InitTransflectingExprSyntax_positiveExamples(
 
 @Test(
   "`UInt64.init(transflectingExprSyntax:)` (positive examples)",
+  .tags(
+    .transflection,
+    .positiveExamples,
+    .unsignedIntegerTransflections,
+    .uint64Transflection,
+    .optionalTransflections
+  ),
   arguments: positiveExamples(
     forType: UInt64.self
   ).map(\.optionalized)

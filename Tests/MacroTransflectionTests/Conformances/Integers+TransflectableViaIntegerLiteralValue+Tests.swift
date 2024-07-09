@@ -1,10 +1,16 @@
 import Testing
-import MacroTransflection
+import MacroToolboxTestSupport
+@testable import MacroTransflection
 
 // MARK: Signed Integer
 
 @Test(
   "`Int` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections
+  ),
   arguments: probeRange(type: Int.self)
 )
 func testIntTransflectionConformance(
@@ -15,6 +21,11 @@ func testIntTransflectionConformance(
 
 @Test(
   "`Int8` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections
+  ),
   arguments: probeRange(type: Int8.self)
 )
 func testInt8TransflectionConformance(
@@ -25,6 +36,11 @@ func testInt8TransflectionConformance(
 
 @Test(
   "`Int16` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections
+  ),
   arguments: probeRange(type: Int16.self)
 )
 func testInt16TransflectionConformance(
@@ -35,6 +51,11 @@ func testInt16TransflectionConformance(
 
 @Test(
   "`Int32` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections
+  ),
   arguments: probeRange(type: Int32.self)
 )
 func testInt32TransflectionConformance(
@@ -45,6 +66,11 @@ func testInt32TransflectionConformance(
 
 @Test(
   "`Int64` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections
+  ),
   arguments: probeRange(type: Int64.self)
 )
 func testInt64TransflectionConformance(
@@ -57,6 +83,11 @@ func testInt64TransflectionConformance(
 
 @Test(
   "`UInt` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections
+  ),
   arguments: probeRange(type: UInt.self)
 )
 func testUIntTransflectionConformance(
@@ -67,6 +98,11 @@ func testUIntTransflectionConformance(
 
 @Test(
   "`UInt8` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections
+  ),
   arguments: probeRange(type: UInt8.self)
 )
 func testUInt8TransflectionConformance(
@@ -77,6 +113,11 @@ func testUInt8TransflectionConformance(
 
 @Test(
   "`UInt16` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections
+  ),
   arguments: probeRange(type: UInt16.self)
 )
 func testUInt16TransflectionConformance(
@@ -87,6 +128,11 @@ func testUInt16TransflectionConformance(
 
 @Test(
   "`UInt32` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections
+  ),
   arguments: probeRange(type: UInt32.self)
 )
 func testUInt32TransflectionConformance(
@@ -97,6 +143,12 @@ func testUInt32TransflectionConformance(
 
 @Test(
   "`UInt64` transflection",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections,
+    .uint64Transflection
+  ),
   arguments: probeRange(type: UInt64.self)
 )
 func testUInt64TransflectionConformance(
@@ -109,6 +161,14 @@ func testUInt64TransflectionConformance(
 
 @Test(
   "`Int8` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections,
+    .int8Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: Int8.self)
 )
 func testInt8TransflectionThrowsOnUnrepresentableLiterals(
@@ -119,6 +179,14 @@ func testInt8TransflectionThrowsOnUnrepresentableLiterals(
 
 @Test(
   "`Int16` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections,
+    .int16Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: Int16.self)
 )
 func testInt16TransflectionThrowsOnUnrepresentableLiterals(
@@ -129,6 +197,14 @@ func testInt16TransflectionThrowsOnUnrepresentableLiterals(
 
 @Test(
   "`Int32` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections,
+    .int32Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: Int32.self)
 )
 func testInt32TransflectionThrowsOnUnrepresentableLiterals(
@@ -141,6 +217,14 @@ func testInt32TransflectionThrowsOnUnrepresentableLiterals(
 
 @Test(
   "`UInt8` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .signedIntegerTransflections,
+    .uint8Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: UInt8.self)
 )
 func testUInt8TransflectionThrowsOnUnrepresentableLiterals(
@@ -151,6 +235,14 @@ func testUInt8TransflectionThrowsOnUnrepresentableLiterals(
 
 @Test(
   "`UInt16` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections,
+    .uint16Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: UInt16.self)
 )
 func testUInt16TransflectionThrowsOnUnrepresentableLiterals(
@@ -161,6 +253,14 @@ func testUInt16TransflectionThrowsOnUnrepresentableLiterals(
 
 @Test(
   "`UInt32` throws on unrepresentable literals",
+  .tags(
+    .transflection,
+    .integerTransflections,
+    .unsignedIntegerTransflections,
+    .uint32Transflection,
+    .negativeExamples,
+    .unrepresentableValues
+  ),
   arguments: unrepresentableProbes(forType: UInt32.self)
 )
 func testUInt32TransflectionThrowsOnUnrepresentableLiterals(
@@ -235,7 +335,7 @@ extension BinaryInteger where Self: TransflectableViaIntegerLiteralValue {
   
   fileprivate func validateTransflection(
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = .__here()
+    _ sourceLocation: SourceLocation = .automatic()
   ) throws {
     try validateTransflectionRoundTrip(
       original: self,
@@ -253,7 +353,7 @@ extension Int64 {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = .__here()
+    _ sourceLocation: SourceLocation = .automatic()
   ) throws where T: TransflectableViaIntegerLiteralValue {
     #expect(
       throws: IntegerLiteralTransflectionError.self,
@@ -283,7 +383,7 @@ extension UInt64 {
   fileprivate func validateTransflectionFailure<T>(
     forType type: T.Type,
     _ function: StaticString = #function,
-    _ sourceLocation: SourceLocation = .__here()
+    _ sourceLocation: SourceLocation = .automatic()
   ) throws where T: TransflectableViaIntegerLiteralValue {
     #expect(
       throws: IntegerLiteralTransflectionError.self,

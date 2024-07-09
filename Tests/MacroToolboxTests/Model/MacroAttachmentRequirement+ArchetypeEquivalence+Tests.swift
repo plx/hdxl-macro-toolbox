@@ -1,7 +1,15 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`MacroAttachmentRequirement<TypeDeclarationArchetype>` conversion equivalence (unspecified)")
+@Test(
+  "`MacroAttachmentRequirement<TypeDeclarationArchetype>` conversion equivalence (unspecified)",
+  .tags(
+    .macroAttachmentRequirement,
+    .declarationArchetype,
+    .typeDeclarationArchetype
+  )
+)
 func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence_unspecified() {
   
   let typeAttachmentRequirement = MacroAttachmentRequirement<TypeDeclarationArchetype>.unspecified
@@ -28,6 +36,11 @@ func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence
 
 @Test(
   "`MacroAttachmentRequirement<TypeDeclarationArchetype>` conversion equivalence (exactly)",
+  .tags(
+    .macroAttachmentRequirement,
+    .declarationArchetype,
+    .typeDeclarationArchetype
+  ),
   arguments: TypeDeclarationArchetype.allCases, DeclarationArchetype.allCases
 )
 func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence_exactly(
@@ -63,6 +76,11 @@ func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence
 
 @Test(
   "`MacroAttachmentRequirement<TypeDeclarationArchetype>` conversion equivalence (mustBeOneOf)",
+  .tags(
+    .macroAttachmentRequirement,
+    .declarationArchetype,
+    .typeDeclarationArchetype
+  ),
   arguments: TypeDeclarationArchetype.allCases, DeclarationArchetype.allCases
 )
 func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence_mustBeOneOf(
@@ -98,6 +116,11 @@ func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence
 
 @Test(
   "`MacroAttachmentRequirement<TypeDeclarationArchetype>` conversion equivalence (anythingBut)",
+  .tags(
+    .macroAttachmentRequirement,
+    .declarationArchetype,
+    .typeDeclarationArchetype
+  ),
   arguments: TypeDeclarationArchetype.allCases, DeclarationArchetype.allCases
 )
 func testMacroAttachmentRequirementTypeDeclarationArchetypeConversionEquivalence_anythingBut(

@@ -1,7 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`InlinabilityDisposition.description` uniqueness")
+@Test(
+  "`InlinabilityDisposition.description` uniqueness",
+  .tags(.inlinabilityDisposition)
+)
 func testInlinabilityDispositionDescriptionUniqueness() {
   #expect(
     InlinabilityDisposition
@@ -17,7 +21,10 @@ func testInlinabilityDispositionDescriptionUniqueness() {
   )
 }
 
-@Test("`InlinabilityDisposition.debugDescription` uniqueness")
+@Test(
+  "`InlinabilityDisposition.debugDescription` uniqueness",
+  .tags(.inlinabilityDisposition)
+)
 func testInlinabilityDispositionDebugDescriptionUniqueness() {
   #expect(
     InlinabilityDisposition
@@ -33,7 +40,10 @@ func testInlinabilityDispositionDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`InlinabilityDisposition.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`InlinabilityDisposition.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.inlinabilityDisposition)
+)
 func testInlinabilityDispositionCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     InlinabilityDisposition

@@ -1,7 +1,11 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`TypeDeclarationArchetype.description` uniqueness")
+@Test(
+  "`TypeDeclarationArchetype.description` uniqueness",
+  .tags(.typeDeclarationArchetype)
+)
 func testTypeDeclarationArchetypeDescriptionUniqueness() {
   #expect(
     TypeDeclarationArchetype
@@ -17,7 +21,10 @@ func testTypeDeclarationArchetypeDescriptionUniqueness() {
   )
 }
 
-@Test("`TypeDeclarationArchetype.debugDescription` uniqueness")
+@Test(
+  "`TypeDeclarationArchetype.debugDescription` uniqueness",
+  .tags(.typeDeclarationArchetype)
+)
 func testTypeDeclarationArchetypeDebugDescriptionUniqueness() {
   #expect(
     TypeDeclarationArchetype
@@ -33,7 +40,10 @@ func testTypeDeclarationArchetypeDebugDescriptionUniqueness() {
   )
 }
 
-@Test("`TypeDeclarationArchetype.caseNameWithoutLeadingDot` uniqueness")
+@Test(
+  "`TypeDeclarationArchetype.caseNameWithoutLeadingDot` uniqueness",
+  .tags(.typeDeclarationArchetype)
+)
 func testTypeDeclarationArchetypeCaseNameWithoutLeadingDotUniqueness() {
   #expect(
     TypeDeclarationArchetype
@@ -50,7 +60,8 @@ func testTypeDeclarationArchetypeCaseNameWithoutLeadingDotUniqueness() {
 }
 
 @Test(
-  "`TypeDeclarationArchetype.declarationArchetype`"
+  "`TypeDeclarationArchetype.declarationArchetype`",
+  .tags(.typeDeclarationArchetype)
 )
 func testTypeDeclarationArchetypeDeclarationArchetype() {
   #expect(
@@ -82,6 +93,7 @@ func testTypeDeclarationArchetypeDeclarationArchetype() {
 
 @Test(
   "`TypeDeclarationArchetype.isNotAProtocol`",
+  .tags(.typeDeclarationArchetype),
   arguments: TypeDeclarationArchetype.allCases
 )
 func testTypeDeclarationArchetypeIsNotAProtocol(
@@ -96,6 +108,7 @@ func testTypeDeclarationArchetypeIsNotAProtocol(
 
 @Test(
   "`TypeDeclarationArchetype.isEnumClassOrStruct`",
+  .tags(.typeDeclarationArchetype),
   arguments: TypeDeclarationArchetype.allCases
 )
 func testTypeDeclarationArchetypeIsEnumClassOrStruct(
@@ -110,6 +123,7 @@ func testTypeDeclarationArchetypeIsEnumClassOrStruct(
 
 @Test(
   "`TypeDeclarationArchetype.isActorClassOrStruct`",
+  .tags(.typeDeclarationArchetype),
   arguments: TypeDeclarationArchetype.allCases
 )
 func testTypeDeclarationArchetypeIsActorClassOrStruct(

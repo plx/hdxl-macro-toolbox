@@ -1,7 +1,15 @@
 import Testing
+import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-@Test("`VisibilityLevel.keywordRepresentation`")
+@Test(
+  "`VisibilityLevel.keywordRepresentation`",
+  .tags(
+    .visibilityLevel,
+    .syntaxInteroperation,
+    .keyword
+  )
+)
 func testVisibilityLevelKeywordRepresentation() {
   #expect(
     VisibilityLevel.private.keywordRepresentation
@@ -37,6 +45,11 @@ func testVisibilityLevelKeywordRepresentation() {
 
 @Test(
   "`VisibilityLevel.keywordRepresentation` (round-trips)",
+  .tags(
+    .visibilityLevel,
+    .syntaxInteroperation,
+    .keyword
+  ),
   arguments: VisibilityLevel.allCases
 )
 func testVisibilityLevelKeywordRepresentationRoundTrip(

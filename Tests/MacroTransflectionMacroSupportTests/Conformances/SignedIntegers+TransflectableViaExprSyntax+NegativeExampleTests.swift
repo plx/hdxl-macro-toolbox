@@ -5,12 +5,20 @@ import SwiftSyntaxBuilder
 import SwiftDiagnostics
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
+
 
 // MARK: - Tests
 
 @Test(
   "`Int.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .intTransflection
+  ),
   arguments: negativeExamples(forType: Int.self)
 )
 func testIntInitTransflectingExprSyntax_negativeExamples(
@@ -21,6 +29,12 @@ func testIntInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int8.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int8Transflection
+  ),
   arguments: negativeExamples(forType: Int8.self)
 )
 func testInt8InitTransflectingExprSyntax_negativeExamples(
@@ -31,6 +45,12 @@ func testInt8InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int16.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int16Transflection
+  ),
   arguments: negativeExamples(forType: Int16.self)
 )
 func testInt16InitTransflectingExprSyntax_negativeExamples(
@@ -41,6 +61,12 @@ func testInt16InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int32.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int32Transflection
+  ),
   arguments: negativeExamples(forType: Int32.self)
 )
 func testInt32InitTransflectingExprSyntax_negativeExamples(
@@ -51,6 +77,12 @@ func testInt32InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int64.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int64Transflection
+  ),
   arguments: negativeExamples(forType: Int64.self)
 )
 func testInt64InitTransflectingExprSyntax_negativeExamples(
@@ -63,6 +95,13 @@ func testInt64InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .intTransflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Int.self
   ).map(\.optionalized)
@@ -75,6 +114,13 @@ func testOptionalIntInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int8?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int8Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Int8.self
   ).map(\.optionalized)
@@ -87,6 +133,13 @@ func testOptionalInt8InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int16?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int16Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Int16.self
   ).map(\.optionalized)
@@ -98,7 +151,14 @@ func testOptionalInt16InitTransflectingExprSyntax_negativeExamples(
 }
 
 @Test(
-  "`Int32.init(transflectingExprSyntax:)` (negative examples)",
+  "`Int32?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int32Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Int32.self
   ).map(\.optionalized)
@@ -111,6 +171,13 @@ func testOptionalInt32InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Int64?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .signedIntegerTransflections,
+    .int64Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Int64.self
   ).map(\.optionalized)

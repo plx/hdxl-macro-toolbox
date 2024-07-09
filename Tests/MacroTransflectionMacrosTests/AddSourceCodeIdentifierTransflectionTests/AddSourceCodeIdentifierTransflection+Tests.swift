@@ -1,6 +1,7 @@
 import Testing
 import MacroTransflection
 import MacroTransflectionMacros
+import MacroToolboxTestSupport
 
 @AddSourceCodeIdentifierTransflection
 enum ExampleTransflectableEnumeration {
@@ -12,7 +13,13 @@ enum ExampleTransflectableEnumeration {
   case excludedQuuz
 }
 
-@Test("`AddSourceCodeIdentifierTransflection` on `ExampleTransflectableEnumeration`")
+@Test(
+  "`AddSourceCodeIdentifierTransflection` on `ExampleTransflectableEnumeration`",
+  .tags(
+    .transflection,
+    .enumerationTransflections
+  )
+)
 func testAddSourceCodeIdentifierTransflectionOnExampleTransflectableEnumeration() throws {
   // these should work:
   #expect(

@@ -3,12 +3,19 @@ import SwiftSyntax
 import SwiftParser
 import MacroToolbox
 import MacroTransflection
+import MacroToolboxTestSupport
 @testable import MacroTransflectionMacroSupport
 
 // MARK: - Tests
 
 @Test(
   "`Float16.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .float16Transflection
+  ),
   arguments: negativeExamples(forType: Float16.self)
 )
 func testFloat16InitTransflectingExprSyntax_negativeExamples(
@@ -19,6 +26,12 @@ func testFloat16InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Float.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .floatTransflection
+  ),
   arguments: negativeExamples(forType: Float.self)
 )
 func testFloatInitTransflectingExprSyntax_negativeExamples(
@@ -29,6 +42,12 @@ func testFloatInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Double.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .doubleTransflection
+  ),
   arguments: negativeExamples(forType: Double.self)
 )
 func testDoubleInitTransflectingExprSyntax_negativeExamples(
@@ -41,6 +60,13 @@ func testDoubleInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Float16?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .float16Transflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Float16.self
   ).map(\.optionalized)
@@ -53,6 +79,13 @@ func testOptionalFloat16InitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Float?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .floatTransflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Float.self
   ).map(\.optionalized)
@@ -65,6 +98,13 @@ func testOptionalFloatInitTransflectingExprSyntax_negativeExamples(
 
 @Test(
   "`Double?.init(transflectingExprSyntax:)` (negative examples)",
+  .tags(
+    .transflection,
+    .negativeExamples,
+    .floatingPointTransflections,
+    .doubleTransflection,
+    .optionalTransflections
+  ),
   arguments: negativeExamples(
     forType: Double.self
   ).map(\.optionalized)
