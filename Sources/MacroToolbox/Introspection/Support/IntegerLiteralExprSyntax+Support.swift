@@ -2,6 +2,7 @@ import SwiftSyntax
 
 extension IntegerLiteralExprSyntax {
   
+  /// The concrete integer value represented by `self`, if any (as an `Int`).
   @inlinable
   public var representedIntegerLiteralValue: Int? {
     guard
@@ -14,6 +15,11 @@ extension IntegerLiteralExprSyntax {
     return integerValue
   }
 
+  /// The concrete integer value represented by `self`, if any, when interpreted as a value of type `type`.
+  ///
+  /// - note:
+  ///
+  /// This exists for cases that cannot be represented as an `Int`, like e.g. very large `UInt64` literals.
   @inlinable
   public func representedValue<T>(
     ofType type: T.Type

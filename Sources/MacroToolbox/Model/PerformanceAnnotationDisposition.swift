@@ -1,4 +1,8 @@
 
+// ------------------------------------------------------------------------- //
+// MARK: PerformanceAnnotationDisposition
+// ------------------------------------------------------------------------- //
+
 public struct PerformanceAnnotationDisposition {
   
   public var inlinabilityDisposition: InlinabilityDisposition?
@@ -13,10 +17,19 @@ public struct PerformanceAnnotationDisposition {
   }
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - Synthesized Conformances
+// ------------------------------------------------------------------------- //
+
 extension PerformanceAnnotationDisposition: Sendable { }
 extension PerformanceAnnotationDisposition: Equatable { }
 extension PerformanceAnnotationDisposition: Hashable { }
 extension PerformanceAnnotationDisposition: Codable { }
+
+// ------------------------------------------------------------------------- //
+// MARK: - CaseIterable
+// ------------------------------------------------------------------------- //
+
 extension PerformanceAnnotationDisposition: CaseIterable {
   
   public static let allCases: [PerformanceAnnotationDisposition] = {
@@ -45,8 +58,13 @@ extension PerformanceAnnotationDisposition: CaseIterable {
   }()
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - API
+// ------------------------------------------------------------------------- //
+
 extension PerformanceAnnotationDisposition {
-  
+
+  @inlinable
   public func performanceAnnotationSourceCodeRepresentation(
     visibilityLevel: VisibilityLevel,
     attachmentSite: PerformanceAnnotationAttachmentSite,

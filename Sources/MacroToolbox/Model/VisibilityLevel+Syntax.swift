@@ -123,6 +123,7 @@ extension TokenSyntax {
 
 extension VisibilityLevel {
   
+  /// Obtain the text uses to represent this visibility level within source code (e.g. `"private"` for `.private`).
   @inlinable
   public var sourceCodeStringRepresentation: String {
     switch self {

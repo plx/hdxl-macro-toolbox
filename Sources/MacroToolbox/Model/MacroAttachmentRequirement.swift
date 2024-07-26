@@ -1,4 +1,8 @@
 
+// ------------------------------------------------------------------------- //
+// MARK: MacroAttachmentRequirement
+// ------------------------------------------------------------------------- //
+
 public enum MacroAttachmentRequirement<T> where T :Hashable {
   case unspecified
   case exactly(T)
@@ -6,10 +10,18 @@ public enum MacroAttachmentRequirement<T> where T :Hashable {
   case anythingBut(Set<T>)
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - Synthesized Conformances
+// ------------------------------------------------------------------------- //
+
 extension MacroAttachmentRequirement: Sendable where T: Sendable { }
 extension MacroAttachmentRequirement: Equatable { }
 extension MacroAttachmentRequirement: Encodable where T: Encodable { }
 extension MacroAttachmentRequirement: Decodable where T: Decodable { }
+
+// ------------------------------------------------------------------------- //
+// MARK: - CustomStringConvertible
+// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement: CustomStringConvertible {
   
@@ -29,6 +41,10 @@ extension MacroAttachmentRequirement: CustomStringConvertible {
   
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - CustomDebugStringConvertible
+// ------------------------------------------------------------------------- //
+
 extension MacroAttachmentRequirement: CustomDebugStringConvertible {
   
   @inlinable
@@ -47,6 +63,10 @@ extension MacroAttachmentRequirement: CustomDebugStringConvertible {
 
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - API
+// ------------------------------------------------------------------------- //
+
 extension MacroAttachmentRequirement {
   
   @inlinable
@@ -60,24 +80,6 @@ extension MacroAttachmentRequirement {
       allowedValues.contains(value)
     case .anythingBut(let excludedValues):
       !excludedValues.contains(value)
-    }
-  }
-  
-}
-
-extension MacroAttachmentRequirement {
-  
-  @inlinable
-  package var hasConsistentInternalState: Bool {
-    switch self {
-    case .unspecified:
-      true
-    case .exactly:
-      true
-    case .mustBeOneOf(let allowedTypes):
-      !allowedTypes.isEmpty
-    case .anythingBut(let excludedTypes):
-      !excludedTypes.isEmpty
     }
   }
   
@@ -105,6 +107,28 @@ extension MacroAttachmentRequirement {
       
       assert(result.hasConsistentInternalState)
       return result
+    }
+  }
+
+}
+
+// ------------------------------------------------------------------------- //
+// MARK: - Internal API
+// ------------------------------------------------------------------------- //
+
+extension MacroAttachmentRequirement {
+  
+  @inlinable
+  package var hasConsistentInternalState: Bool {
+    switch self {
+    case .unspecified:
+      true
+    case .exactly:
+      true
+    case .mustBeOneOf(let allowedTypes):
+      !allowedTypes.isEmpty
+    case .anythingBut(let excludedTypes):
+      !excludedTypes.isEmpty
     }
   }
   

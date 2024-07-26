@@ -1,3 +1,8 @@
+import MacroTransflection
+
+// ------------------------------------------------------------------------- //
+// MARK: PerformanceAnnotationAttachmentSite
+// ------------------------------------------------------------------------- //
 
 /// ``PerformanceAnnotationAttachmentSite`` corresponds to the distinct declaration-types to-which the "performance annotations" could be attached.
 ///
@@ -41,6 +46,10 @@ public enum PerformanceAnnotationAttachmentSite {
   case functionOrMethodDeclaration
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - Synthesized Conformances
+// ------------------------------------------------------------------------- //
+
 extension PerformanceAnnotationAttachmentSite: Sendable {}
 extension PerformanceAnnotationAttachmentSite: Equatable {}
 extension PerformanceAnnotationAttachmentSite: Hashable {}
@@ -48,6 +57,10 @@ extension PerformanceAnnotationAttachmentSite: CaseIterable {}
 extension PerformanceAnnotationAttachmentSite: Codable {}
 extension PerformanceAnnotationAttachmentSite: CustomStringConvertible { }
 extension PerformanceAnnotationAttachmentSite: CustomDebugStringConvertible { }
+
+// ------------------------------------------------------------------------- //
+// MARK: - MacroToolboxCaseNameAwareEnumeration
+// ------------------------------------------------------------------------- //
 
 extension PerformanceAnnotationAttachmentSite: MacroToolboxCaseNameAwareEnumeration {
   
@@ -63,4 +76,13 @@ extension PerformanceAnnotationAttachmentSite: MacroToolboxCaseNameAwareEnumerat
     }
   }
   
+}
+
+// ------------------------------------------------------------------------- //
+// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
+// ------------------------------------------------------------------------- //
+
+extension PerformanceAnnotationAttachmentSite: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
+  @usableFromInline
+  internal static let sourceCodeIdentifierTransflectionTable = _inferred
 }

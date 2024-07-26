@@ -2,6 +2,15 @@ import SwiftSyntax
 
 extension MemberBlockSyntax {
   
+  /// Finds all declarations of type `type` satisfying `predicate` within `self`'s members.
+  ///
+  /// - Parameters:
+  ///   - type: The type of declaration you're tryign to find.
+  ///   - predicate: The predicate declarations need to satisfy for inclusion in the result.
+  /// - Returns: All declarations within `self`'s members that are of type `type` and satisfy `predicate`.
+  ///
+  /// - seealso: ``MemberBlockItemListSyntax.allSatisfactoryDeclarations(ofType:predicate:)``
+  ///
   @inlinable
   public func allSatisfactoryDeclarations<T>(
     ofType type: T.Type,
@@ -13,6 +22,15 @@ extension MemberBlockSyntax {
     )
   }
   
+  /// `true` iff all declarations of type `type` satisfying `predicate` within `self`'s members.
+  ///
+  /// - Parameters:
+  ///   - type: The type of declaration you're tryign to find.
+  ///   - predicate: The predicate declarations need to satisfy for inclusion in the result.
+  /// - Returns: `true` iff all declarations of `type`  within `self`'s members satisfy `predicate`.
+  ///
+  /// - seealso: ``MemberBlockItemListSyntax.predicateHoldsForAllDeclarations(ofType:_:)``
+  ///
   @inlinable
   public func predicateHoldsForAllDeclarations<T>(
     ofType type: T.Type,
@@ -24,6 +42,15 @@ extension MemberBlockSyntax {
     )
   }
   
+  /// Finds all declarations of type `type` within `self`'s members.
+  ///
+  /// - Parameters:
+  ///   - type: The type of declaration you're tryign to find.
+  ///   - predicate: The predicate declarations need to satisfy for inclusion in the result.
+  /// - Returns: All declarations within `self`'s members that are of type `type` and satisfy `predicate`.
+  ///
+  /// - seealso: ``MemberBlockItemListSyntax.allDeclarations(ofType:)``
+  ///
   @inlinable
   public func allDeclarations<T>(
     ofType type: T.Type

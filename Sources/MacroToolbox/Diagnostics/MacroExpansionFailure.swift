@@ -1,6 +1,7 @@
 import SwiftSyntax
 import SwiftDiagnostics
 
+/// General-purpose error for use within this package.
 public struct MacroExpansionFailure : Error {
   
   public let explanation: String
@@ -27,7 +28,8 @@ public struct MacroExpansionFailure : Error {
     self.column = column
   }
 
-  public init(
+  @usableFromInline
+  internal init(
     encapsulating anyOtherError: any Error,
     explanation: String,
     function: StaticString = #function,
@@ -67,6 +69,7 @@ public struct MacroExpansionFailure : Error {
 
 extension MacroExpansionFailure {
   
+  @inlinable
   public static func withAutomaticEncapsulation<R>(
     explanation: @autoclosure () -> String,
     function: StaticString = #function,
@@ -120,67 +123,22 @@ extension MacroExpansionFailure: CustomDebugStringConvertible {
   
 }
 
-extension String {
-  
-  mutating func appendAdditionalLine(_  additionalLine: String) {
-    append("\n")
-    append(additionalLine)
-  }
-
-  mutating func appendAdditionalLine(
-    _  additionalLine: String,
-    reindentedWith indent: String
-  ) {
-    appendAdditionalLine("\(indent)\(additionalLine)")
-  }
-
-  mutating func appendAdditionalLine(
-    _  additionalLine: String,
-    indentation: String,
-    depth: Int
-  ) {
-    appendAdditionalLine(
-      additionalLine,
-      reindentedWith: String(
-        repeating: indentation,
-        count: depth
-      )
-    )
-  }
-
-  mutating func appendAdditionalLines(_  additionalLines: some Sequence<String>) {
-    for additionalLine in additionalLines {
-      appendAdditionalLine(additionalLine)
-    }
-  }
-  
-  mutating func appendAdditionalLines(
-    _  additionalLines: some Sequence<String>,
-    reindentedWith indent: String
-  ) {
-    appendAdditionalLines(
-      additionalLines.lazy.map { "\(indent)\($0)" }
-    )
-  }
-
-  mutating func appendAdditionalLines(
-    _  additionalLines: some Sequence<String>,
-    indentation: String,
-    depth: Int
-  ) {
-    appendAdditionalLines(
-      additionalLines,
-      reindentedWith: String(
-        repeating: indentation,
-        count: depth
-      )
-    )
-  }
-
-}
-
 extension MacroExpansionFailure {
   
+  public func prettyPrinted(
+    indentation: String = "  ",
+    depth: Int = 0
+  ) -> String {
+    var result = "`MacroExpansionFailure`"
+    addPrettyPrintedFields(
+      to: &result,
+      indentation: indentation,
+      depth: depth + 1
+    )
+    
+    return result
+  }
+
   private func addPrettyPrintedFields(
     to inProgressString: inout String,
     indentation: String,
@@ -251,18 +209,63 @@ extension MacroExpansionFailure {
     }
   }
   
-  public func prettyPrinted(
-    indentation: String = "  ",
-    depth: Int = 0
-  ) -> String {
-    var result = "`MacroExpansionFailure`"
-    addPrettyPrintedFields(
-      to: &result,
-      indentation: indentation,
-      depth: depth + 1
+}
+
+extension String {
+  
+  fileprivate mutating func appendAdditionalLine(_  additionalLine: String) {
+    append("\n")
+    append(additionalLine)
+  }
+  
+  fileprivate mutating func appendAdditionalLine(
+    _  additionalLine: String,
+    reindentedWith indent: String
+  ) {
+    appendAdditionalLine("\(indent)\(additionalLine)")
+  }
+  
+  fileprivate mutating func appendAdditionalLine(
+    _  additionalLine: String,
+    indentation: String,
+    depth: Int
+  ) {
+    appendAdditionalLine(
+      additionalLine,
+      reindentedWith: String(
+        repeating: indentation,
+        count: depth
+      )
     )
-    
-    return result
+  }
+  
+  fileprivate mutating func appendAdditionalLines(_  additionalLines: some Sequence<String>) {
+    for additionalLine in additionalLines {
+      appendAdditionalLine(additionalLine)
+    }
+  }
+  
+  fileprivate mutating func appendAdditionalLines(
+    _  additionalLines: some Sequence<String>,
+    reindentedWith indent: String
+  ) {
+    appendAdditionalLines(
+      additionalLines.lazy.map { "\(indent)\($0)" }
+    )
+  }
+  
+  fileprivate mutating func appendAdditionalLines(
+    _  additionalLines: some Sequence<String>,
+    indentation: String,
+    depth: Int
+  ) {
+    appendAdditionalLines(
+      additionalLines,
+      reindentedWith: String(
+        repeating: indentation,
+        count: depth
+      )
+    )
   }
   
 }

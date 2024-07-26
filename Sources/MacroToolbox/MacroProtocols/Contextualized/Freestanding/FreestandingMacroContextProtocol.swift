@@ -7,3 +7,12 @@ import SwiftSyntaxMacros
 public protocol FreestandingMacroContextProtocol<ExpansionContext> : MacroContextProtocol
 where MacroNode: FreestandingMacroExpansionSyntax
 { }
+
+extension FreestandingMacroContextProtocol {
+  
+  @inlinable
+  public var invocationArgumentsAsLabeledExpressionList: LabeledExprListSyntax? {
+    macroInvocationNode.arguments
+  }
+  
+}

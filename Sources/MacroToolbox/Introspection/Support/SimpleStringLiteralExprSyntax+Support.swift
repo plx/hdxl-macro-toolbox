@@ -3,6 +3,7 @@ import SwiftParser
 
 extension SimpleStringLiteralExprSyntax {
   
+  /// Obtains the represented string as a `String`.
   @inlinable
   public var representedStringLiteralValue: String? {
     var result: String = ""

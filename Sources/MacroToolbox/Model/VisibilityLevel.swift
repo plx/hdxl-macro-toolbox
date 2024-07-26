@@ -1,8 +1,16 @@
+import MacroTransflection
+
+// ------------------------------------------------------------------------- //
+// MARK: VisibilityLevel
+// ------------------------------------------------------------------------- //
 
 /// Each case in ``VisibilityLevel`` corresponds to one of Swift's access levels.
 ///
-/// This exists primarily to streamline reasoning about access levels while expanding macros;
-/// for example, see its together-with ``InlinabilityDisposition`` and ``InlinabilityAnnotableDeclarationType``.
+/// This exists to streamline reasoning about access levels while expanding macros.
+///
+/// - seealso: ``InlinabilityDisposition``
+/// - seealso: ``InlinabilityAnnotableDeclarationType``.
+///
 public enum VisibilityLevel {
   
   /// Corresponds to the `private` access level.
@@ -24,6 +32,10 @@ public enum VisibilityLevel {
   case `open`
 }
 
+// ------------------------------------------------------------------------- //
+// MARK: - Synthesized Conformances
+// ------------------------------------------------------------------------- //
+
 extension VisibilityLevel: Sendable {}
 extension VisibilityLevel: Equatable {}
 extension VisibilityLevel: Hashable {}
@@ -31,6 +43,10 @@ extension VisibilityLevel: CaseIterable {}
 extension VisibilityLevel: Codable {}
 extension VisibilityLevel: CustomStringConvertible { }
 extension VisibilityLevel: CustomDebugStringConvertible { }
+
+// ------------------------------------------------------------------------- //
+// MARK: - MacroToolboxCaseNameAwareEnumeration
+// ------------------------------------------------------------------------- //
 
 extension VisibilityLevel: MacroToolboxCaseNameAwareEnumeration {
   
@@ -52,4 +68,13 @@ extension VisibilityLevel: MacroToolboxCaseNameAwareEnumeration {
     }
   }
   
+}
+
+// ------------------------------------------------------------------------- //
+// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
+// ------------------------------------------------------------------------- //
+
+extension VisibilityLevel: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
+  @usableFromInline
+  internal static let sourceCodeIdentifierTransflectionTable = _inferred
 }

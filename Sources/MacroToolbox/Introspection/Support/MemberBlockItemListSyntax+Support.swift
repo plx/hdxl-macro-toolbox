@@ -2,6 +2,18 @@ import SwiftSyntax
 
 extension MemberBlockItemListSyntax {
   
+  /// Finds all declarations of type `type` satisfying `predicate`.
+  ///
+  /// - Parameters:
+  ///   - type: The type of declaration you're tryign to find.
+  ///   - predicate: The predicate declarations need to satisfy for inclusion in the result.
+  /// - Returns: All declarations within `self` that are of type `type` and satisfy `predicate`.
+  ///
+  /// - seealso: ``MemberBlockItemListSyntax.allDeclarations(ofType:)``
+  /// - seealso: ``MemberBlockItemListSyntax.predicateHoldsForAllDeclarations(ofType:predicate:)``
+  ///
+  /// - note: This exists as a convenient fusion of two independent filter steps (type-checking then applying `predicate`).
+  ///
   @inlinable
   public func allSatisfactoryDeclarations<T>(
     ofType type: T.Type,
@@ -20,7 +32,8 @@ extension MemberBlockItemListSyntax {
     
     return result
   }
-
+  
+  /// `true` iff all declarations of type `type` within `self` satisfy `predicate`.
   @inlinable
   public func predicateHoldsForAllDeclarations<T>(
     ofType type: T.Type,
@@ -38,6 +51,7 @@ extension MemberBlockItemListSyntax {
     return true
   }
   
+  /// Returns all declarations from `self` that're of type `type`.
   @inlinable
   public func allDeclarations<T>(
     ofType type: T.Type
@@ -46,4 +60,5 @@ extension MemberBlockItemListSyntax {
       candidate.decl.as(type)
     }
   }
+  
 }

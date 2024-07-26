@@ -7,6 +7,7 @@ extension EnumDeclSyntax {
     genericParameterClause?.simpleGenericParameterNames
   }
   
+  /// `true` iff all of our case-declarations satisfy `predicate`.
   @inlinable
   public func allCaseDeclarationsSatisfy(
     _ predicate: (EnumCaseDeclSyntax) throws -> Bool
@@ -17,11 +18,13 @@ extension EnumDeclSyntax {
     )
   }
   
+  /// `true` iff all of our cases are simple and payload-free.
   @inlinable
   public var allCasesAreSimpleWithoutPayload: Bool {
     allCaseDeclarationsSatisfy(\.isSimpleCaseWithoutPayload)
   }
   
+  /// Returns all case-declarations satisfying `predicate`.
   @inlinable
   public func allCaseDeclarationsSatisfying(
     _ predicate: (EnumCaseDeclSyntax) throws -> Bool

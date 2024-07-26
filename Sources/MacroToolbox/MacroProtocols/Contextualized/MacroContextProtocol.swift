@@ -1,7 +1,7 @@
 import SwiftSyntax
 import SwiftDiagnostics
 import SwiftSyntaxMacros
-
+import MacroTransflection
 
 /// ``MacroContextProtocol`` is a base protocol corresponding to the lowest-common-denominator set of information available to *all* macros during expansion.
 ///
@@ -13,7 +13,6 @@ public protocol MacroContextProtocol<MacroNode, ExpansionContext> {
   /// Will be `AttributeSyntax` for attached macros and `FreestandingMacroExpansionSyntax` for freestanding macros.
   associatedtype MacroNode: SyntaxProtocol
   
-
   /// The concrete type of the `MacroExpansionContext` supplied for this expansion.
   associatedtype ExpansionContext: MacroExpansionContext
   
@@ -33,6 +32,10 @@ public protocol MacroContextProtocol<MacroNode, ExpansionContext> {
   
   /// An arbitrary syntax node that acts as the default node for diagnostic *positioning* (e.g. *where* the diagnostic sits in the syntax tree).
   var syntaxNodeForPositioning: any SyntaxProtocol { get }
+  
+  ///
+  /// - note: This is made into a customization point so that we can
+  var invocationArgumentsAsLabeledExpressionList: LabeledExprListSyntax? { get }
 }
 
 extension MacroContextProtocol {

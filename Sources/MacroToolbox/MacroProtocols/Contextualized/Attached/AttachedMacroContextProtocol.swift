@@ -19,3 +19,16 @@ where MacroNode == AttributeSyntax
   var declaration: Declaration { get }
   
 }
+
+extension AttachedMacroContextProtocol {
+  
+  @inlinable
+  public var invocationArgumentsAsLabeledExpressionList: LabeledExprListSyntax? {
+    guard case .argumentList(let argumentList) = macroInvocationNode.arguments else {
+      return nil
+    }
+    
+    return argumentList
+  }
+  
+}

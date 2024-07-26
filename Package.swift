@@ -96,12 +96,6 @@ let package = Package(
       ]
     ),
     .library(
-      name: "MacroTransflectionMacroSupport",
-      targets: [
-        "MacroTransflectionMacroSupport"
-      ]
-    ),
-    .library(
       name: "MacroTransflectionMacros",
       targets: [
         "MacroTransflectionMacros"
@@ -167,8 +161,7 @@ let package = Package(
       name: "MacroTransflectionMacrosPlugin",
       dependencies: [
         "MacroToolbox",
-        "MacroTransflection",
-        "MacroTransflectionMacroSupport"
+        "MacroTransflection"
       ] + macroPluginDependencies
     ),
     .testTarget(
@@ -185,22 +178,6 @@ let package = Package(
       dependencies: [
         "MacroTransflection",
         "MacroTransflectionMacros"
-      ]
-    ),
-
-    // macro-transflection macro support:
-    .target(
-      name: "MacroTransflectionMacroSupport",
-      dependencies: [
-        "MacroTransflection",
-        "MacroToolbox"
-      ] + macroSupportDependencies
-    ),
-    .testTarget(
-      name: "MacroTransflectionMacroSupportTests",
-      dependencies: [
-        "MacroTransflectionMacroSupport",
-        "MacroToolboxTestSupport"
       ]
     ),
 

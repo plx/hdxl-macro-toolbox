@@ -1,10 +1,18 @@
-import SwiftSyntax
+import MacroTransflection
+
+// ------------------------------------------------------------------------- //
+// MARK: ExplicitInlineDisposition
+// ------------------------------------------------------------------------- //
 
 /// ``ExplicitInlineDisposition`` corresponds to the valid flavors of explicit `@inline($disposition)` attributes.
 public enum ExplicitInlineDisposition {
   case always
   case never
 }
+
+// ------------------------------------------------------------------------- //
+// MARK: - Synthesized Conformances
+// ------------------------------------------------------------------------- //
 
 extension ExplicitInlineDisposition: Sendable {}
 extension ExplicitInlineDisposition: Equatable {}
@@ -13,6 +21,10 @@ extension ExplicitInlineDisposition: CaseIterable {}
 extension ExplicitInlineDisposition: Codable {}
 extension ExplicitInlineDisposition: CustomStringConvertible { }
 extension ExplicitInlineDisposition: CustomDebugStringConvertible { }
+
+// ------------------------------------------------------------------------- //
+// MARK: - MacroToolboxCaseNameAwareEnumeration
+// ------------------------------------------------------------------------- //
 
 extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
   
@@ -25,8 +37,26 @@ extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
       "never"
     }
   }
- 
-  func appropriateDisposition(
+  
+}
+
+// ------------------------------------------------------------------------- //
+// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
+// ------------------------------------------------------------------------- //
+
+extension ExplicitInlineDisposition: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
+  @usableFromInline
+  internal static let sourceCodeIdentifierTransflectionTable = _inferred
+}
+
+// ------------------------------------------------------------------------- //
+// MARK: - API
+// ------------------------------------------------------------------------- //
+
+extension ExplicitInlineDisposition {
+  
+  @inlinable
+  public func appropriateDisposition(
     forAttachmentSite attachmentSite: PerformanceAnnotationAttachmentSite
   ) -> Self? {
     switch attachmentSite {
@@ -38,4 +68,5 @@ extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
       self
     }
   }
+  
 }

@@ -81,6 +81,11 @@ extension String {
     self = "(\(contents))"
   }
 
+  /// Prepares a constructor-like string with a mix of labeled and unlabeled arguments (e.g. `Modulator(target, using: modulator)`).
+  ///
+  /// - Parameters:
+  ///   - type: The type for-which we're preparing this string (e.g.
+  ///   - labeledArguments: <#labeledArguments description#>
   @inlinable
   package init<Parent, each T>(
     forConstructorOf type: Parent.Type,
@@ -102,6 +107,7 @@ extension String {
     self = "\(String(reflecting: type))(\(contents))"
   }
 
+  /// Constructs a constructor-like string w/completely-unlabeled arguments (e.g. `Foo(x,y,z)`).
   @inlinable
   package init<Parent, each T>(
     forConstructorOf type: Parent.Type,

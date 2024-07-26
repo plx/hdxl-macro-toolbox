@@ -1,6 +1,15 @@
 
 extension Set {
   
+  /// Implements a set-to-set mapping.
+  ///
+  /// - parameters:
+  ///   - expectUnique: if `true`, the result will pre-reserve `count` elements.
+  ///   - transform: The transformation to apply.
+  ///
+  /// - returns: A `Set<V>` with the transformed elements from `self`.
+  ///
+  /// - note: This exists to avoid creating any transient, intermediate array (etc.).
   @inlinable
   package func setMap<V>(
     expectUnique: Bool = true,

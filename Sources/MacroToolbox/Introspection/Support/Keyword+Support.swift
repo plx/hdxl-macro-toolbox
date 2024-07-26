@@ -2,6 +2,7 @@ import SwiftSyntax
 
 extension Keyword {
   
+  /// The ``VisibilityLevel`` represented-by `self`, if any.
   @inlinable
   public var visibilityLevel: VisibilityLevel? {
     switch self {
