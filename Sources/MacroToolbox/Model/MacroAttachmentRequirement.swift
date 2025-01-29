@@ -70,6 +70,11 @@ extension MacroAttachmentRequirement: CustomDebugStringConvertible {
 extension MacroAttachmentRequirement {
   
   @inlinable
+  public static func mustNotBe(_ value: T) -> Self {
+    .anythingBut([value])
+  }
+  
+  @inlinable
   public func isCompatible(with value: T) -> Bool {
     switch self {
     case .unspecified:

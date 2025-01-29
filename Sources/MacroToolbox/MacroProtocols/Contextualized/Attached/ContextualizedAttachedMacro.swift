@@ -2,7 +2,6 @@ import SwiftSyntax
 import SwiftDiagnostics
 import SwiftSyntaxMacros
 
-
 /// ``ContextualizedAttachedMacro`` is an abstract protocol for attached macros that use attachment-contexts for expansion.
 ///
 /// With a richer type system, much of this system's functionality could be included here...but, as it is, this is somewhere between
@@ -27,6 +26,20 @@ public protocol ContextualizedAttachedMacro: AttachedMacro, DiagnosticDomainAwar
     _ attributeSyntax: AttributeSyntax
   ) throws
  
+  static func validateMacroInvocationName(
+    _ macroInvocationName: String
+  ) throws
+
+  static func validateAttachedTypeName(
+    _ attachedTypeName: String
+  ) throws
+
+  /// If overridden to be non-nil, the macro will report an error whenever the attached type doesn't match the regex.
+  static var macroInvocationNameRegex: Regex<Substring>? { get }
+  
+  /// If overridden to be non-nil, the macro will report an error whenever the attached type doesn't match the regex.
+  static var attachedTypeNameRegex: Regex<Substring>? { get }
+
   /// This method is a hook *solely* meant to give you a way to do finer-grained validation of macro's attachment site.
   ///
   /// The supplied default is a no-op.
@@ -40,6 +53,13 @@ public protocol ContextualizedAttachedMacro: AttachedMacro, DiagnosticDomainAwar
     for attachmentContext: some AttachedMacroContextProtocol
   ) throws
 
+}
+
+public enum ContextualizedAttachedMacroValidationError: Error {
+  
+  case macroInvocationNameMismatch(String)
+  case attachedTypeNameMismatch(String)
+  
 }
 
 extension ContextualizedAttachedMacro {
@@ -83,5 +103,51 @@ extension ContextualizedAttachedMacro {
   ) throws {
     return // default: no validation!
   }
+  
+  @inlinable
+  public static func validateMacroInvocationName(
+    _ macroInvocationName: String
+  ) throws {
+    guard let macroInvocationNameRegex else {
+      return
+    }
+    
+    switch try macroInvocationNameRegex.wholeMatch(in: macroInvocationName) {
+    case .some:
+      return
+    case .none:
+      throw ContextualizedAttachedMacroValidationError.macroInvocationNameMismatch(
+        """
+        \(Self.self) invoked by \(macroInvocationName), which doesn't match the requirement \(macroInvocationNameRegex)!
+        """
+      )
+    }
+  }
+
+  @inlinable
+  public static func validateAttachedTypeName(
+    _ attachedTypeName: String
+  ) throws {
+    guard let attachedTypeNameRegex else {
+      return
+    }
+    
+    switch try attachedTypeNameRegex.wholeMatch(in: attachedTypeName) {
+    case .some:
+      return
+    case .none:
+      throw ContextualizedAttachedMacroValidationError.attachedTypeNameMismatch(
+        """
+        \(Self.self) attached to type named \(attachedTypeName), which doesn't match the requirement \(attachedTypeNameRegex)!
+        """
+      )
+    }
+  }
+
+  @inlinable
+  public static var macroInvocationNameRegex: Regex<Substring>? { nil }
+  
+  @inlinable
+  public static var attachedTypeNameRegex: Regex<Substring>? { nil }
 
 }

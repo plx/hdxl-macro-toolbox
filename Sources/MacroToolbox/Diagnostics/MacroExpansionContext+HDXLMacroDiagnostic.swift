@@ -20,33 +20,10 @@ extension MacroExpansionContext {
   @inlinable
   public func diagnose(possibleDiagnostics: (some Sequence<Diagnostic>)?) {
     guard let possibleDiagnostics else { return }
-    diagnose(possibleDiagnostics: possibleDiagnostics)
+    diagnose(diagnostics: possibleDiagnostics)
   }
 
 }
-
-public struct AbstractSourceLocationStrategy: @unchecked Sendable {
-  public let positionInSyntaxNode: PositionInSyntaxNode
-  public let filePathMode: SourceLocationFilePathMode
-  
-  public init(positionInSyntaxNode: PositionInSyntaxNode, filePathMode: SourceLocationFilePathMode) {
-    self.positionInSyntaxNode = positionInSyntaxNode
-    self.filePathMode = filePathMode
-  }
-  
-  public static let standard = Self(
-    positionInSyntaxNode: .afterLeadingTrivia,
-    filePathMode: .filePath
-  )
-}
-
-public enum DiagnosticPositionStrategy : @unchecked Sendable {
-  case explicit(AbstractSourceLocation)
-  case automatic(AbstractSourceLocationStrategy)
-  
-  public static let standard = Self.automatic(.standard)
-}
-
 
 
 extension MacroExpansionContext {

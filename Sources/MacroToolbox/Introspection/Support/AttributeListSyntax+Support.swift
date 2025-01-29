@@ -8,4 +8,12 @@ extension AttributeListSyntax {
     anySatisfy { $0.isAttribute(named: name) }
   }
   
+  /// Returns the first inlinability-related attribute, if any.
+  @inlinable
+  public var inlinabilityDisposition: InlinabilityDisposition? {
+    firstNonNilValue {
+      InlinabilityDisposition(attributeListElement: $0)
+    }
+  }
+  
 }

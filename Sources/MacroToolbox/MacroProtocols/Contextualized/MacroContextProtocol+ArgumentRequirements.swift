@@ -72,7 +72,7 @@ extension MacroContextProtocol {
       }
     }
   }
-
+  
   @inlinable
   public func requireTransflection<R>(
     of expression: ExprSyntax,
@@ -110,4 +110,35 @@ extension MacroContextProtocol {
       }
     }
   }
+  
+  @inlinable
+  public func requireSynthesizableConformances(
+    argument argumentPositionDescriptor: ArgumentPositionDescriptor,
+    messageIdentifier: @autoclosure () -> String = .unableToPerformRequiredTransflection,
+    attributionNode: @autoclosure () -> (any SyntaxProtocol)? = nil,
+    subjectNode: @autoclosure () -> (any SyntaxProtocol)? = nil,
+    highlights: @autoclosure () -> [Syntax]? = nil,
+    notes: @autoclosure () -> [Note] = [],
+    fixIts: @autoclosure () -> [FixIt] = [],
+    function: StaticString = #function,
+    fileID: StaticString = #fileID,
+    line: UInt = #line,
+    column: UInt = #column
+  ) throws -> [SynthesizableProtocol] {
+    try requireTransflection(
+      argument: argumentPositionDescriptor,
+      as: [SynthesizableProtocol].self,
+      messageIdentifier: messageIdentifier(),
+      attributionNode: attributionNode(),
+      subjectNode: subjectNode(),
+      highlights: highlights(),
+      notes: notes(),
+      fixIts: fixIts(),
+      function: function,
+      fileID: fileID,
+      line: line,
+      column: column
+    )
+  }
+
 }

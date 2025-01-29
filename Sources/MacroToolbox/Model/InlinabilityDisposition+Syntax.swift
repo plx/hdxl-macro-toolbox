@@ -1,4 +1,5 @@
 import SwiftSyntax
+import SwiftSyntaxBuilder
 
 extension InlinabilityDisposition {
 
@@ -42,5 +43,25 @@ extension InlinabilityDisposition {
     self.init(tokenSyntax: identifier.name)
   }
 
-}
+  @inlinable
+  public init?(attributeListElement: AttributeListSyntax.Element) {
+    guard let attributeSyntax = attributeListElement.attributeSyntax else {
+      return nil
+    }
+    
+    self.init(
+      attributeSyntax: attributeSyntax
+    )
+  }
+  
+  @inlinable
+  public var attributeSyntax: AttributeSyntax {
+    switch self {
+    case .usableFromInline:
+      "@usableFromInline"
+    case .inlinable:
+      "@inlinable"
+    }
+  }
 
+}

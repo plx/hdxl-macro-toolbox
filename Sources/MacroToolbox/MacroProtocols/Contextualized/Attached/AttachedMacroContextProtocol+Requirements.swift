@@ -53,6 +53,46 @@ extension AttachedMacroContextProtocol {
        column: column
     )
   }
-  
+
+  @inlinable
+  public func requireConcreteDeclSyntax(
+    messageIdentifier: @autoclosure () -> String = .declarationOfIncorrectType,
+    function: StaticString = #function,
+    fileID: StaticString = #fileID,
+    line: UInt = #line,
+    column: UInt = #column
+  ) throws -> ConcreteDeclSyntax {
+    try requireValue(
+      "Need to be attached to a concrete declaration.",
+      messageIdentifier: messageIdentifier(),
+      function: function,
+      fileID: fileID,
+      line: line,
+      column: column
+    ) {
+      ConcreteDeclSyntax(decl: declaration)
+    }
+  }
+
+  @inlinable
+  public func requireConcreteTypeDeclaration(
+    messageIdentifier: @autoclosure () -> String = .declarationOfIncorrectType,
+    function: StaticString = #function,
+    fileID: StaticString = #fileID,
+    line: UInt = #line,
+    column: UInt = #column
+  ) throws -> ConcreteTypeDeclaration {
+    try requireValue(
+      "Need to be attached to a concrete type.",
+      messageIdentifier: messageIdentifier(),
+      function: function,
+      fileID: fileID,
+      line: line,
+      column: column
+    ) {
+      ConcreteTypeDeclaration(decl: declaration)
+    }
+  }
+
 }
 

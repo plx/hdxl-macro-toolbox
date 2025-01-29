@@ -2,6 +2,16 @@ import SwiftSyntax
 
 extension AttributeListSyntax.Element {
   
+  /// Returns `attribute` for this element, if it has one.
+  @inlinable
+  public var attributeSyntax: AttributeSyntax? {
+    guard case .attribute(let attributeSyntax) = self else {
+      return nil
+    }
+    
+    return attributeSyntax
+  }
+  
   /// The inlinability-disposition implied by this element, if any.
   ///
   /// - seealso: ``InlinabilityDisposition``

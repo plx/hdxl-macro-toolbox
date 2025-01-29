@@ -3,6 +3,42 @@ import MacroTransflection
 
 /// Types conforrming to ``TransflectableViaExprSyntax`` can be transflected into concrete values *from* their source-code representations.
 ///
+/// In other words, if you wrote a `Foo` macro and used it like this:
+///
+/// ```swift
+/// @Foo(bar: false)
+/// struct Baz { }
+/// ```
+///
+/// ...then at macro-expansion time the `bar: false` portion would be represented by *syntax* like this:
+///
+/// ```swift
+/// LabeledExprListSyntax([
+///   LabeledExprSyntax(
+///     label: TokenSyntax(.identifier("foo")),
+///     colon: .colon,
+///     expr: BooleanLiteralExprSyntax(
+///       literal: TokenSyntax(.keyword(.false))
+///     )
+///   )
+/// ])
+/// ```
+///
+/// As such, if your macro-expansion code needed to know if `bar` was `true` or `false`, it'd need to
+/// traipse through the syntax tree until it found that `BooleanLiteralExprSyntax`, and then it'd need
+/// to check the content of `literal` to see if it should be `true` or `false`.
+///
+/// 
+///
+/// - work your way through the syntax tree via a long `guard-let` chain
+/// -
+///
+/// To do that by hand on a on would
+///
+/// The ``TransflectableViaExprSyntax`` protocol exists
+///
+/// -
+///
 /// For a simple example, consider `Bool`: given an expression contain a boolean literal like `true`, we can "transflect" that back into the boolean value `true`.
 public protocol TransflectableViaExprSyntax {
 

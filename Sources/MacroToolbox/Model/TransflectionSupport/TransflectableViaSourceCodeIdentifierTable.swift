@@ -67,6 +67,9 @@ extension TransflectableViaSourceCodeIdentifierTable {
 extension TransflectableViaSourceCodeIdentifierTable where Self: CaseIterable {
   
   @inlinable
+  internal static var sourceCodeIdentifierTransflectionTable: [String: Self] { _inferred}
+  
+  @inlinable
   internal static var _inferred: [String: Self] {
     [String:Self](
       uniqueKeysWithValues: allCases

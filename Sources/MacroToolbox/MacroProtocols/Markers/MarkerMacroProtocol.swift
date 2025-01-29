@@ -13,7 +13,7 @@ extension MarkerMacroProtocol {
   public static func contextualizedExpansion(
     in attachmentContext: some PeerMacroContextProtocol
   ) throws -> [DeclSyntax] {
-    return []
+    []
   }
   
 }
