@@ -50,6 +50,14 @@ extension VisibilityLevel: CustomDebugStringConvertible { }
 
 extension VisibilityLevel: Comparable {
   
+  /// Compares two visibility levels.
+  ///
+  /// Visibility levels are ordered from most restrictive (`private`) to least restrictive (`open`).
+  ///
+  /// - Parameters:
+  ///   - lhs: The left-hand side visibility level
+  ///   - rhs: The right-hand side visibility level
+  /// - Returns: `true` if `lhs` is more restrictive than `rhs`
   @inlinable
   public static func < (lhs: VisibilityLevel, rhs: VisibilityLevel) -> Bool {
     lhs.rawValue < rhs.rawValue
@@ -63,6 +71,9 @@ extension VisibilityLevel: Comparable {
 
 extension VisibilityLevel: MacroToolboxCaseNameAwareEnumeration {
   
+  /// Returns the case name as a string without a leading dot.
+  ///
+  /// This property is useful when generating Swift code that refers to visibility modifiers.
   @inlinable
   public var caseNameWithoutLeadingDot: String {
     switch self {
@@ -98,6 +109,10 @@ extension VisibilityLevel: TransflectableViaSourceCodeIdentifier, Transflectable
 
 extension VisibilityLevel {
   
+  /// Indicates whether this visibility level is within the "private tier".
+  ///
+  /// Returns `true` for `.private` and `.fileprivate`, and `false` for all other visibility levels.
+  /// This is useful when determining if a declaration is private to its containing module.
   @inlinable
   public var isWithinPrivateTier: Bool {
     switch self {
