@@ -3,144 +3,156 @@ import Testing
 package extension Tag {
   
   @Tag
-  static var declarationArchetype: Self
+  static let declarationArchetype: Self
 
   @Tag
-  static var explicitInlineDisposition: Self
+  static let explicitInlineDisposition: Self
   
   @Tag
-  static var inlinabilityDisposition: Self
+  static let inlinabilityDisposition: Self
   
   @Tag
-  static var visibilityLevel: Self
+  static let visibilityLevel: Self
 
   @Tag
-  static var typeDeclarationArchetype: Self
+  static let typeDeclarationArchetype: Self
     
   @Tag
-  static var macroAttachmentRequirement: Self
+  static let macroAttachmentRequirement: Self
 
   @Tag
-  static var performanceAnnotationAttachmentSite: Self
+  static let performanceAnnotationAttachmentSite: Self
   
   @Tag
-  static var syntaxInteroperation: Self
+  static let syntaxInteroperation: Self
 
 }
 
 package extension Tag {
   
   @Tag
-  static var attributeSyntax: Self
+  static let attributeSyntax: Self
   
   @Tag
-  static var tokenSyntax: Self
+  static let tokenSyntax: Self
   
   @Tag
-  static var tokenKind: Self
+  static let tokenKind: Self
   
   @Tag
-  static var keyword: Self
+  static let keyword: Self
   
   @Tag
-  static var booleanLiteralExprSyntax: Self
+  static let booleanLiteralExprSyntax: Self
   
   @Tag
-  static var syntaxIntrospection: Self
+  static let integerLiteralExprSyntax: Self
+  
+  @Tag
+  static let floatLiteralExprSyntax: Self
+  
+  @Tag
+  static let simpleStringLiteralExprSyntax: Self
+  
+  @Tag
+  static let structDeclSyntax: Self
+  
+  @Tag
+  static let syntaxIntrospection: Self
 }
 
 package extension Tag {
   
   @Tag
-  static var testInfrastructure: Self 
+  static let testInfrastructure: Self 
 }
 
 package extension Tag {
   
   @Tag
-  static var positiveExamples: Self
+  static let positiveExamples: Self
 
   @Tag
-  static var negativeExamples: Self
+  static let negativeExamples: Self
   
   @Tag
-  static var unrepresentableValues: Self
+  static let unrepresentableValues: Self
 
 }
 
 package extension Tag {
 
   @Tag
-  static var optionalTransflections: Self
+  static let optionalTransflections: Self
 
   @Tag
-  static var floatingPointTransflections: Self
+  static let floatingPointTransflections: Self
 
   @Tag
-  static var integerTransflections: Self
+  static let integerTransflections: Self
 
   @Tag
-  static var signedIntegerTransflections: Self
+  static let signedIntegerTransflections: Self
 
   @Tag
-  static var unsignedIntegerTransflections: Self
+  static let unsignedIntegerTransflections: Self
 
   @Tag
-  static var booleanTransflections: Self
+  static let booleanTransflections: Self
 
   @Tag
-  static var stringTransflections: Self
+  static let stringTransflections: Self
 
   @Tag
-  static var enumerationTransflections: Self
+  static let enumerationTransflections: Self
 
   @Tag
-  static var transflection: Self
+  static let transflection: Self
 
 }
 
 package extension Tag {
   
   @Tag
-  static var float16Transflection: Self
+  static let float16Transflection: Self
 
   @Tag
-  static var floatTransflection: Self
+  static let floatTransflection: Self
 
   @Tag
-  static var doubleTransflection: Self
+  static let doubleTransflection: Self
 
   @Tag
-  static var intTransflection: Self
+  static let intTransflection: Self
 
   @Tag
-  static var int8Transflection: Self
+  static let int8Transflection: Self
 
   @Tag
-  static var int16Transflection: Self
+  static let int16Transflection: Self
 
   @Tag
-  static var int32Transflection: Self
+  static let int32Transflection: Self
 
   @Tag
-  static var int64Transflection: Self
+  static let int64Transflection: Self
 
   @Tag
-  static var uintTransflection: Self
+  static let uintTransflection: Self
 
   @Tag
-  static var uint8Transflection: Self
+  static let uint8Transflection: Self
 
   @Tag
-  static var uint16Transflection: Self
+  static let uint16Transflection: Self
 
   @Tag
-  static var uint32Transflection: Self
+  static let uint32Transflection: Self
 
   @Tag
-  static var uint64Transflection: Self
+  static let uint64Transflection: Self
 
   @Tag
-  static var stringTransflection: Self
+  static let stringTransflection: Self
 
 }
