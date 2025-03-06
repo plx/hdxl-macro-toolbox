@@ -4,7 +4,6 @@ import SwiftParser
 import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-
 @Test(
   "`StructDeclSyntax.simpleGenericParameterNames`",
   .tags(
@@ -12,39 +11,28 @@ import MacroToolboxTestSupport
     .structDeclSyntax
   )
 )
-func testStructDeclSyntaxSimpleGenericParameterNames() {
+func testStructDeclSyntaxSimpleGenericParameterNames() throws {
   // Helper function to create StructDeclSyntax from source code
-  func makeStructDecl(_ source: String) -> StructDeclSyntax {
+  func makeStructDecl(_ source: String) throws -> StructDeclSyntax {
     let parsed = Parser.parse(source: source)
-    let structDecl = parsed.statements.first!.item.as(DeclSyntax.self)!
-    return structDecl.as(StructDeclSyntax.self)!
+    let statement = try #require(parsed.statements.first?.item)
+    let structDecl = try #require(statement.as(DeclSyntax.self))
+    return try #require(structDecl.as(StructDeclSyntax.self))
   }
   
   // Test struct with single generic parameter
-  #expect(
-    ["T"]
-    ==
-    makeStructDecl("struct Example<T> {}").simpleGenericParameterNames
-  )
+  let singleGenericStruct = try makeStructDecl("struct Example<T> {}")
+  #expect(["T"] == singleGenericStruct.simpleGenericParameterNames)
   
   // Test struct with multiple generic parameters
-  #expect(
-    ["K", "V"]
-    ==
-    makeStructDecl("struct Example<K, V> {}").simpleGenericParameterNames
-  )
+  let multipleGenericStruct = try makeStructDecl("struct Example<K, V> {}")
+  #expect(["K", "V"] == multipleGenericStruct.simpleGenericParameterNames)
   
   // Test struct with no generic parameters
-  #expect(
-    nil
-    ==
-    makeStructDecl("struct Example {}").simpleGenericParameterNames
-  )
+  let noGenericStruct = try makeStructDecl("struct Example {}")
+  #expect(nil == noGenericStruct.simpleGenericParameterNames)
   
   // Test struct with complex generic parameters (including constraints)
-  #expect(
-    ["T", "U"]
-    ==
-    makeStructDecl("struct Example<T: Comparable, U> where T: Hashable {}").simpleGenericParameterNames
-  )
+  let complexGenericStruct = try makeStructDecl("struct Example<T: Comparable, U> where T: Hashable {}")
+  #expect(["T", "U"] == complexGenericStruct.simpleGenericParameterNames)
 }

@@ -11,12 +11,15 @@ import MacroToolboxTestSupport
     .attributeSyntax
   )
 )
-func testAttributeSyntaxFunctionality() {
+func testAttributeSyntaxFunctionality() throws {
   // Use parsing to create the attributes since direct construction is version-sensitive
   let inlinableSource = "@inlinable func test() {}"
-  let inlinableDecl = Parser.parse(source: inlinableSource).statements.first!.item.as(DeclSyntax.self)!
-  let funcDecl = inlinableDecl.as(FunctionDeclSyntax.self)!
-  let inlinableAttr = funcDecl.attributes.first!.as(AttributeSyntax.self)!
+  let sourceFile = Parser.parse(source: inlinableSource)
+  let statement = try #require(sourceFile.statements.first?.item)
+  let inlinableDecl = try #require(statement.as(DeclSyntax.self))
+  let funcDecl = try #require(inlinableDecl.as(FunctionDeclSyntax.self))
+  let attribute = try #require(funcDecl.attributes.first)
+  let inlinableAttr = try #require(attribute.as(AttributeSyntax.self))
   
   // Test hasName
   #expect(inlinableAttr.hasName("inlinable") == true)
@@ -28,20 +31,27 @@ func testAttributeSyntaxFunctionality() {
   // Test inlinabilityDisposition
   #expect(inlinableAttr.inlinabilityDisposition == InlinabilityDisposition.inlinable)
   
-  // Create attribute with arguments
-  let availableSource = "@available(iOS 13.0, *) func test() {}"
-  let availableDecl = Parser.parse(source: availableSource).statements.first!.item.as(DeclSyntax.self)!
-  let availableFuncDecl = availableDecl.as(FunctionDeclSyntax.self)!
-  let availableAttr = availableFuncDecl.attributes.first!.as(AttributeSyntax.self)!
+  // Create attribute with proper arguments format - using a different attribute format
+  let macroSource = "@CustomStringConvertible(arg1: 123, arg2: \"test\") func test() {}"
+  let macroSourceFile = Parser.parse(source: macroSource)
+  let macroStatement = try #require(macroSourceFile.statements.first?.item)
+  let macroDecl = try #require(macroStatement.as(DeclSyntax.self))
+  let macroFuncDecl = try #require(macroDecl.as(FunctionDeclSyntax.self))
+  let macroAttribute = try #require(macroFuncDecl.attributes.first)
+  let macroAttr = try #require(macroAttribute.as(AttributeSyntax.self))
   
   // Test hasNoArguments for attribute with arguments
-  #expect(availableAttr.hasNoArguments == false)
+  #expect(macroAttr.hasNoArguments == false)
   
-  // Test argumentListAsLabeledExprList
-  #expect(availableAttr.argumentListAsLabeledExprList != nil)
+  // Test argumentListAsLabeledExprList - validate we can get the argument list
+  if let argList = macroAttr.argumentListAsLabeledExprList {
+    #expect(argList.count >= 1)
+  } else {
+    #expect(Bool(false), "argumentListAsLabeledExprList should not be nil")
+  }
   
   // Test inlinabilityDisposition for non-inlinable attribute
-  #expect(availableAttr.inlinabilityDisposition == nil)
+  #expect(macroAttr.inlinabilityDisposition == nil)
   
   // Test hasAtSign
   #expect(inlinableAttr.hasAtSign == true)

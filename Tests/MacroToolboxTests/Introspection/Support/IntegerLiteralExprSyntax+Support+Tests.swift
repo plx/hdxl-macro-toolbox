@@ -3,7 +3,6 @@ import SwiftSyntax
 import MacroToolboxTestSupport
 @testable import MacroToolbox
 
-
 @Test(
   "`IntegerLiteralExprSyntax.representedIntegerLiteralValue`",
   .tags(
