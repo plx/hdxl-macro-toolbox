@@ -30,6 +30,10 @@ public enum ConcreteDeclSyntax {
 
 }
 
+extension ConcreteDeclSyntax: Sendable { }
+extension ConcreteDeclSyntax: Equatable { }
+extension ConcreteDeclSyntax: Hashable { }
+
 extension ConcreteDeclSyntax {
   
   @inlinable

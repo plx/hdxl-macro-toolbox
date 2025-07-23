@@ -60,4 +60,30 @@ extension MemberBlockSyntax {
     )
   }
   
+  @inlinable
+  public var storedPropertyDescriptors: [StoredPropertyDescriptor] {
+    members.compactMap { member in
+      StoredPropertyDescriptor(decl: member.decl)
+    }
+  }
+
+  @inlinable
+  public func allStoredPropertyDescriptors(
+    where predicate: (StoredPropertyDescriptor) throws -> Bool
+  ) rethrows -> [StoredPropertyDescriptor] {
+    var result: [StoredPropertyDescriptor] = []
+    for member in members {
+      guard
+        let descriptor = StoredPropertyDescriptor(decl: member.decl),
+        try predicate(descriptor)
+      else {
+        continue
+      }
+      
+      result.append(descriptor)
+    }
+    
+    return result
+  }
+
 }

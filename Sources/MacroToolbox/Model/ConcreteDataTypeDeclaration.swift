@@ -2,20 +2,19 @@ import SwiftSyntax
 import SwiftDiagnostics
 import SwiftSyntaxMacros
 
-public enum ConcreteTypeDeclaration {
+public enum ConcreteDataTypeDeclaration {
   
   case actor(ActorDeclSyntax)
   case `class`(ClassDeclSyntax)
-  case `enum`(EnumDeclSyntax)
   case `struct`(StructDeclSyntax)
   
 }
 
-extension ConcreteTypeDeclaration: Sendable { }
-extension ConcreteTypeDeclaration: Equatable { }
-extension ConcreteTypeDeclaration: Hashable { }
+extension ConcreteDataTypeDeclaration: Sendable { }
+extension ConcreteDataTypeDeclaration: Equatable { }
+extension ConcreteDataTypeDeclaration: Hashable { }
 
-extension ConcreteTypeDeclaration {
+extension ConcreteDataTypeDeclaration {
   
   @inlinable
   public init?(decl: some DeclSyntaxProtocol) {
@@ -23,8 +22,6 @@ extension ConcreteTypeDeclaration {
       self = .actor(actorDecl)
     } else if let classDecl = decl.as(ClassDeclSyntax.self) {
       self = .class(classDecl)
-    } else if let enumDecl = decl.as(EnumDeclSyntax.self) {
-      self = .enum(enumDecl)
     } else if let structDecl = decl.as(StructDeclSyntax.self) {
       self = .struct(structDecl)
     } else {
@@ -33,8 +30,8 @@ extension ConcreteTypeDeclaration {
   }
   
 }
-  
-extension ConcreteTypeDeclaration {
+
+extension ConcreteDataTypeDeclaration {
   
   @inlinable
   public var modifiers: DeclModifierListSyntax {
@@ -42,8 +39,6 @@ extension ConcreteTypeDeclaration {
     case .actor(let decl):
       decl.modifiers
     case .class(let decl):
-      decl.modifiers
-    case .enum(let decl):
       decl.modifiers
     case .struct(let decl):
       decl.modifiers
@@ -57,8 +52,6 @@ extension ConcreteTypeDeclaration {
       decl.attributes
     case .class(let decl):
       decl.attributes
-    case .enum(let decl):
-      decl.attributes
     case .struct(let decl):
       decl.attributes
     }
@@ -71,18 +64,15 @@ extension ConcreteTypeDeclaration {
       decl.name
     case .class(let decl):
       decl.name
-    case .enum(let decl):
-      decl.name
     case .struct(let decl):
       decl.name
     }
   }
-  
+
   @inlinable
   public var name: String {
     nameSyntax.text
   }
-  
 
   @inlinable
   public var inheritanceClause: InheritanceClauseSyntax? {
@@ -91,13 +81,11 @@ extension ConcreteTypeDeclaration {
       decl.inheritanceClause
     case .class(let decl):
       decl.inheritanceClause
-    case .enum(let decl):
-      decl.inheritanceClause
     case .struct(let decl):
       decl.inheritanceClause
     }
   }
-  
+
   @inlinable
   public var genericParameterClause: GenericParameterClauseSyntax? {
     switch self {
@@ -105,21 +93,17 @@ extension ConcreteTypeDeclaration {
       decl.genericParameterClause
     case .class(let decl):
       decl.genericParameterClause
-    case .enum(let decl):
-      decl.genericParameterClause
     case .struct(let decl):
       decl.genericParameterClause
     }
   }
-  
+
   @inlinable
   public var genericWhereClause: GenericWhereClauseSyntax? {
     switch self {
     case .actor(let decl):
       decl.genericWhereClause
     case .class(let decl):
-      decl.genericWhereClause
-    case .enum(let decl):
       decl.genericWhereClause
     case .struct(let decl):
       decl.genericWhereClause
@@ -138,7 +122,7 @@ extension ConcreteTypeDeclaration {
   
 }
 
-extension ConcreteTypeDeclaration {
+extension ConcreteDataTypeDeclaration {
   
   @inlinable
   public var concreteDeclSyntax: ConcreteDeclSyntax {
@@ -147,10 +131,24 @@ extension ConcreteTypeDeclaration {
       .actor(decl)
     case .class(let decl):
       .class(decl)
-    case .enum(let decl):
-      .enum(decl)
     case .struct(let decl):
       .struct(decl)
+    }
+  }
+  
+}
+
+extension ConcreteDataTypeDeclaration {
+  
+  @inlinable
+  public var storedPropertyDescriptors: [StoredPropertyDescriptor] {
+    switch self {
+    case .actor(let decl):
+      decl.storedPropertyDescriptors
+    case .class(let decl):
+      decl.storedPropertyDescriptors
+    case .struct(let decl):
+      decl.storedPropertyDescriptors
     }
   }
   

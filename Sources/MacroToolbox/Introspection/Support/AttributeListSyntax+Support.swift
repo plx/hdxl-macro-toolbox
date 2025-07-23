@@ -16,4 +16,17 @@ extension AttributeListSyntax {
     }
   }
   
+  @inlinable
+  public var nonConfigurationAttributes: [AttributeSyntax] {
+    var result: [AttributeSyntax] = []
+    for element in self {
+      guard case .attribute(let attributeSyntax) = element else {
+        continue
+      }
+      result.append(attributeSyntax)
+    }
+    
+    return result
+  }
+  
 }
