@@ -3,9 +3,7 @@ import SwiftDiagnostics
 import SwiftSyntaxMacros
 
 
-// -------------------------------------------------------------------------- //
 // MARK: AttachedMacroContextProtocol
-// -------------------------------------------------------------------------- //
 
 /// ``AttachedMacroContextProtocol`` refines ``MacroContextProtocol`` and specializes it for use with attached macros.
 public protocol AttachedMacroContextProtocol<Declaration, ExpansionContext> : MacroContextProtocol

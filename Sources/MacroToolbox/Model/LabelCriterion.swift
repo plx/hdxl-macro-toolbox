@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: LabelCriterion
-// ------------------------------------------------------------------------- //
 
 public enum LabelCriterion {
   
@@ -11,18 +9,14 @@ public enum LabelCriterion {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension LabelCriterion: Sendable { }
 extension LabelCriterion: Equatable { }
 extension LabelCriterion: Hashable { }
 extension LabelCriterion: Codable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension LabelCriterion: CustomStringConvertible {
   
@@ -39,9 +33,7 @@ extension LabelCriterion: CustomStringConvertible {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomDebugStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension LabelCriterion: CustomDebugStringConvertible {
   

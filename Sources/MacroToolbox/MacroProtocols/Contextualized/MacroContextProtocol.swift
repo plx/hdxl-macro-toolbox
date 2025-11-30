@@ -1,7 +1,6 @@
 import SwiftSyntax
 import SwiftDiagnostics
 import SwiftSyntaxMacros
-import MacroTransflection
 
 /// ``MacroContextProtocol`` is a base protocol corresponding to the lowest-common-denominator set of information available to *all* macros during expansion.
 ///

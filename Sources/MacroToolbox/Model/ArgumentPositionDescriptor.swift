@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: ArgumentPositionDescriptor
-// ------------------------------------------------------------------------- //
 
 public enum ArgumentPositionDescriptor {
 
@@ -11,18 +9,14 @@ public enum ArgumentPositionDescriptor {
 
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension ArgumentPositionDescriptor: Sendable { }
 extension ArgumentPositionDescriptor: Equatable { }
 extension ArgumentPositionDescriptor: Hashable { }
 extension ArgumentPositionDescriptor: Codable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Identifiable
-// ------------------------------------------------------------------------- //
 
 extension ArgumentPositionDescriptor: Identifiable {
   public typealias ID = Self
@@ -32,9 +26,7 @@ extension ArgumentPositionDescriptor: Identifiable {
  
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentPositionDescriptor: CustomStringConvertible {
   
@@ -52,9 +44,7 @@ extension ArgumentPositionDescriptor: CustomStringConvertible {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomDebugStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentPositionDescriptor: CustomDebugStringConvertible {
   
@@ -71,9 +61,7 @@ extension ArgumentPositionDescriptor: CustomDebugStringConvertible {
   }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension ArgumentPositionDescriptor {
   public static let first = Self.relativeToFirst(0)

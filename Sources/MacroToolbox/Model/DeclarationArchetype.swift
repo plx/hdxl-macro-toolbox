@@ -1,8 +1,5 @@
-import MacroTransflection
 
-// ------------------------------------------------------------------------- //
 // MARK: DeclarationArchetype
-// ------------------------------------------------------------------------- //
 
 /// Enumeration with cases kept 1:1 with the concrete types of declarations (e.g. each concrete `DeclSyntaxProtocol`-conforming syntax type).
 public enum DeclarationArchetype {
@@ -32,9 +29,7 @@ public enum DeclarationArchetype {
   case variable
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension DeclarationArchetype: Sendable { }
 extension DeclarationArchetype: Equatable { }
@@ -44,9 +39,7 @@ extension DeclarationArchetype: CaseIterable { }
 extension DeclarationArchetype: CustomStringConvertible { }
 extension DeclarationArchetype: CustomDebugStringConvertible { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - MacroToolboxCaseNameAwareEnumeration
-// ------------------------------------------------------------------------- //
 
 extension DeclarationArchetype: MacroToolboxCaseNameAwareEnumeration {
   
@@ -106,18 +99,7 @@ extension DeclarationArchetype: MacroToolboxCaseNameAwareEnumeration {
   
 }
 
-// ------------------------------------------------------------------------- //
-// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
-// ------------------------------------------------------------------------- //
-
-extension DeclarationArchetype: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
-  @usableFromInline
-  internal static let sourceCodeIdentifierTransflectionTable = _inferred
-}
-
-// ------------------------------------------------------------------------- //
 // MARK: - Internal API
-// ------------------------------------------------------------------------- //
 
 extension DeclarationArchetype {
   

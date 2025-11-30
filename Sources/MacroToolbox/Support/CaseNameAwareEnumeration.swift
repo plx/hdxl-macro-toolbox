@@ -1,5 +1,4 @@
 import Foundation
-import MacroTransflection
 
 // TODO: supply a macro-based implementation of this
 public protocol MacroToolboxCaseNameAwareEnumeration {

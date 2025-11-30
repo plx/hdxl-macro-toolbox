@@ -3,9 +3,7 @@ import SwiftDiagnostics
 import SwiftSyntaxMacros
 
 
-// -------------------------------------------------------------------------- //
 // MARK: - Automatic Recording
-// -------------------------------------------------------------------------- //
 
 extension MacroContextProtocol {
   

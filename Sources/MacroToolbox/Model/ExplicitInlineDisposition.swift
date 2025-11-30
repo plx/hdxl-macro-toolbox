@@ -1,8 +1,5 @@
-import MacroTransflection
 
-// ------------------------------------------------------------------------- //
 // MARK: ExplicitInlineDisposition
-// ------------------------------------------------------------------------- //
 
 /// ``ExplicitInlineDisposition`` corresponds to the valid flavors of explicit `@inline($disposition)` attributes.
 public enum ExplicitInlineDisposition {
@@ -10,9 +7,7 @@ public enum ExplicitInlineDisposition {
   case never
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension ExplicitInlineDisposition: Sendable {}
 extension ExplicitInlineDisposition: Equatable {}
@@ -22,9 +17,7 @@ extension ExplicitInlineDisposition: Codable {}
 extension ExplicitInlineDisposition: CustomStringConvertible { }
 extension ExplicitInlineDisposition: CustomDebugStringConvertible { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - MacroToolboxCaseNameAwareEnumeration
-// ------------------------------------------------------------------------- //
 
 extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
   
@@ -40,18 +33,7 @@ extension ExplicitInlineDisposition: MacroToolboxCaseNameAwareEnumeration {
   
 }
 
-// ------------------------------------------------------------------------- //
-// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
-// ------------------------------------------------------------------------- //
-
-extension ExplicitInlineDisposition: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
-  @usableFromInline
-  internal static let sourceCodeIdentifierTransflectionTable = _inferred
-}
-
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension ExplicitInlineDisposition {
   

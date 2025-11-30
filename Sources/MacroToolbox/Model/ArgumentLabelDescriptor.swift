@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: ArgumentLabelDescriptor
-// ------------------------------------------------------------------------- //
 
 /// Type used to represent an argument label.
 public enum ArgumentLabelDescriptor {
@@ -14,18 +12,14 @@ public enum ArgumentLabelDescriptor {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLabelDescriptor: Sendable { }
 extension ArgumentLabelDescriptor: Equatable { }
 extension ArgumentLabelDescriptor: Hashable { }
 extension ArgumentLabelDescriptor: Codable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Identifiable
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLabelDescriptor: Identifiable {
   public typealias ID = Self
@@ -34,9 +28,7 @@ extension ArgumentLabelDescriptor: Identifiable {
   public var id: ID { self }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLabelDescriptor: CustomStringConvertible {
   
@@ -51,9 +43,7 @@ extension ArgumentLabelDescriptor: CustomStringConvertible {
   }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomDebugStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLabelDescriptor: CustomDebugStringConvertible {
   
@@ -68,9 +58,7 @@ extension ArgumentLabelDescriptor: CustomDebugStringConvertible {
   }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLabelDescriptor {
   

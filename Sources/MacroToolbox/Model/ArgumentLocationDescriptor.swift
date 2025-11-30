@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: - ArgumentLocationDescriptor
-// ------------------------------------------------------------------------- //
 
 public struct ArgumentLocationDescriptor {
   
@@ -18,18 +16,14 @@ public struct ArgumentLocationDescriptor {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLocationDescriptor: Sendable { }
 extension ArgumentLocationDescriptor: Equatable { }
 extension ArgumentLocationDescriptor: Hashable { }
 extension ArgumentLocationDescriptor: Codable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLocationDescriptor: CustomStringConvertible {
   
@@ -40,9 +34,7 @@ extension ArgumentLocationDescriptor: CustomStringConvertible {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomDebugStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLocationDescriptor: CustomDebugStringConvertible {
   
@@ -52,9 +44,7 @@ extension ArgumentLocationDescriptor: CustomDebugStringConvertible {
   }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension ArgumentLocationDescriptor {
   

@@ -1,5 +1,4 @@
 import SwiftSyntax
-import MacroTransflection
 
 /// ``TransparentDisposition`` corresponds to the `@_transparent` attribute.
 public enum TransparentDisposition {
@@ -23,9 +22,4 @@ extension TransparentDisposition: MacroToolboxCaseNameAwareEnumeration {
       "transparent"
     }
   }
-}
-
-extension TransparentDisposition: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
-  @usableFromInline
-  internal static let sourceCodeIdentifierTransflectionTable = _inferred
 }

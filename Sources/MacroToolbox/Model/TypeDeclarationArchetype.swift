@@ -1,8 +1,5 @@
-import MacroTransflection
 
-// -------------------------------------------------------------------------- //
 // MARK: TypeDeclarationArchetype
-// -------------------------------------------------------------------------- //
 
 /// Each case corresponds to a *type-level* declaration archetype.
 ///
@@ -26,9 +23,7 @@ public enum TypeDeclarationArchetype {
   case `protocol`
 }
 
-// -------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// -------------------------------------------------------------------------- //
 
 extension TypeDeclarationArchetype: Sendable { }
 extension TypeDeclarationArchetype: Equatable { }
@@ -38,9 +33,7 @@ extension TypeDeclarationArchetype: CaseIterable { }
 extension TypeDeclarationArchetype: CustomStringConvertible { }
 extension TypeDeclarationArchetype: CustomDebugStringConvertible { }
 
-// -------------------------------------------------------------------------- //
 // MARK: - MacroToolboxCaseNameAwareEnumeration
-// -------------------------------------------------------------------------- //
 
 extension TypeDeclarationArchetype: MacroToolboxCaseNameAwareEnumeration {
   
@@ -62,18 +55,7 @@ extension TypeDeclarationArchetype: MacroToolboxCaseNameAwareEnumeration {
   
 }
 
-// -------------------------------------------------------------------------- //
-// MARK: - TransflectableViaSourceCodeIdentifierTable
-// -------------------------------------------------------------------------- //
-
-extension TypeDeclarationArchetype: TransflectableViaSourceCodeIdentifierTable {
-  @usableFromInline
-  internal static let sourceCodeIdentifierTransflectionTable = _inferred
-}
-
-// -------------------------------------------------------------------------- //
 // MARK: - Additional API
-// -------------------------------------------------------------------------- //
 
 extension TypeDeclarationArchetype {
   

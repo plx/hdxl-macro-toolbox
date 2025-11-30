@@ -1,8 +1,5 @@
-import MacroTransflection
 
-// ------------------------------------------------------------------------- //
 // MARK: VisibilityLevel
-// ------------------------------------------------------------------------- //
 
 /// Each case in ``VisibilityLevel`` corresponds to one of Swift's access levels.
 ///
@@ -32,9 +29,7 @@ public enum VisibilityLevel: UInt8 {
   case `open` = 0b00100000
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension VisibilityLevel: Sendable {}
 extension VisibilityLevel: Equatable {}
@@ -44,9 +39,7 @@ extension VisibilityLevel: Codable {}
 extension VisibilityLevel: CustomStringConvertible { }
 extension VisibilityLevel: CustomDebugStringConvertible { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Comparable
-// ------------------------------------------------------------------------- //
 
 extension VisibilityLevel: Comparable {
   
@@ -57,9 +50,7 @@ extension VisibilityLevel: Comparable {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - MacroToolboxCaseNameAwareEnumeration
-// ------------------------------------------------------------------------- //
 
 extension VisibilityLevel: MacroToolboxCaseNameAwareEnumeration {
   
@@ -83,18 +74,7 @@ extension VisibilityLevel: MacroToolboxCaseNameAwareEnumeration {
   
 }
 
-// ------------------------------------------------------------------------- //
-// MARK: - TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable
-// ------------------------------------------------------------------------- //
-
-extension VisibilityLevel: TransflectableViaSourceCodeIdentifier, TransflectableViaSourceCodeIdentifierTable {
-  @usableFromInline
-  internal static let sourceCodeIdentifierTransflectionTable = _inferred
-}
-
-// ------------------------------------------------------------------------- //
 // MARK: - General API
-// ------------------------------------------------------------------------- //
 
 extension VisibilityLevel {
   
