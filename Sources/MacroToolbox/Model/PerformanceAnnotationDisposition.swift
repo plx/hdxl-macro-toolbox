@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: PerformanceAnnotationDisposition
-// ------------------------------------------------------------------------- //
 
 public struct PerformanceAnnotationDisposition {
   
@@ -17,18 +15,14 @@ public struct PerformanceAnnotationDisposition {
   }
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension PerformanceAnnotationDisposition: Sendable { }
 extension PerformanceAnnotationDisposition: Equatable { }
 extension PerformanceAnnotationDisposition: Hashable { }
 extension PerformanceAnnotationDisposition: Codable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CaseIterable
-// ------------------------------------------------------------------------- //
 
 extension PerformanceAnnotationDisposition: CaseIterable {
   
@@ -58,9 +52,7 @@ extension PerformanceAnnotationDisposition: CaseIterable {
   }()
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension PerformanceAnnotationDisposition {
 

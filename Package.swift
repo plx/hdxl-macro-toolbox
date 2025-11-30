@@ -1,5 +1,4 @@
-// swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 6.2
 
 import PackageDescription
 import CompilerPluginSupport
@@ -83,30 +82,14 @@ let macroSupportDependencies: [Target.Dependency] = [
 let package = Package(
   name: "hdxl-macro-toolbox",
   platforms: [
-    .iOS(.v18),
-    .macOS(.v15),
-    .tvOS(.v18),
-    .watchOS(.v11)
+    .iOS(.v26),
+    .macOS(.v26),
+    .tvOS(.v26),
+    .watchOS(.v26),
+    .macCatalyst(.v26),
+    .visionOS(.v26)
   ],
   products: [
-    .library(
-      name: "MacroTransflection",
-      targets: [
-        "MacroTransflection"
-      ]
-    ),
-    .library(
-      name: "MacroTransflectionMacros",
-      targets: [
-        "MacroTransflectionMacros"
-      ]
-    ),
-    .executable(
-      name: "MacroTransflectionMacrosClient",
-      targets: ["MacroTransflectionMacrosClient"]
-    ),
-
-    
     .library(
       name: "MacroToolbox",
       targets: [
@@ -132,61 +115,13 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/swiftlang/swift-syntax.git",
-      from: "600.0.0-latest"
+      from: "602.0.0"
     ),
   ],
   targets: [
-    // macro-transflection:
-    .target(
-      name: "MacroTransflection",
-      dependencies: []
-    ),
-    .testTarget(
-      name: "MacroTransflectionTests",
-      dependencies: [
-        "MacroTransflection",
-        "MacroToolboxTestSupport"
-      ]
-    ),
-    
-    // macro-transflection macros:
-    .target(
-      name: "MacroTransflectionMacros",
-      dependencies: [
-        "MacroTransflection",
-        "MacroTransflectionMacrosPlugin"
-      ] + macroLibraryDependencies
-    ),
-    .macro(
-      name: "MacroTransflectionMacrosPlugin",
-      dependencies: [
-        "MacroToolbox",
-        "MacroTransflection"
-      ] + macroPluginDependencies
-    ),
-    .testTarget(
-      name: "MacroTransflectionMacrosTests",
-      dependencies: [
-        "MacroToolbox",
-        "MacroTransflection",
-        "MacroTransflectionMacros",
-        "MacroToolboxTestSupport"
-      ]
-    ),
-    .executableTarget(
-      name: "MacroTransflectionMacrosClient",
-      dependencies: [
-        "MacroTransflection",
-        "MacroTransflectionMacros"
-      ]
-    ),
-
-    // macro-toolbox related:
     .target(
       name: "MacroToolbox",
-      dependencies: [
-        "MacroTransflection"
-      ] + macroSupportDependencies
+      dependencies: [] + macroSupportDependencies
     ),
     .testTarget(
       name: "MacroToolboxTests",
@@ -196,7 +131,6 @@ let package = Package(
       ]
     ),
 
-    // macro-toolbox-macros related:
     .target(
       name: "MacroToolboxMacros",
       dependencies: [

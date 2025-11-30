@@ -3,9 +3,7 @@ import SwiftDiagnostics
 import SwiftSyntaxMacros
 
 
-// -------------------------------------------------------------------------- //
 // MARK: - Value Requirements
-// -------------------------------------------------------------------------- //
 
 extension MacroContextProtocol {
   
@@ -95,9 +93,7 @@ extension MacroContextProtocol {
   
 }
 
-// -------------------------------------------------------------------------- //
 // MARK: - Property Requirements
-// -------------------------------------------------------------------------- //
 
 extension MacroContextProtocol {
 
@@ -525,9 +521,7 @@ extension MacroContextProtocol {
 
 }
 
-// -------------------------------------------------------------------------- //
 // MARK: - Condition Requirements
-// -------------------------------------------------------------------------- //
 
 extension MacroContextProtocol {
   
@@ -615,9 +609,7 @@ extension MacroContextProtocol {
 
 }
 
-// -------------------------------------------------------------------------- //
 // MARK: - External-Value Validation
-// -------------------------------------------------------------------------- //
 
 extension MacroContextProtocol {
   

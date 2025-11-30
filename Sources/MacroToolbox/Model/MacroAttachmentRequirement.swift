@@ -1,7 +1,5 @@
 
-// ------------------------------------------------------------------------- //
 // MARK: MacroAttachmentRequirement
-// ------------------------------------------------------------------------- //
 
 public enum MacroAttachmentRequirement<T> where T :Hashable {
   case unspecified
@@ -10,18 +8,14 @@ public enum MacroAttachmentRequirement<T> where T :Hashable {
   case anythingBut(Set<T>)
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Synthesized Conformances
-// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement: Sendable where T: Sendable { }
 extension MacroAttachmentRequirement: Equatable { }
 extension MacroAttachmentRequirement: Encodable where T: Encodable { }
 extension MacroAttachmentRequirement: Decodable where T: Decodable { }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement: CustomStringConvertible {
   
@@ -41,9 +35,7 @@ extension MacroAttachmentRequirement: CustomStringConvertible {
   
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - CustomDebugStringConvertible
-// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement: CustomDebugStringConvertible {
   
@@ -63,9 +55,7 @@ extension MacroAttachmentRequirement: CustomDebugStringConvertible {
 
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - API
-// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement {
   
@@ -117,9 +107,7 @@ extension MacroAttachmentRequirement {
 
 }
 
-// ------------------------------------------------------------------------- //
 // MARK: - Internal API
-// ------------------------------------------------------------------------- //
 
 extension MacroAttachmentRequirement {
   
