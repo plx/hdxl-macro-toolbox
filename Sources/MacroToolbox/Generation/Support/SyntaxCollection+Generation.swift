@@ -33,7 +33,7 @@ extension SyntaxCollection where Element: WithTrailingCommaSyntax {
         case true:
           result.trailingComma = nil
         case false:
-          result.trailingComma = TokenSyntax.commaToken()
+          result.trailingComma = TokenSyntax.commaToken(trailingTrivia: .space)
         }
         
         return result

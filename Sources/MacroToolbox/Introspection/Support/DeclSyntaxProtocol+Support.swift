@@ -1,6 +1,78 @@
 import SwiftSyntax
 import SwiftSyntaxMacros
 
+@inlinable
+func _updateConcreteTypeMappingResult<Declaration, R, T>(
+  _ result: inout R?,
+  foundMatch: inout Bool,
+  declaration: Declaration,
+  association: (R, T.Type)
+)
+where
+  Declaration: DeclSyntaxProtocol,
+  T: DeclSyntaxProtocol
+{
+  guard !foundMatch else {
+    return
+  }
+
+  let (value, concreteType) = association
+  guard declaration.is(concreteType) else {
+    return
+  }
+
+  foundMatch = true
+  result = value
+}
+
+@inlinable
+func _updateHomogeneousValueResult<Declaration, R, T>(
+  _ result: inout R?,
+  foundMatch: inout Bool,
+  declaration: Declaration,
+  association: (KeyPath<T, R>, T.Type)
+)
+where
+  Declaration: DeclSyntaxProtocol,
+  T: DeclSyntaxProtocol
+{
+  guard !foundMatch else {
+    return
+  }
+
+  let (keyPath, concreteType) = association
+  guard let concreteValue = declaration.as(concreteType) else {
+    return
+  }
+
+  foundMatch = true
+  result = concreteValue[keyPath: keyPath]
+}
+
+@inlinable
+func _updateOptionalHomogeneousValueResult<Declaration, R, T>(
+  _ result: inout R?,
+  foundMatch: inout Bool,
+  declaration: Declaration,
+  association: (KeyPath<T, R?>, T.Type)
+)
+where
+  Declaration: DeclSyntaxProtocol,
+  T: DeclSyntaxProtocol
+{
+  guard !foundMatch else {
+    return
+  }
+
+  let (keyPath, concreteType) = association
+  guard let concreteValue = declaration.as(concreteType) else {
+    return
+  }
+
+  foundMatch = true
+  result = concreteValue[keyPath: keyPath]
+}
+
 extension DeclSyntaxProtocol {
 
   /// Maps `self` to the supplied value that's associated-with `self`'s type.
@@ -35,13 +107,18 @@ extension DeclSyntaxProtocol {
   public func applyConcreteTypeMapping<R, each T: DeclSyntaxProtocol>(
     associations: (repeat (R, (each T).Type))
   ) -> R? {
-    for (value, concreteType) in repeat each associations {
-      if self.is(concreteType) {
-        return value
-      }
-    }
-    
-    return nil
+    var result: R?
+    var foundMatch = false
+    _ = (
+      repeat _updateConcreteTypeMappingResult(
+        &result,
+        foundMatch: &foundMatch,
+        declaration: self,
+        association: each associations
+      )
+    )
+
+    return result
   }
 
   /// Given a list of pairs like ("possible type, keypath-on-type"), returns the appropriate value from `self` (or `nil`, if `self` isn't any of the supplied types).
@@ -56,13 +133,18 @@ extension DeclSyntaxProtocol {
   public func extractHomogeneousValues<R, each T: DeclSyntaxProtocol>(
     using associations: (repeat (KeyPath<each T,R>, (each T).Type))
   ) -> R? {
-    for (keyPath, concreteType) in repeat each associations {
-      if let concreteValue = self.as(concreteType) {
-        return concreteValue[keyPath: keyPath]
-      }
-    }
-    
-    return nil
+    var result: R?
+    var foundMatch = false
+    _ = (
+      repeat _updateHomogeneousValueResult(
+        &result,
+        foundMatch: &foundMatch,
+        declaration: self,
+        association: each associations
+      )
+    )
+
+    return result
   }
 
   /// Extracts homogeneously-typed values from `self`, if possible, using the first successful type-and-keypath pair.
@@ -77,13 +159,18 @@ extension DeclSyntaxProtocol {
   public func extractHomogeneousValues<R, each T: DeclSyntaxProtocol>(
     using associations: (repeat (KeyPath<each T,R?>, (each T).Type))
   ) -> R? {
-    for (keyPath, concreteType) in repeat each associations {
-      if let concreteValue = self.as(concreteType) {
-        return concreteValue[keyPath: keyPath]
-      }
-    }
-    
-    return nil
+    var result: R?
+    var foundMatch = false
+    _ = (
+      repeat _updateOptionalHomogeneousValueResult(
+        &result,
+        foundMatch: &foundMatch,
+        declaration: self,
+        association: each associations
+      )
+    )
+
+    return result
   }
 
   @inlinable
@@ -98,7 +185,7 @@ extension DeclSyntaxProtocol {
       )
     )
   }
-  
+
   @inlinable
   public var declarationArchetype: DeclarationArchetype? {
     applyConcreteTypeMapping(
@@ -130,6 +217,5 @@ extension DeclSyntaxProtocol {
       )
     )
   }
-  
-}
 
+}

@@ -12,6 +12,7 @@ extension GenericRequirementSyntax {
           leftType: IdentifierTypeSyntax.forType(
             named: typeName
           ),
+          colon: .colonToken(trailingTrivia: .space),
           rightType: IdentifierTypeSyntax.forType(
             named: otherTypeName
           )

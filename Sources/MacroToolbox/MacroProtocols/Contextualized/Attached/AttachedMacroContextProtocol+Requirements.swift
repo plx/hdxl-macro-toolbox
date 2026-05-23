@@ -28,6 +28,7 @@ extension AttachedMacroContextProtocol {
         """
         Our archetype was \(declarationArchetype), which isn't compatible-with \(attachmentRequirement)!
         """,
+      messageIdentifier: messageIdentifier(),
       function: function,
       fileID: fileID,
       line: line,
@@ -47,6 +48,7 @@ extension AttachedMacroContextProtocol {
     try requireSyntaxProperty(
       \.declaration,
        as: declarationType,
+       messageIdentifier: messageIdentifier(),
        function: function,
        fileID: fileID,
        line: line,
@@ -95,4 +97,3 @@ extension AttachedMacroContextProtocol {
   }
 
 }
-

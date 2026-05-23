@@ -143,6 +143,7 @@ extension AllOrNoneConditionalConformanceMacro {
     parameters: AllOrNoneConditionalConformanceParameters
   ) throws -> ExtensionDeclSyntax {
     ExtensionDeclSyntax(
+      extensionKeyword: .keyword(.extension, trailingTrivia: .space),
       extendedType: attachmentContext.extendedType,
       inheritanceClause: try conditionalConformanceInheritanceClause(
         in: attachmentContext,
@@ -151,6 +152,13 @@ extension AllOrNoneConditionalConformanceMacro {
       genericWhereClause: try conditionalConformanceRequirementsClause(
         in: attachmentContext,
         parameters: parameters
+      ).with(
+        \.whereKeyword,
+        .keyword(
+          .where,
+          leadingTrivia: .space,
+          trailingTrivia: .space
+        )
       ),
       memberBlock: MemberBlockSyntax(
         declarations: try conditionalConformanceDeclarations(

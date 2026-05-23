@@ -20,6 +20,7 @@ extension SingleProtocolUnconditionalConformanceMacro {
     in attachmentContext: some ExtensionMacroContextProtocol
   ) throws -> ExtensionDeclSyntax {
     ExtensionDeclSyntax(
+      extensionKeyword: .keyword(.extension, trailingTrivia: .space),
       extendedType: attachmentContext.extendedType,
       inheritanceClause: try unconditionalInheritanceClause(
         in: attachmentContext
