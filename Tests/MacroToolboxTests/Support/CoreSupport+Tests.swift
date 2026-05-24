@@ -235,6 +235,37 @@ func testStringTupleStringificationHelpers() {
   #expect(Optional<String>.none.argumentLabelRepresentation == "")
   #expect(Optional("").argumentLabelRepresentation == "")
   #expect(Optional("value").argumentLabelRepresentation == "value: ")
+
+  // Single-element variadic packs: Swift represents `(repeat each T)` as the
+  // scalar element type when the pack has exactly one element, so the
+  // initializers must iterate the pack directly rather than relying on
+  // `Mirror`-based child enumeration, which would yield zero children for a
+  // scalar like `Int` and silently drop the argument.
+  #expect(
+    String(forCaption: "solo", describingTuple: (1))
+    ==
+    "(solo: 1)"
+  )
+  #expect(String(describingTuple: (1)) == "(1)")
+
+  // Labeled single-element packs cannot be expressed with literal tuple
+  // syntax — Swift cannot disambiguate `(String, T)` between a 1-element
+  // labeled pack and a 2-element non-labeled pack — so the regression is
+  // exercised through generic wrappers that forward a real pack expansion.
+  #expect(forwardingDescribingLabeledTuple(("x", 1)) == "(x: 1)")
+  #expect(forwardingReflectingLabeledTuple(("x", "one")) == #"(x: "one")"#)
+}
+
+private func forwardingDescribingLabeledTuple<each T>(
+  _ labeledValues: repeat (String, each T)
+) -> String {
+  String(describingLabeledTuple: (repeat each labeledValues))
+}
+
+private func forwardingReflectingLabeledTuple<each T>(
+  _ labeledValues: repeat (String, each T)
+) -> String {
+  String(reflectingLabeledTuple: (repeat each labeledValues))
 }
 
 @Test("String constructor stringification helpers preserve labels and arguments")
@@ -250,9 +281,24 @@ func testStringConstructorStringificationHelpersPreserveLabelsAndArguments() {
     forConstructorOf: TupleStringificationFixture.self,
     unlabeledArguments: (1, "two", 3)
   )
-  
+
   #expect(labeled.hasSuffix(#"TupleStringificationFixture(1, label: "two", 3)"#))
   #expect(unlabeled.hasSuffix(#"TupleStringificationFixture(1, "two", 3)"#))
+
+  // Single-element packs must also reach the constructor-string initializers
+  // without losing the argument, since variadic packs collapse to the scalar
+  // type for one element. The labeled constructor takes pairs whose first
+  // component is `String?`, so Swift cannot disambiguate a literal pair from
+  // a 2-element pack of non-labeled values — the regression is exercised via
+  // a generic wrapper that forwards a real pack expansion.
+  let singleLabeled = forwardingForConstructorArgument(("label", 1))
+  let singleUnlabeled = String(
+    forConstructorOf: TupleStringificationFixture.self,
+    unlabeledArguments: (1)
+  )
+
+  #expect(singleLabeled.hasSuffix("TupleStringificationFixture(label: 1)"))
+  #expect(singleUnlabeled.hasSuffix("TupleStringificationFixture(1)"))
   
   for label in [String?.none, "", "value"] {
     let expected = label.map { $0.isEmpty ? "" : "\($0): " } ?? ""
@@ -277,6 +323,15 @@ func testStringConstructorStringificationHelpersPreserveLabelsAndArguments() {
     from: 1
   )
   #expect(missingParsedLabel == nil)
+}
+
+private func forwardingForConstructorArgument<each T>(
+  _ labeledValues: repeat (String?, each T)
+) -> String {
+  String(
+    forConstructorOf: TupleStringificationFixture.self,
+    arguments: (repeat each labeledValues)
+  )
 }
 
 private enum SupportExampleCase: String, CaseIterable, MacroToolboxCaseNameAwareEnumeration, CustomStringConvertible, CustomDebugStringConvertible {

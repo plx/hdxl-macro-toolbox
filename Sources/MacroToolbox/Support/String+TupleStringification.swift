@@ -7,17 +7,19 @@ extension String {
     forCaption caption: String,
     describingTuple values: (repeat each T)
   ) {
-    let components = String.tupleComponents(
-      describing: values
-    )
+    var components: [String] = []
+    for value in repeat each values {
+      components.append(String(describing: value))
+    }
     self = "(\(caption): \(components.joined(separator: ", ")))"
   }
 
   @inlinable
   package init<each T>(describingTuple values: (repeat each T)) {
-    let components = String.tupleComponents(
-      describing: values
-    )
+    var components: [String] = []
+    for value in repeat each values {
+      components.append(String(describing: value))
+    }
     self = "(\(components.joined(separator: ", ")))"
   }
 
@@ -25,9 +27,10 @@ extension String {
   package init<each T>(
     describingLabeledTuple labeledValues: (repeat (String, each T))
   ) {
-    let components = String.labeledTupleComponents(
-      describing: labeledValues
-    )
+    var components: [String] = []
+    for labeledValue in repeat each labeledValues {
+      components.append("\(labeledValue.0): \(String(describing: labeledValue.1))")
+    }
     self = "(\(components.joined(separator: ", ")))"
   }
 
@@ -35,9 +38,10 @@ extension String {
   package init<each T>(
     reflectingLabeledTuple labeledValues: (repeat (String, each T))
   ) {
-    let components = String.labeledTupleComponents(
-      reflecting: labeledValues
-    )
+    var components: [String] = []
+    for labeledValue in repeat each labeledValues {
+      components.append("\(labeledValue.0): \(String(reflecting: labeledValue.1))")
+    }
     self = "(\(components.joined(separator: ", ")))"
   }
 
@@ -51,9 +55,10 @@ extension String {
     forConstructorOf type: Parent.Type,
     arguments labeledArguments: (repeat (String?, each T))
   ) {
-    let components = String.constructorArgumentComponents(
-      reflecting: labeledArguments
-    )
+    var components: [String] = []
+    for labeledArgument in repeat each labeledArguments {
+      components.append("\(labeledArgument.0.argumentLabelRepresentation)\(String(reflecting: labeledArgument.1))")
+    }
     self = "\(String(reflecting: type))(\(components.joined(separator: ", ")))"
   }
 
@@ -63,9 +68,10 @@ extension String {
     forConstructorOf type: Parent.Type,
     unlabeledArguments: (repeat each T)
   ) {
-    let components = String.tupleComponents(
-      reflecting: unlabeledArguments
-    )
+    var components: [String] = []
+    for value in repeat each unlabeledArguments {
+      components.append(String(reflecting: value))
+    }
     self = "\(String(reflecting: type))(\(components.joined(separator: ", ")))"
   }
 
