@@ -5,6 +5,7 @@ extension GenericWhereClauseSyntax {
   @inlinable
   public init(requirements: some Collection<GenericRequirementSyntax>) {
     self.init(
+      whereKeyword: .keyword(.where, trailingTrivia: .space),
       requirements: GenericRequirementListSyntax(
         withTrailingCommasInsertedBetween: requirements
       )

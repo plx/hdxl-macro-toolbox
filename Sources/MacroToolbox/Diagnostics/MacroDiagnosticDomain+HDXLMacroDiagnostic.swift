@@ -37,19 +37,15 @@ extension MacroDiagnosticDomain {
     highlights: [Syntax]? = nil,
     notes: [Note] = [],
     fixIts: [FixIt] = []
-  ) -> DiagnosticsError {
-    DiagnosticsError(
-      diagnostics: [
-        _diagnosticWarning(
-          for: node,
-          at: position,
-          explanation: explanation,
-          messageID: messageID,
-          highlights: highlights,
-          notes: notes,
-          fixIts: fixIts
-        )
-      ]
+  ) -> Diagnostic {
+    _diagnosticWarning(
+      for: node,
+      at: position,
+      explanation: explanation,
+      messageID: messageID,
+      highlights: highlights,
+      notes: notes,
+      fixIts: fixIts
     )
   }
   
@@ -62,19 +58,15 @@ extension MacroDiagnosticDomain {
     highlights: [Syntax]? = nil,
     notes: [Note] = [],
     fixIts: [FixIt] = []
-  ) -> DiagnosticsError {
-    DiagnosticsError(
-      diagnostics: [
-        _diagnosticNote(
-          for: node,
-          at: position,
-          explanation: explanation,
-          messageID: messageID,
-          highlights: highlights,
-          notes: notes,
-          fixIts: fixIts
-        )
-      ]
+  ) -> Diagnostic {
+    _diagnosticNote(
+      for: node,
+      at: position,
+      explanation: explanation,
+      messageID: messageID,
+      highlights: highlights,
+      notes: notes,
+      fixIts: fixIts
     )
   }
   
@@ -87,19 +79,15 @@ extension MacroDiagnosticDomain {
     highlights: [Syntax]? = nil,
     notes: [Note] = [],
     fixIts: [FixIt] = []
-  ) -> DiagnosticsError {
-    DiagnosticsError(
-      diagnostics: [
-        _diagnosticRemark(
-          for: node,
-          at: position,
-          explanation: explanation,
-          messageID: messageID,
-          highlights: highlights,
-          notes: notes,
-          fixIts: fixIts
-        )
-      ]
+  ) -> Diagnostic {
+    _diagnosticRemark(
+      for: node,
+      at: position,
+      explanation: explanation,
+      messageID: messageID,
+      highlights: highlights,
+      notes: notes,
+      fixIts: fixIts
     )
   }
   
@@ -222,4 +210,3 @@ extension MacroDiagnosticDomain {
   }
   
 }
-

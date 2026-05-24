@@ -7,78 +7,42 @@ extension String {
     forCaption caption: String,
     describingTuple values: (repeat each T)
   ) {
-    var contents: String = "\(caption): "
-    var iterationIndex: Int = 0
+    var components: [String] = []
     for value in repeat each values {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(String(describing: value))"
-      case false:
-        contents += String(describing: value)
-      }
-      
-      iterationIndex += 1
+      components.append(String(describing: value))
     }
-    
-    self = "(\(contents))"
+    self = "(\(caption): \(components.joined(separator: ", ")))"
   }
 
   @inlinable
   package init<each T>(describingTuple values: (repeat each T)) {
-    var contents: String = ""
-    var iterationIndex: Int = 0
+    var components: [String] = []
     for value in repeat each values {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(String(describing: value))"
-      case false:
-        contents += String(describing: value)
-      }
-      
-      iterationIndex += 1
+      components.append(String(describing: value))
     }
-    
-    self = "(\(contents))"
+    self = "(\(components.joined(separator: ", ")))"
   }
-  
+
   @inlinable
   package init<each T>(
     describingLabeledTuple labeledValues: (repeat (String, each T))
   ) {
-    var contents: String = ""
-    var iterationIndex: Int = 0
+    var components: [String] = []
     for labeledValue in repeat each labeledValues {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(labeledValue.0): \(String(describing: labeledValue.1))"
-      case false:
-        contents += "\(labeledValue.0): \(String(describing: labeledValue.1))"
-      }
-      
-      iterationIndex += 1
+      components.append("\(labeledValue.0): \(String(describing: labeledValue.1))")
     }
-    
-    self = "(\(contents))"
+    self = "(\(components.joined(separator: ", ")))"
   }
 
   @inlinable
   package init<each T>(
     reflectingLabeledTuple labeledValues: (repeat (String, each T))
   ) {
-    var contents: String = ""
-    var iterationIndex: Int = 0
+    var components: [String] = []
     for labeledValue in repeat each labeledValues {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(labeledValue.0): \(String(reflecting: labeledValue.1))"
-      case false:
-        contents += "\(labeledValue.0): \(String(reflecting: labeledValue.1))"
-      }
-      
-      iterationIndex += 1
+      components.append("\(labeledValue.0): \(String(reflecting: labeledValue.1))")
     }
-    
-    self = "(\(contents))"
+    self = "(\(components.joined(separator: ", ")))"
   }
 
   /// Prepares a constructor-like string with a mix of labeled and unlabeled arguments (e.g. `Modulator(target, using: modulator)`).
@@ -91,20 +55,11 @@ extension String {
     forConstructorOf type: Parent.Type,
     arguments labeledArguments: (repeat (String?, each T))
   ) {
-    var contents: String = ""
-    var iterationIndex: Int = 0
-    for labeledValue in repeat each labeledArguments {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(labeledValue.0.argumentLabelRepresentation)\(String(reflecting: labeledValue.1))"
-      case false:
-        contents += "\(labeledValue.0.argumentLabelRepresentation)\(String(reflecting: labeledValue.1))"
-      }
-      
-      iterationIndex += 1
+    var components: [String] = []
+    for labeledArgument in repeat each labeledArguments {
+      components.append("\(labeledArgument.0.argumentLabelRepresentation)\(String(reflecting: labeledArgument.1))")
     }
-    
-    self = "\(String(reflecting: type))(\(contents))"
+    self = "\(String(reflecting: type))(\(components.joined(separator: ", ")))"
   }
 
   /// Constructs a constructor-like string w/completely-unlabeled arguments (e.g. `Foo(x,y,z)`).
@@ -113,26 +68,112 @@ extension String {
     forConstructorOf type: Parent.Type,
     unlabeledArguments: (repeat each T)
   ) {
-    var contents: String = ""
-    var iterationIndex: Int = 0
-    for unlabeledArgument in repeat each unlabeledArguments {
-      switch iterationIndex > 0 {
-      case true:
-        contents += ", \(String(reflecting: unlabeledArgument))"
-      case false:
-        contents += "\(String(reflecting: unlabeledArgument))"
-      }
-      
-      iterationIndex += 1
+    var components: [String] = []
+    for value in repeat each unlabeledArguments {
+      components.append(String(reflecting: value))
     }
-    
-    self = "\(String(reflecting: type))(\(contents))"
+    self = "\(String(reflecting: type))(\(components.joined(separator: ", ")))"
+  }
+
+}
+
+extension String {
+
+  @usableFromInline
+  package static func tupleComponents(
+    describing value: Any
+  ) -> [String] {
+    Mirror(reflecting: value).children.map { child in
+      String(describing: child.value)
+    }
+  }
+
+  @usableFromInline
+  package static func tupleComponents(
+    reflecting value: Any
+  ) -> [String] {
+    Mirror(reflecting: value).children.map { child in
+      String(reflecting: child.value)
+    }
+  }
+
+  @usableFromInline
+  package static func labeledTupleComponents(
+    describing value: Any
+  ) -> [String] {
+    tuplePairComponents(from: value) { pair in
+      "\(pair.label): \(String(describing: pair.value))"
+    }
+  }
+
+  @usableFromInline
+  package static func labeledTupleComponents(
+    reflecting value: Any
+  ) -> [String] {
+    tuplePairComponents(from: value) { pair in
+      "\(pair.label): \(String(reflecting: pair.value))"
+    }
+  }
+
+  @usableFromInline
+  package static func constructorArgumentComponents(
+    reflecting value: Any
+  ) -> [String] {
+    Mirror(reflecting: value).children.map { child in
+      let pairChildren = Array(Mirror(reflecting: child.value).children)
+      guard
+        pairChildren.count == 2,
+        let label = parsedConstructorArgumentLabel(
+          from: pairChildren[0].value
+        )
+      else {
+        return String(describing: child.value)
+      }
+
+      return "\(label.argumentLabelRepresentation)\(String(reflecting: pairChildren[1].value))"
+    }
+  }
+
+  @usableFromInline
+  package static func parsedConstructorArgumentLabel(from value: Any) -> String?? {
+    if let label = value as? String {
+      return Optional.some(Optional.some(label))
+    }
+
+    if let optionalLabel = value as? String? {
+      return Optional.some(optionalLabel)
+    }
+
+    return nil
+  }
+
+  @usableFromInline
+  package static func tuplePairComponents(
+    from value: Any,
+    transform: ((label: String, value: Any)) -> String
+  ) -> [String] {
+    Mirror(reflecting: value).children.map { child in
+      let pairChildren = Array(Mirror(reflecting: child.value).children)
+      guard
+        pairChildren.count == 2,
+        let label = pairChildren[0].value as? String
+      else {
+        return String(describing: child.value)
+      }
+
+      return transform(
+        (
+          label: label,
+          value: pairChildren[1].value
+        )
+      )
+    }
   }
 
 }
 
 extension Optional<String> {
-  
+
   @inlinable
   package var argumentLabelRepresentation: String {
     guard
@@ -141,8 +182,8 @@ extension Optional<String> {
     else {
       return ""
     }
-    
+
     return "\(label): "
   }
-  
+
 }

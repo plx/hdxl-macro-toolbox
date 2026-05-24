@@ -12,6 +12,7 @@ extension InheritanceClauseSyntax {
   @inlinable
   public static func forInheritedTypeNames(_ inheritedTypeNames: some Sequence<String>)-> Self {
     InheritanceClauseSyntax(
+      colon: .colonToken(trailingTrivia: .space),
       inheritedTypes: .forTypeNames(inheritedTypeNames)
     )
   }

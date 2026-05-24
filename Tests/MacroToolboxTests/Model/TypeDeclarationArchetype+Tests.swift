@@ -135,3 +135,22 @@ func testTypeDeclarationArchetypeIsActorClassOrStruct(
     [.actor, .class, .struct].contains(archetype)
   )
 }
+
+@Test(
+  "`TypeDeclarationArchetype.isNotEnumOrProtocol`",
+  .tags(.typeDeclarationArchetype),
+  arguments: TypeDeclarationArchetype.allCases
+)
+func testTypeDeclarationArchetypeIsNotEnumOrProtocol(
+  archetype: TypeDeclarationArchetype
+) {
+  // Property-style test: this spelling is intentionally equivalent to the
+  // actor/class/struct predicate, so every case should match that independent
+  // membership check.
+  #expect(
+    archetype.isNotEnumOrProtocol
+    ==
+    [.actor, .class, .struct].contains(archetype)
+  )
+  #expect(archetype.isNotEnumOrProtocol == archetype.isActorClassOrStruct)
+}

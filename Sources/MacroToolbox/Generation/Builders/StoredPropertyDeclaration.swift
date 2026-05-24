@@ -44,7 +44,7 @@ extension StoredProperty: ConcreteDeclSyntaxDeclaration, DeclSyntaxDeclaration {
   }
   
   internal var setterVisibilityDeclaration: String? {
-    visibility.map {
+    setterVisibility.map {
       "\($0.sourceCodeStringRepresentation)(set)"
     }
   }
@@ -113,4 +113,3 @@ public protocol DeclSyntaxDeclaration {
   func makeDeclSyntax() throws -> DeclSyntax
   
 }
-
