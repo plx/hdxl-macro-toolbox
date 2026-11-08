@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.4
 
 import PackageDescription
 import CompilerPluginSupport
@@ -82,12 +82,12 @@ let macroSupportDependencies: [Target.Dependency] = [
 let package = Package(
   name: "hdxl-macro-toolbox",
   platforms: [
-    .iOS(.v26),
-    .macOS(.v26),
-    .tvOS(.v26),
-    .watchOS(.v26),
-    .macCatalyst(.v26),
-    .visionOS(.v26)
+    .iOS(.v27),
+    .macOS(.v27),
+    .tvOS(.v27),
+    .watchOS(.v27),
+    .macCatalyst(.v27),
+    .visionOS(.v27)
   ],
   products: [
     .library(
@@ -115,7 +115,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/swiftlang/swift-syntax.git",
-      from: "602.0.0"
+      from: "604.0.0"
     ),
   ],
   targets: [
