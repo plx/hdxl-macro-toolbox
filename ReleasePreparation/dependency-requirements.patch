@@ -1,0 +1,11 @@
+--- a/Package.swift
++++ b/Package.swift
+@@ -98,7 +98,7 @@
+     // Lower-level core revision containing the normal decoder, source paths, and ordered binder.
+     .package(
+       url: "https://github.com/plx/hdxl-macro-transflection.git",
+-      revision: "e28d2bb2fb8e957d8c5b4ac36a10d4d8c406e16e"
++      "0.3.0"..<"0.4.0"
+     ),
+     // for documentation-rendering support
+     .package(

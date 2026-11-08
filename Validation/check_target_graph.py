@@ -44,10 +44,14 @@ def check(manifest, core=None):
     if core is not None:
         if 'toolbox' in json.dumps(core.get('dependencies', [])).lower():
             errors.append('Core must not depend back on toolbox')
+        if 'hdxl-macro-transflection-macros' in json.dumps(core.get('dependencies', [])).lower():
+            errors.append('Core must not depend on the downstream derivation package')
         for target in core['targets']:
             for dep in target.get('dependencies', []):
                 if 'toolbox' in dependency_name(dep).lower():
                     errors.append(f'Core reverse edge {target["name"]} -> {dependency_name(dep)}')
+                if dependency_name(dep).startswith('MacroTransflection'):
+                    errors.append(f'Core derivation edge {target["name"]} -> {dependency_name(dep)}')
     return errors
 
 def check_sources():
@@ -91,6 +95,15 @@ def self_test(manifest, core):
         assert check(manifest,mutated);cases.append(f'{source} -> MacroToolbox')
     mutated=copy.deepcopy(core);mutated['dependencies'].append({'url':'https://github.com/plx/hdxl-macro-toolbox'})
     assert check(manifest,mutated);cases.append('Core package -> toolbox package')
+    mutated=copy.deepcopy(core);mutated['dependencies'].append({'url':'https://github.com/plx/hdxl-macro-transflection-macros'})
+    assert check(manifest,mutated);cases.append('Core package -> derivation package')
+    for source in ['ValueTransflection','ExpansionTimeTransflection']:
+        mutated=copy.deepcopy(core)
+        next(t for t in mutated['targets'] if t['name']==source)['dependencies'].append({'byName':['MacroTransflectionMacros',None]})
+        assert check(manifest,mutated);cases.append(f'{source} -> MacroTransflectionMacros')
+    mutated=copy.deepcopy(core)
+    mutated['targets'].append({'name':'ReverseEdgeProbeTests','type':'test','dependencies':[{'byName':['MacroTransflectionMacros',None]}]})
+    assert check(manifest,mutated);cases.append('Core test-only target -> MacroTransflectionMacros')
     return cases
 
 def main():
