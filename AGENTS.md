@@ -12,3 +12,9 @@ Run `swift package resolve`, `swift package dump-package`,
 `swift package show-dependencies --format json`, `swift build`, and `swift test`
 with the supported macOS toolchain. Preserve the syntax-free value layer and
 never add a dependency from a lower foundation package to derivation.
+
+`python3 Validation/validate_public_consumers.py --output <new-directory>` is the complete
+public-consumer gate: five root checks, reverse-edge/target graph mutations, and independent
+TargetBoundaries, TypedConstructionConsumer, and PublicMacroConsumer fixtures. Run it for
+public API or boundary changes. The fixtures must remain downstream packages, with ordinary
+public imports and handwritten option witnesses; never add them to the root target graph.

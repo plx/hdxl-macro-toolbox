@@ -1,122 +1,66 @@
 # ``MacroToolbox``
 
-The ``MacroToolbox`` package provides tools meant to streamline writing Swift macros. 
+Public models, syntax utilities, and optional expansion support for Swift macro authors.
 
-## Overview
+## Products and dependency direction
 
-`MacroToolbox` provides contextualized expansion, diagnostics and orchestration above two
-focused modules: `MacroToolboxModels` for pure shared policies and `MacroToolboxSyntax` for
-structural navigation, syntax descriptors, construction and formatting. This umbrella re-exports
-both. Import the focused modules when no macro context is needed; moved types have those module
-identities. Models depend only on the standard library and expose no syntax types.
+`MacroToolboxModels` contains syntax-free shared policies and handwritten value witnesses. Its
+only non-standard-library runtime dependency is the separate `ValueTransflection` product.
+`MacroToolboxSyntax` contains original-source descriptors, structural analysis, typed builders,
+and formatting; its SwiftSyntaxBuilder dependency also brings parser diagnostics on the host.
+It does not depend on contextualized macro protocols.
 
-`MacroToolboxSyntax` has no dependency on this contextualized framework. Its existing public
-validation/string-construction helpers use SwiftSyntaxBuilder, which transitively builds
-SwiftDiagnostics and SwiftParserDiagnostics for parser errors. These host-only dependencies
-never belong to Models or the ordinary `MacroToolboxMacros` declaration wrapper. That wrapper
-has only its compiler-host plugin dependency; all four gathering declarations remain published.
+`MacroToolbox` adds diagnostics and `StagedMacroExpansion` and re-exports the two focused modules.
+`MacroToolboxTransflection` is the available optional host bridge to `ValueTransflection` and
+`ExpansionTimeTransflection`. Core owns expression lowering, binding, and failure paths; toolbox
+owns convenience adapters and source-anchored diagnostic presentation, not another evaluator.
+The four `MacroToolboxMacros` declarations have a compiler-host plugin relationship; their
+ordinary wrapper imports no syntax library. Neither foundation depends on the derivation package.
 
-Transflection is owned by the separate `hdxl-macro-transflection` package. A future optional
-`MacroToolboxTransflection` bridge will connect it to toolbox diagnostics; it is not a current
-subsystem. Foundational option conformances must be handwritten so toolbox never depends on its
-downstream derivation generator. See the repository README and `Validation/TargetInventory.md`
-for import migration, exact edges, and executable boundary validation.
+## Public author workflow
 
-### Contextualized-Macros
+1. Define shared pure options with ordinary public constructors. Handwrite bootstrap value
+   witnesses with core enum extraction and ordered binding. Use the same options in client and plugin.
+2. Give the macro-declaration target only its pure options and host plugin dependencies. Put
+   SwiftSyntax, diagnostics, toolbox syntax, and the optional bridge in the implementation target.
+3. Adopt an ordinary SwiftSyntax `MemberMacro` or another role; contextualized refinements are
+   optional. Decode normal options with `TransflectionMacroBridge.decodeArgument(at:in:as:)`.
+4. Inspect `StructDeclSyntax.analyzeDirectMembers()`: all direct members/bindings, written types,
+   initializers, source identities, accessor forms, and separate getter/setter access remain public.
+   Call `validated(using:)` with the supported shapes. Unknown storage is reported, never omitted.
+5. Prepare an immutable caller-owned plan with names, access and semantic choices.
+   `StagedMacroExpansion` validates/prepares first and renders from the finished plan only.
+6. Use `SyntaxConstruction` typed stored/read-only property, initializer, function and extension
+   builders. Access legality, collisions and domain-specific behavior remain the caller's policy.
+7. Own emission once with `TransflectionMacroBridge.withDiagnostics`, normally returning `[]`
+   on a member/extension failure. Inner operations throw without emitting. Original syntax anchors,
+   typed core paths/causes and caller-supplied diagnostic metadata are preserved.
 
-When writing macros I've repeatedly encountered two pain points:
+An explicitly asymmetric decoder is a separate choice, never a fallback from normal decoding.
+No API evaluates arbitrary caller Swift or infers semantic type identity from syntax spelling.
 
-1. *validating* macro usage
-  - is the (attached) macro attached to a compatible declaration-type?
-  - are the macro arguments valid-and-usable?
-  - can we gather all the information we need for expansion?
-2. *reporting* validation issues:
-  - can we report validation issues in a useful way?
-  - can we include enough context to be helpful? 
+## Independent executable proof
 
-In my experience, at least, as macros become increasingly non-trivial:
+`IntegrationFixtures/PublicMacroConsumer` uses public imports, handwritten visibility/item/record
+options, an ordinary member macro, a pure immutable plan, and typed private storage/read-only
+projection/initializer generation. Its local strict policy accepts one plain typed seed field and
+rejects unsupported members and generated-name conflicts without partial output. Host tests assert
+one original-source diagnostic for a nested wrong-shape item. Separate compiler rejection fixtures
+cover valid but unsupported expressions/members, while an external executable verifies success.
 
-- the macro-expansion logic, itself, tends to remain reasonably short-and-concise
-- the validation-and-reporting logic tends to become an order of magnitude longer than the underyling expansion-logic
+`IntegrationFixtures/TargetBoundaries` first builds a model-only client without host objects, then
+focused syntax/bridge and gathering-macro clients. `TypedConstructionConsumer` compiles and runs
+generated declarations and verifies intended compiler failures.
 
-Here's a worked example trying to illustrate the dynamic.
+Run `python3 Validation/validate_public_consumers.py --output <new-directory>` from the checkout.
+The single CI gate records actual compiler/SDK/resolved revisions, runs root checks and graph
+mutations, and builds all fixtures independently. Actual target graphs, verbose compiler/linker
+commands, runtime object inputs and isolated compiled-module imports distinguish host plugin
+builds from ordinary dependencies. SwiftSyntax downloads alone do not establish a runtime edge.
 
-For a simple macro, you can simply write "vanilla" macro code, forego any validation, and still get a reasonable result.
+## Supported environment
 
-For example, if you wanted a macro that added `var typeName: String { get }` to a type, this would work:
-
-```swift
-public enum AddTypeNameMacro : ExtensionMacro {
-
-  public static func expansion(
-    of node: AttributeSyntax,
-    attachedTo declaration: some DeclGroupSyntax,
-    providingExtensionsOf type: some TypeSyntaxProtocol,
-    conformingTo protocols: [TypeSyntax],
-    in context: some MacroExpansionContext
-  ) throws -> [ExtensionDeclSyntax] {
-    return [
-      try ExtensionDeclSyntax(
-        """
-        extension \(type) {
-          var typeName: String {
-            String(reflecting: type(of: self))
-          } 
-        }
-        """
-      )
-    ]
-  }
-} 
-```
-
-Now let's say you wanted a macro that automated the synthesis of a "case enumeration":
-
-```swift
-// given this:
-@AddCaseEnumeration
-enum EnumerationWithPayload<T,V,R> {
-  case tee(T)
-  case vee(V)
-  case arr(R)
-}
-
-// you want this to get emitted:
-enum EnumerationWithPayload<T,V,R> {
-  enum EnumerationCase {
-    case tee
-    case vee
-    case arr  
-  }
-
-  // "what case am I?"
-  var eumerationCase: EnumerationCase {
-    switch self {
-    case .tee: .tee
-    case .vee: .vee
-    case .arr: .arr
-    }
-  }
-
-  // all the bells and whistles, too:
-  var isTee: Bool { is(enumerationCase: .tee) }
-  var isVee: Bool { is(enumerationCase: .vee) }
-  var isArr: Bool { is(enumerationCase: .arr) }
-  
-  func is(enumerationCase: EnumerationCase) -> Bool {
-    self.enumerationCase == enumerationCase
-  }
-}
-```
-
-Aside from the syntax-expansion itself, you'd want to do a fair amount of validation: 
-
-- this macro should only be attached to enumeration declarations
-- this macro should at least *warn* if it's attached to an enumeration *without* any payloads
-
-...and that's where things start to get a bit painful.
-## Topics
-
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
-
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+Swift 6.4, Swift language mode 6, SwiftSyntax 604.x, and minimum 27.0 on macOS, iOS, tvOS,
+watchOS, visionOS and Mac Catalyst. Validation runs on the required macOS toolchain and fails
+rather than skipping unavailable infrastructure. See the repository README and fixture READMEs
+for complete products, source/output subsets, unsupported-input behavior, and command recipes.

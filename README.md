@@ -341,3 +341,28 @@ Use Swift 6.4, Swift language mode 6, and SwiftSyntax 604.x. The deployment mini
 macOS, iOS, tvOS, watchOS, visionOS, and Mac Catalyst. This is a single-toolchain development
 baseline; older compilers and Linux are not supported by this validation contract. The fixture
 runs on macOS; that does not claim execution on other deployment destinations.
+
+## Independent public-consumer gate
+
+```sh
+python3 Validation/validate_public_consumers.py --output /tmp/toolbox-public-gate
+```
+
+Use a new output directory. This CI entry point records exact Swift/Xcode/Apple SDK and resolved
+SwiftSyntax versions, runs the five root checks and target/reverse-edge mutation guard, then
+builds all three external fixtures independently from clean scratch directories. Missing Swift
+6.4 / Apple 27 infrastructure fails clearly; no fallback compatibility mode is used.
+
+[PublicMacroConsumer](IntegrationFixtures/PublicMacroConsumer/README.md) is the complete small
+author recipe: pure handwritten shared options → ordinary MemberMacro with optional decoding
+bridge → complete public field/access analysis → immutable caller-owned plan → typed generation
+→ one terminal diagnostic owner. Its wrapper has only pure-model and host-plugin dependencies.
+It compiles private item storage, a read-only projection, and an initializer, then runs a separate
+client against the generated public API. Its policy deliberately supports one typed seed field;
+no production newtype/accumulator policy is moved into toolbox.
+
+The gate also runs TargetBoundaries' model-only client before any host build and the existing
+typed-construction compiler fixture. It records actual ordinary/host target graphs, verbose
+compiler/linker evidence, isolated compiled imports, nested source-path diagnostics, and compiler
+rejections for unsupported fields and name collisions. Runtime isolation means absence from the
+ordinary target/link/module closure, not absence from the resolver's downloads or host builds.
