@@ -1,6 +1,0 @@
-import SwiftSyntax
-
-extension FreestandingMacroExpansionSyntax {
-  
-  
-}

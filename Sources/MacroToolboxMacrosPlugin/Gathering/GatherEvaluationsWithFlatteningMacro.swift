@@ -1,11 +1,13 @@
+import MacroToolboxModels
+import MacroToolboxSyntax
 import SwiftSyntax
 import SwiftSyntaxMacros
 import SwiftSyntaxBuilder
 import MacroToolbox
 
-public struct GatherEvaluationsWithFlattening : DiagnosticDomainAwareMacro { }
+public struct GatherEvaluationsWithFlatteningMacro : DiagnosticDomainAwareMacro { }
 
-extension GatherEvaluationsWithFlattening: AbstractGatherEvaluationsMacro {
+extension GatherEvaluationsWithFlatteningMacro: AbstractGatherEvaluationsMacro {
   
   public static let macroExpansionConfiguration = GatherEvaluationsMacroConfiguration(
     hasThrowingSemantics: false,

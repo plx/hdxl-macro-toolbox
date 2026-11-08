@@ -1,3 +1,5 @@
+import MacroToolboxModels
+import MacroToolboxSyntax
 import SwiftCompilerPlugin
 import SwiftSyntax
 import SwiftSyntaxBuilder
@@ -7,7 +9,7 @@ import SwiftSyntaxMacros
 struct MacroToolboxMacrosPlugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
     GatherEvaluationsMacro.self,
-    GatherEvaluationsWithFlattening.self,
+    GatherEvaluationsWithFlatteningMacro.self,
     
     GatherThrowingEvaluationsMacro.self,
     GatherThrowingEvaluationsWithFlatteningMacro.self

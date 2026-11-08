@@ -1,3 +1,5 @@
+import MacroToolboxModels
+import MacroToolboxSyntax
 import SwiftDiagnostics
 
 /// Types conforming to ``MacroDiagnosticDomain`` gain access to a streamlined API for reporting macro diagnostics.
