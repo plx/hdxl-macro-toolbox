@@ -61,6 +61,8 @@ extension MemberBlockSyntax {
     )
   }
   
+  /// Historical filtered list: multi-bindings and unsupported shapes may disappear. Use
+  /// `StructDeclSyntax.analyzeDirectMembers()` and strict validation for complete transformations.
   @inlinable
   public var storedPropertyDescriptors: [StoredPropertyDescriptor] {
     members.compactMap { member in
@@ -68,6 +70,7 @@ extension MemberBlockSyntax {
     }
   }
 
+  /// Filter over the same historical, incomplete single-binding inventory.
   @inlinable
   public func allStoredPropertyDescriptors(
     where predicate: (StoredPropertyDescriptor) throws -> Bool

@@ -1,6 +1,13 @@
 import MacroToolboxModels
 import SwiftSyntax
 
+/// Historical single-binding stored-property convenience. It does not validate attributes,
+/// lazy storage, conditional members, or complete field coverage. Strict transformations should
+/// use `StructMemberAnalysis.validated(using:)` instead.
+///
+/// Equality compares the name and original binding/declaration node identities. A value equals
+/// itself, a copy, and a descriptor built from the same original nodes; independently parsed
+/// text is not required to compare equal. Cache state is irrelevant to equality and hashing.
 public struct StoredPropertyDescriptor {
   
   @usableFromInline
@@ -45,6 +52,17 @@ public struct StoredPropertyDescriptor {
 
 extension StoredPropertyDescriptor: Equatable { }
 extension StoredPropertyDescriptor: Hashable { }
+
+extension StoredPropertyDescriptor {
+  public var variableName: String { storage.variableName }
+  public var primaryBinding: PatternBindingSyntax { storage.primaryBinding }
+  public var variableDeclaration: VariableDeclSyntax { storage.variableDeclaration }
+  public var modifiers: DeclModifierListSyntax { variableDeclaration.modifiers }
+  public var attributes: AttributeListSyntax { variableDeclaration.attributes }
+  public var explicitType: TypeSyntax? { primaryBinding.typeAnnotation?.type }
+  public var initializer: ExprSyntax? { primaryBinding.initializer?.value }
+  public var writtenAccess: WrittenDeclarationAccess { .init(modifiers: modifiers) }
+}
 
 
 @usableFromInline
@@ -141,7 +159,7 @@ extension StoredPropertyDescriptorStorage: Equatable {
     rhs: StoredPropertyDescriptorStorage
   ) -> Bool {
     guard lhs !== rhs else {
-      return false
+      return true
     }
     
     guard

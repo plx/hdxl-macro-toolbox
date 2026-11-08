@@ -15,6 +15,7 @@ semantics retained.
 | All `+Syntax` conversions | MacroToolboxSyntax | Depend downward on Models |
 | ConcreteDeclSyntax, ConcreteTypeDeclaration, ConcreteDataTypeDeclaration | MacroToolboxSyntax | SwiftSyntax-bearing sums; unused diagnostics/macro imports removed |
 | StoredPropertyDescriptor, DataTypeFieldStructureDescriptor, PositionedLabeledExpression | MacroToolboxSyntax | Original syntax stays host-side; unused `os` import removed |
+| StructMemberAnalysis, StructBindingDescriptor, WrittenDeclarationAccess, strict policy/results/findings | MacroToolboxSyntax | Complete original source inventory; no syntax-bearing data added to Models |
 | Introspection and Generation | MacroToolboxSyntax | Navigation, parsing, typed declarations, builders and formatting |
 | MacroExpansionFailure | MacroToolboxSyntax | Small error representation used by parsing; unused syntax/diagnostics imports removed; preserves existing error identity/name within its new module |
 | MacroProtocols and remaining Diagnostics | MacroToolbox | Expansion contexts, diagnostics and orchestration above lower layers |
@@ -49,3 +50,8 @@ The external TargetBoundaries fixture is independent; it is never a root depende
 validator retains actual PIF graphs, compiler/linker invocations, ordinary runtime inputs,
 plugin inputs, and public model module dependency scans. Full-package test imports exercise
 relocated internals separately from these external public-API checks.
+
+The `FieldAnalysisPublicTests` target imports only public Models/Syntax APIs and SwiftSyntax/SwiftParser.
+It has no orchestration/plugin dependency. Its source-shape matrix is compiled as Swift and then
+analyzed from that same source file; malformed/recovery fixtures remain parser-only negatives.
+The graph guard inventories this consumer and rejects reverse or macro-framework dependencies.

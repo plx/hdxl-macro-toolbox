@@ -10,7 +10,9 @@ extension InitializerDeclSyntax {
     attributes.anySatisfy(\.isPreferredMemberwiseInitializer)
   }
   
-  /// `true` iff this initializer could be a memberwise initializer (vis-a-vis the supplied `storedProperties`).
+  /// Textual name/count heuristic only. A match does not prove memberwise semantics, preserved
+  /// invariants, default behavior, or suitability for a transflection conformance. It must never
+  /// select which compiled initializer a transformation invokes.
   ///
   /// - note:
   ///

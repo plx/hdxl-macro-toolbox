@@ -139,6 +139,8 @@ extension ConcreteDataTypeDeclaration {
 
 extension ConcreteDataTypeDeclaration {
   
+  /// Historical filtered single-binding inventory; unsupported members may be omitted.
+  /// Use `StructMemberAnalysis` for complete direct-member struct analysis.
   @inlinable
   public var storedPropertyDescriptors: [StoredPropertyDescriptor] {
     switch self {

@@ -3,10 +3,16 @@ import SwiftSyntax
 
 extension DeclModifierListSyntax {
   
-  /// The visibility level represented by this decl-modifier (if there is one).
+  /// First written declaration/read access, ignoring setter-only modifiers. No enclosing default
+  /// or effective-access calculation is performed; strict analysis also checks duplicates.
   @inlinable
   public var visibilityLevel: VisibilityLevel? {
     firstNonNilValue(\.visibilityLevel)
+  }
+
+  @inlinable
+  public var setterVisibilityLevel: VisibilityLevel? {
+    firstNonNilValue(\.setterVisibilityLevel)
   }
   
 }
