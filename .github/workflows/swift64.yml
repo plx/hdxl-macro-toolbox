@@ -28,7 +28,19 @@ jobs:
         shell: bash
         env:
           EVIDENCE_DIR: ${{ runner.temp }}/${{ env.EVIDENCE_NAME }}
+          HDXL_READ_TOKEN: ${{ secrets.HDXL_READ_TOKEN }}
+          GIT_TERMINAL_PROMPT: "0"
         run: |
+          # Use existing runner Git credentials, or a read-only token covering
+          # the private HDXL repositories. Keep credentials out of URLs/logs.
+          if [[ -n "$HDXL_READ_TOKEN" ]]; then
+            export GH_TOKEN="$HDXL_READ_TOKEN"
+            export GIT_CONFIG_COUNT=2
+            export GIT_CONFIG_KEY_0=credential.helper
+            export GIT_CONFIG_VALUE_0=''
+            export GIT_CONFIG_KEY_1=credential.https://github.com.helper
+            export GIT_CONFIG_VALUE_1='!gh auth git-credential'
+          fi
           python3 Validation/validate_public_consumers.py --output "$EVIDENCE_DIR"
       - name: Retain validation evidence
         if: always()

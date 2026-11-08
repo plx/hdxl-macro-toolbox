@@ -42,7 +42,13 @@ minimums and installed SDK inventory; they have no claimed compilation or execut
 The 2026-11-08 repository Actions runner inventory reported zero registered self-hosted runners
 in each of the four repositories. No matching hosted image or Actions execution has been verified.
 Manual workflows require an actual available runner label selection and reject another compiler
-or macOS SDK. Actions execution is pending; local execution of the same commands is separate
+or macOS SDK. Core, derivation and accumulators are private repositories at preparation; Toolbox
+is public. The runner also needs authorized Git read access to the required private dependencies,
+either preconfigured or through the repository secret `HDXL_READ_TOKEN` (a token with contents-read
+access and GitHub CLI installed). The workflow uses a process-local Git credential helper and never
+puts tokens in URLs, command logs or persistent Git configuration. The default per-repository
+`GITHUB_TOKEN` alone cannot grant access to the other private repositories. Credential setup and
+Actions execution remain owner-controlled pending steps; no secret is created by this work. Actions execution is pending; local execution of the same commands is separate
 evidence. No runner registration, default-branch change or release publication is implied.
 
 ## Expression and construction contract
