@@ -126,11 +126,11 @@ public enum SyntaxConstruction {
     return try FunctionParameterSyntax(
       firstName: external ?? .wildcardToken(), secondName: external?.text == local.text ? nil : local,
       type: type, defaultValue: defaultValue.map { InitializerClauseSyntax(value: $0) }
-    ).validated()
+    ).autoFormattedForHDXLProject()
   }
 
   public static func argument(label: TokenSyntax? = nil, expression: ExprSyntax) throws -> LabeledExprSyntax {
-    try LabeledExprSyntax(label: label.map(normalizedIdentifier), colon: label == nil ? nil : .colonToken(), expression: expression).validated()
+    try LabeledExprSyntax(label: label.map(normalizedIdentifier), colon: label == nil ? nil : .colonToken(), expression: expression).autoFormattedForHDXLProject()
   }
 
   public static func call(callee: ExprSyntax, arguments: [LabeledExprSyntax]) throws -> FunctionCallExprSyntax {
@@ -163,20 +163,20 @@ public enum SyntaxConstruction {
 
   public static func parameterClause(_ parameters: [FunctionParameterSyntax]) throws -> FunctionParameterClauseSyntax {
     for parameter in parameters { _ = try parameter.validated() }
-    return FunctionParameterClauseSyntax(parameters: FunctionParameterListSyntax(withTrailingCommasInsertedBetween: parameters))
+    return try FunctionParameterClauseSyntax(parameters: FunctionParameterListSyntax(withTrailingCommasInsertedBetween: parameters)).autoFormattedForHDXLProject()
   }
 
   /// Empty inputs omit the entire clause, avoiding a dangling `where` or colon.
   public static func whereClause(_ requirements: [GenericRequirementSyntax]) throws -> GenericWhereClauseSyntax? {
     guard !requirements.isEmpty else { return nil }
     for requirement in requirements { _ = try requirement.validated() }
-    return GenericWhereClauseSyntax(requirements: requirements)
+    return try GenericWhereClauseSyntax(requirements: requirements).autoFormattedForHDXLProject()
   }
 
   public static func inheritanceClause(_ types: [TypeSyntax]) throws -> InheritanceClauseSyntax? {
     guard !types.isEmpty else { return nil }
     for type in types { _ = try type.validated() }
-    return InheritanceClauseSyntax(inheritedTypes: InheritedTypeListSyntax(withTrailingCommasInsertedBetween: types.map { InheritedTypeSyntax(type: $0) }))
+    return try InheritanceClauseSyntax(inheritedTypes: InheritedTypeListSyntax(withTrailingCommasInsertedBetween: types.map { InheritedTypeSyntax(type: $0) })).autoFormattedForHDXLProject()
   }
 
   public static func conformanceRequirement(_ type: TypeSyntax, to constraint: TypeSyntax) -> GenericRequirementSyntax {

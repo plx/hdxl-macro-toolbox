@@ -88,6 +88,10 @@ func typedLists() throws {
   let other = try Build.parameter(externalName: .keyword(.for), localName: .identifier("value"), type: "Int")
   #expect(other.firstName.text == "`for`")
   #expect(other.secondName?.text == "value")
+  #expect(other.trimmedDescription == "`for` value: Int")
+  #expect(try Build.parameterClause([other]).trimmedDescription == "(`for` value: Int)")
+  let labeledArgument = try Build.argument(label: .identifier("value"), expression: "1")
+  #expect(labeledArgument.trimmedDescription == "value: 1")
 }
 
 @Test("Comma normalization preserves comments and original node identity")
