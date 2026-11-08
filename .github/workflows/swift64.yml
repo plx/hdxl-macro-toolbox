@@ -19,13 +19,15 @@ jobs:
     timeout-minutes: 120
     env:
       DEVELOPER_DIR: ${{ inputs.developer_directory }}
-      EVIDENCE_DIR: ${{ runner.temp }}/swift64-validation-${{ github.run_id }}-${{ github.run_attempt }}
+      EVIDENCE_NAME: swift64-validation-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Run the single supported toolchain lane
         shell: bash
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/${{ env.EVIDENCE_NAME }}
         run: |
           python3 Validation/validate_public_consumers.py --output "$EVIDENCE_DIR"
       - name: Retain validation evidence
@@ -34,9 +36,9 @@ jobs:
         with:
           name: swift64-validation
           path: |
-            ${{ env.EVIDENCE_DIR }}/
-            !${{ env.EVIDENCE_DIR }}/**/build/**
-            !${{ env.EVIDENCE_DIR }}/**/root-build/**
-            !${{ env.EVIDENCE_DIR }}/**/.build/**
-            !${{ env.EVIDENCE_DIR }}/**/.git/**
-            !${{ env.EVIDENCE_DIR }}/**/*-cache/**
+            ${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/
+            !${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/**/build/**
+            !${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/**/root-build/**
+            !${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/**/.build/**
+            !${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/**/.git/**
+            !${{ runner.temp }}/${{ env.EVIDENCE_NAME }}/**/*-cache/**
