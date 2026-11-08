@@ -76,6 +76,7 @@ let package = Package(
   products: [
     .library(name: "MacroToolboxModels", targets: ["MacroToolboxModels"]),
     .library(name: "MacroToolboxSyntax", targets: ["MacroToolboxSyntax"]),
+    .library(name: "MacroToolboxTransflection", targets: ["MacroToolboxTransflection"]),
     .library(
       name: "MacroToolbox",
       targets: [
@@ -94,6 +95,11 @@ let package = Package(
     ),
   ],
   dependencies: [
+    // Lower-level core revision containing the normal decoder, source paths, and ordered binder.
+    .package(
+      url: "https://github.com/plx/hdxl-macro-transflection.git",
+      revision: "be93e17e023b72e6c72188193ad698d8d13b7d44"
+    ),
     // for documentation-rendering support
     .package(
       url: "https://github.com/apple/swift-docc-plugin",
@@ -105,12 +111,38 @@ let package = Package(
     ),
   ],
   targets: [
-    .target(name: "MacroToolboxModels", dependencies: []),
+    .target(name: "MacroToolboxModels", dependencies: [
+      .product(name: "ValueTransflection", package: "hdxl-macro-transflection")
+    ]),
     .target(name: "MacroToolboxSyntax", dependencies: ["MacroToolboxModels"] + syntaxDependencies),
     .target(
       name: "MacroToolbox",
       dependencies: ["MacroToolboxModels", "MacroToolboxSyntax"] + macroSupportDependencies
     ),
+    .target(name: "MacroToolboxTransflection", dependencies: [
+      "MacroToolboxModels", "MacroToolboxSyntax", "MacroToolbox",
+      .product(name: "ValueTransflection", package: "hdxl-macro-transflection"),
+      .product(name: "ExpansionTimeTransflection", package: "hdxl-macro-transflection"),
+      .product(name: "SwiftSyntax", package: "swift-syntax"),
+      .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+      .product(name: "SwiftDiagnostics", package: "swift-syntax")
+    ]),
+    // Handwritten shared fixture values: no compiler-host dependencies.
+    .target(name: "BridgeTestModels", dependencies: [
+      "MacroToolboxModels",
+      .product(name: "ValueTransflection", package: "hdxl-macro-transflection")
+    ], path: "Tests/BridgeTestModels"),
+    .testTarget(name: "TransflectionBridgeTests", dependencies: [
+      "BridgeTestModels", "MacroToolboxModels", "MacroToolboxSyntax", "MacroToolbox", "MacroToolboxTransflection",
+      .product(name: "ValueTransflection", package: "hdxl-macro-transflection"),
+      .product(name: "ExpansionTimeTransflection", package: "hdxl-macro-transflection"),
+      .product(name: "SwiftSyntax", package: "swift-syntax"),
+      .product(name: "SwiftParser", package: "swift-syntax"),
+      .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+      .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+      .product(name: "SwiftDiagnostics", package: "swift-syntax"),
+      .product(name: "SwiftSyntaxMacroExpansion", package: "swift-syntax")
+    ]),
     .testTarget(
       name: "MacroToolboxTests",
       dependencies: [

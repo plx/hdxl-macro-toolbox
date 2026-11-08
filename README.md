@@ -8,9 +8,10 @@ use syntax and expansion contexts.
 
 | Product / import | Purpose | Direct dependencies |
 | --- | --- | --- |
-| `MacroToolboxModels` | Visibility, inlinability, argument and attachment policies; pure helpers | Swift standard library only |
+| `MacroToolboxModels` | Visibility, inlinability, argument and attachment policies; pure helpers and handwritten visibility transflection | ValueTransflection (syntax-free) |
 | `MacroToolboxSyntax` | Structural navigation, syntax-bearing descriptors, construction and formatting | Models, SwiftSyntax, SwiftParser, SwiftSyntaxBuilder, SwiftBasicFormat |
 | `MacroToolbox` | Contextualized macro protocols, diagnostics and expansion orchestration | Models, Syntax, SwiftSyntax macro/diagnostic products |
+| `MacroToolboxTransflection` | Optional host decoding and source-anchored diagnostic bridge | MacroToolbox, Models, Syntax, ValueTransflection, ExpansionTimeTransflection, SwiftSyntax macro/diagnostic products |
 | `MacroToolboxMacros` | Four public gathering macro declarations | Compiler-host plugin only; signatures use standard-library types |
 
 Use `.product(name: "MacroToolboxModels", package: "hdxl-macro-toolbox")` for an application or
@@ -210,6 +211,72 @@ through public model/syntax imports, emits the actual declarations, and compiles
 also requires the compiler to reject an insufficiently visible conformance witness and a raw
 `String` supplied to a typed type parameter.
 
+## Decoding, plans, and diagnostics
+
+`MacroToolboxTransflection` uses the core's ordinary value route for any
+`TransflectableFromTransflectionExpression`. It does not require another syntax conformance.
+`decode(_:as:)` accepts an expression; `decodeArgument(at:in:as:)` accepts an attribute or
+freestanding invocation. A contextualized macro calls `decodeValueArgument(at:as:)` instead.
+These APIs never emit diagnostics, invoke arbitrary source code, infer initializers, or retry a
+custom decoder. Constructor names, binding, defaults, and reconstruction remain core/value
+witness responsibilities. `decodeAsymmetrically(_:using:)` is an explicit, separate caller choice.
+
+```swift
+import MacroToolboxModels
+import MacroToolboxTransflection
+import SwiftSyntax
+
+func visibility(from argument: ExprSyntax) throws -> VisibilityLevel {
+  try TransflectionMacroBridge.decode(argument, as: VisibilityLevel.self)
+}
+```
+
+`VisibilityLevel` accepts leading-dot cases and the exact `VisibilityLevel` /
+`MacroToolboxModels.VisibilityLevel` qualifications, with no payload. The same model type is
+used in application configuration and plugin decoding. No derivation macro is needed to build it.
+
+`StagedMacroExpansion<Input, Validated, Plan, Output>` in `MacroToolbox` takes explicit `validate`,
+`plan`, and `render` closures. `prepare(input)` validates/decodes and creates the plan without
+rendering; `render(plan)` receives only the completed plan. `expand(input)` composes both.
+Callers own immutable plan types, attachment restrictions, access rules, and generation policy.
+Create any invocation state separately for each macro-role callback; the helper has no shared cache.
+The [bridge fixtures](Tests/TransflectionBridgeTests/MacroExpansionTests.swift) show the same
+stages used by an ordinary `MemberMacro` and `ContextualizedMemberMacro`.
+
+Decoding failures retain the core's typed reason, path, cause, and original source-map sidecar in
+`TransflectionDecodingFailure`. `TransflectionMacroBridge.diagnostic(for:details:)` constructs a
+diagnostic without emission. Its primary node is the original offending expression or label;
+missing input uses the closest enclosing source with an explanatory note. A path note retains
+argument/field/index context. No normalized source is reparsed to invent a location.
+
+Choose one terminal emission owner. `TransflectionMacroBridge.withDiagnostics(in:at:details:
+failureValue:_:)` emits once and returns a caller-selected fallback. A member/extension macro
+usually supplies an empty declaration array. An expression macro supplies its own valid
+replacement. `MacroContextProtocol.withTransflectionDiagnostics` adapts to the same boundary.
+The operation may decode, validate, prepare, and render; it must not also emit its thrown failures.
+`MacroDiagnosticDetails` preserves explicit position, severity, domain/ID, highlights, notes,
+and fix-its. Pass fix-its only when a specific valid replacement is known; the bridge never guesses.
+Caller `DiagnosticsError` metadata is retained. Unknown implementation errors use the distinct
+`MacroToolboxTransflection/unexpected-implementation-error` ID, with the original error available
+to an optional debug callback rather than exposing implementation file/line details to users.
+
+### Diagnostic migration
+
+`requireValue`, `requireCondition`, and related contextualized requirements now **defer** a
+`DiagnosticsError` instead of emitting and rethrowing. Swift's macro boundary (or the explicit
+bridge terminal helper) owns emission. Nested requirements preserve existing diagnostics and
+bridge failures, so they cannot produce a second generic error. `record*` helpers remain explicit
+emission APIs for callers that intentionally report a diagnostic and continue.
+
+`withAutomaticRecordingForRequiredOperation` is deprecated in favor of
+`withDiagnosticContextForRequiredOperation`; the compatibility wrapper now has `throws` rather
+than `rethrows`, because it constructs deferred diagnostic information. Call sites should use
+`try` and let one outer boundary consume the error. `MacroExpansionFailure.description` now
+contains only its explanation; `debugDescription`/`prettyPrinted` retain implementation context.
+A thrown SwiftSyntax `DiagnosticsError` requires an error-severity diagnostic. Use the explicit
+terminal helper for warning/note failures with a caller-chosen fallback, so Swift's throwing
+macro machinery does not add a synthetic “missing error” diagnostic.
+
 ## Gathering macros
 
 Ordinary clients import only `MacroToolboxMacros`:
@@ -237,9 +304,9 @@ analysis/generation behavior is preserved by the split.
 Transflection lives in the separate
 [`hdxl-macro-transflection`](https://github.com/plx/hdxl-macro-transflection) package. The normal
 route converts supported syntax to its syntax-free representation and then constructs the
-requested value; explicitly selected asymmetric decoding is a separate capability. The future
-`MacroToolboxTransflection` bridge and handwritten option witnesses are tracked by
-[TB-04](https://github.com/plx/hdxl-macro-toolbox/issues/8); no placeholder product is added here.
+requested value; explicitly selected asymmetric decoding is a separate capability.
+`MacroToolboxTransflection` is an optional host product above that core. `VisibilityLevel` has a
+handwritten normal value witness in Models, available without importing the host bridge.
 Toolbox and the transflection core never depend on the downstream derivation-macros package.
 Any foundational conformance needed to build the generator must be handwritten.
 
@@ -262,7 +329,8 @@ without it the core mutation checks use a synthetic contract graph and do not cl
 an external checkout.
 
 The independent fixture compiles a model-only client before any syntax product, a syntax-only
-host client using public imports, and a client exercising all four gathering declarations. It
+host client using public imports, an optional bridge client, and a client exercising all four
+gathering declarations. The isolated model import includes only Models and ValueTransflection. It
 retains verbose compiler/linker logs, actual SwiftPM target graphs with host-tool edges separated,
 runtime object/dylib inputs, and an isolated model import/dependency scan. The root package does
 not depend on this fixture. Use a new output directory for each run.

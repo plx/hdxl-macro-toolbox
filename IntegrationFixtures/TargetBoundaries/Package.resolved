@@ -1,6 +1,14 @@
 {
-  "originHash" : "caba4d43e780669a9b4371841431a7f7b53831b9ce7e6831081a05b46f3fc2df",
+  "originHash" : "674883418b15cd89e96de99e4c493a2595229a8c4d51956422aaacde768b471d",
   "pins" : [
+    {
+      "identity" : "hdxl-macro-transflection",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/plx/hdxl-macro-transflection.git",
+      "state" : {
+        "revision" : "be93e17e023b72e6c72188193ad698d8d13b7d44"
+      }
+    },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
