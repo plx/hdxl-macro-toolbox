@@ -12,7 +12,7 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../.."),
-    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", revision: "be93e17e023b72e6c72188193ad698d8d13b7d44"),
+    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", revision: "e28d2bb2fb8e957d8c5b4ac36a10d4d8c406e16e"),
     .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "604.0.0")
   ],
   targets: [
