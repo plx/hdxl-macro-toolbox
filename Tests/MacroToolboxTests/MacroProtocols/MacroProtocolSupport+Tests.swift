@@ -11,8 +11,8 @@ import Testing
 @Test("Macro contexts record diagnostics and enforce value requirements")
 func testMacroContextsRecordDiagnosticsAndEnforceValueRequirements() throws {
   // Hand-written examples: successful requirements should return the underlying
-  // values unchanged, while failed requirements should throw and record one
-  // diagnostic through the expansion context.
+  // values unchanged, while failed requirements should defer one diagnostic; only the simulated
+  // outer macro boundary records it through the expansion context.
   let expansionContext = TestMacroExpansionContext()
   let context = RequirementMacroContext(
     macroInvocationNode: AttributeSyntax("@Requirement(value: 1)"),
@@ -111,7 +111,7 @@ func testMacroContextsRecordDiagnosticsAndEnforceValueRequirements() throws {
   ]
   
   for operation in failureOperations {
-    expectMacroExpansionFailure(operation)
+    expectDeferredDiagnostic(in: expansionContext, operation)
   }
   #expect(expansionContext.diagnostics.count == failureOperations.count)
   #expect(expansionContext.diagnostics.allSatisfy { $0.diagMessage.severity == .error })
@@ -152,7 +152,7 @@ func testMacroContextDiagnosticRecordingHelpersPreserveSeverityAndDefaults() thr
   #expect(expansionContext.diagnostics[0].position == subjectNode.positionAfterSkippingLeadingTrivia)
   #expect(expansionContext.diagnostics[1].node.trimmedDescription == "@Requirement")
   
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     try context.withAutomaticRecordingForRequiredOperation(
       messageIdentifier: "automatic",
       explanation: "automatic failure",
@@ -253,27 +253,27 @@ func testAttachedMacroContextsExposeInvocationDeclarationAndMemberHelpers() thro
   }
   #expect(try typeMemberAttributeContext.requireMemberAsConcreteTypeDeclaration().name == "Box")
   
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try peerContext.requireDeclaration(as: StructDeclSyntax.self)
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try peerContext.requireConcreteTypeDeclaration()
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try memberAttributeContext.requireMemberAsConcreteTypeDeclaration()
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     try peerContext.requireSatisfactoryAttachment(attachmentRequirement: .exactly(.struct))
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     try unsupportedPeerContext.requireSatisfactoryAttachment(
       attachmentRequirement: .exactly(.struct)
     )
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try unsupportedPeerContext.requireConcreteDeclSyntax()
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try unsupportedMemberAttributeContext.requireMemberAsConcreteDeclSyntax()
   }
   #expect(expansionContext.diagnostics.count == 7)
@@ -448,7 +448,7 @@ func testConditionalAndUnconditionalConformanceMacrosRenderExpectedExtensions() 
     in: conditionalContext,
     genericParameterNames: ["T"]
   ).isEmpty)
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try TestConditionalConformanceMacro.genericParameterNames(
       in: nonGenericContext
     )
@@ -491,7 +491,7 @@ func testConditionalAndUnconditionalConformanceMacrosRenderExpectedExtensions() 
     "extension Box: Codable {\n}"
   ])
   
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try TestConditionalConformanceMacro.conditionalConformanceRequirementsClause(
       in: conditionalContext,
       parameters: AllOrNoneConditionalConformanceParameters(
@@ -501,7 +501,7 @@ func testConditionalAndUnconditionalConformanceMacrosRenderExpectedExtensions() 
       )
     )
   }
-  expectMacroExpansionFailure {
+  expectDeferredDiagnostic(in: expansionContext) {
     _ = try EmptyRequiredProtocolConditionalConformanceMacro.conditionalConformanceRequirementsClause(
       in: conditionalContext,
       parameters: AllOrNoneConditionalConformanceParameters(
@@ -600,16 +600,23 @@ private struct UnsupportedDeclSyntax: DeclSyntaxProtocol {
   }
 }
 
-private func expectMacroExpansionFailure(
+private func expectDeferredDiagnostic(
+  in context: TestMacroExpansionContext,
   _ operation: () throws -> Void,
   sourceLocation: Testing.SourceLocation = #_sourceLocation
 ) {
+  let before = context.diagnostics.count
   do {
     try operation()
-    Issue.record("Expected MacroExpansionFailure", sourceLocation: sourceLocation)
-  } catch is MacroExpansionFailure {
+    Issue.record("Expected deferred DiagnosticsError", sourceLocation: sourceLocation)
+  } catch let error as DiagnosticsError {
+    #expect(context.diagnostics.count == before)
+    #expect(error.diagnostics.count == 1)
+    // Simulate the standard Swift macro engine's single terminal emission.
+    context.addDiagnostics(from: error, node: error.diagnostics[0].node)
+    #expect(context.diagnostics.count == before + 1)
   } catch {
-    Issue.record("Expected MacroExpansionFailure, got \(error)", sourceLocation: sourceLocation)
+    Issue.record("Expected deferred DiagnosticsError, got \(error)", sourceLocation: sourceLocation)
   }
 }
 

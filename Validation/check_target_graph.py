@@ -8,6 +8,9 @@ ALLOWED = {
     'MacroToolboxModels': {'ValueTransflection'},
     'MacroToolboxSyntax': {'MacroToolboxModels', 'SwiftSyntax', 'SwiftParser', 'SwiftSyntaxBuilder', 'SwiftBasicFormat'},
     'MacroToolbox': {'MacroToolboxModels', 'MacroToolboxSyntax', 'SwiftSyntax', 'SwiftParser', 'SwiftSyntaxBuilder', 'SwiftSyntaxMacros', 'SwiftDiagnostics'},
+    'MacroToolboxTransflection': {'MacroToolboxModels', 'MacroToolboxSyntax', 'MacroToolbox', 'ValueTransflection', 'ExpansionTimeTransflection', 'SwiftSyntax', 'SwiftSyntaxMacros', 'SwiftDiagnostics'},
+    'BridgeTestModels': {'MacroToolboxModels', 'ValueTransflection'},
+    'TransflectionBridgeTests': {'BridgeTestModels', 'MacroToolboxModels', 'MacroToolboxSyntax', 'MacroToolbox', 'MacroToolboxTransflection', 'ValueTransflection', 'ExpansionTimeTransflection', 'SwiftSyntax', 'SwiftParser', 'SwiftSyntaxBuilder', 'SwiftSyntaxMacros', 'SwiftDiagnostics', 'SwiftSyntaxMacroExpansion'},
     'MacroToolboxMacros': {'MacroToolboxMacrosPlugin', 'MacroToolboxModels'},
     'MacroToolboxMacrosPlugin': {'MacroToolbox', 'MacroToolboxModels', 'MacroToolboxSyntax', 'SwiftSyntax', 'SwiftParser', 'SwiftSyntaxBuilder', 'SwiftSyntaxMacros', 'SwiftCompilerPlugin', 'SwiftDiagnostics'},
     'MacroToolboxMacrosClient': {'MacroToolboxMacros', 'MacroToolboxModels'},
@@ -53,16 +56,23 @@ def check_sources():
         for path in (ROOT/'Sources'/folder).rglob('*.swift'):
             for module in re.findall(r'^\s*(?:(?:public|internal|package|private)\s+)?import\s+(\w+)',path.read_text(),re.M):
                 if module not in allowed: errors.append(f'Forbidden import {path.relative_to(ROOT)} -> {module}')
+    for path in (ROOT/'Tests'/'BridgeTestModels').rglob('*.swift'):
+        for module in re.findall(r'^\s*import\s+(\w+)', path.read_text(), re.M):
+            if module not in {'MacroToolboxModels', 'ValueTransflection'}:
+                errors.append(f'Forbidden pure fixture import {path.relative_to(ROOT)} -> {module}')
     return errors
 
 def self_test(manifest, core):
     cases = []
     for source, destinations in {
-        'MacroToolboxModels': ['SwiftSyntax','SwiftDiagnostics','SwiftSyntaxMacros','MacroToolboxSyntax','MacroToolbox','MacroToolboxMacros','ExpansionTimeTransflection','MacroTransflectionMacros'],
-        'MacroToolboxSyntax': ['MacroToolbox','MacroToolboxMacros','SwiftSyntaxMacros','SwiftCompilerPlugin','SwiftDiagnostics','MacroTransflectionMacros'],
-        'MacroToolboxMacros': ['MacroToolbox','MacroToolboxSyntax','SwiftSyntax','SwiftDiagnostics','SwiftSyntaxMacros','ExpansionTimeTransflection'],
-        'MacroToolboxMacrosClient': ['MacroToolbox','MacroToolboxSyntax','SwiftSyntax'],
-        'MacroToolbox': ['MacroTransflectionMacros'],
+        'MacroToolboxModels': ['MacroToolboxTransflection','SwiftSyntax','SwiftDiagnostics','SwiftSyntaxMacros','MacroToolboxSyntax','MacroToolbox','MacroToolboxMacros','ExpansionTimeTransflection','MacroTransflectionMacros'],
+        'MacroToolboxSyntax': ['MacroToolboxTransflection','ExpansionTimeTransflection','MacroToolbox','MacroToolboxMacros','SwiftSyntaxMacros','SwiftCompilerPlugin','SwiftDiagnostics','MacroTransflectionMacros'],
+        'MacroToolboxMacros': ['MacroToolboxTransflection','MacroToolbox','MacroToolboxSyntax','SwiftSyntax','SwiftDiagnostics','SwiftSyntaxMacros','ExpansionTimeTransflection'],
+        'MacroToolboxMacrosClient': ['MacroToolboxTransflection','MacroToolbox','MacroToolboxSyntax','SwiftSyntax'],
+        'MacroToolbox': ['MacroToolboxTransflection','MacroTransflectionMacros'],
+        'MacroToolboxTransflection': ['MacroTransflectionMacros', 'MacroToolboxMacros'],
+        'BridgeTestModels': ['SwiftSyntax', 'SwiftDiagnostics', 'ExpansionTimeTransflection', 'MacroToolboxTransflection', 'MacroToolbox'],
+        'TransflectionBridgeTests': ['MacroTransflectionMacros'],
         'MacroToolboxTests': ['MacroTransflectionMacros'],
         'FieldAnalysisPublicTests': ['MacroToolbox', 'MacroToolboxMacros', 'SwiftSyntaxMacros', 'MacroTransflectionMacros'],
     }.items():

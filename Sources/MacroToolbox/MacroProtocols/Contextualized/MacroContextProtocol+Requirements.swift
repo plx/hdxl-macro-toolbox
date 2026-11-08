@@ -24,7 +24,7 @@ extension MacroContextProtocol {
     column: UInt = #column,
     _ requirement: () throws -> R
   ) throws -> R {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: explanation(),
       attributionNode: attributionNode(),
@@ -60,7 +60,7 @@ extension MacroContextProtocol {
     column: UInt = #column,
     _ requirement: () throws -> R?
   ) throws -> R {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: explanation(),
       attributionNode: attributionNode(),
@@ -542,7 +542,7 @@ extension MacroContextProtocol {
     column: UInt = #column,
     _ condition: () throws -> Bool
   ) throws {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: explanation(),
       attributionNode: attributionNode(),
@@ -588,7 +588,7 @@ extension MacroContextProtocol {
     line: UInt = #line,
     column: UInt = #column
   ) throws {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: explanation(),
       attributionNode: attributionNode(),
@@ -629,7 +629,7 @@ extension MacroContextProtocol {
     line: UInt = #line,
     column: UInt = #column
   ) throws -> T where T: Collection {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: "We require that `\(values)` must not be empty!",
       attributionNode: attributionNode(),
@@ -666,7 +666,7 @@ extension MacroContextProtocol {
     line: UInt = #line,
     column: UInt = #column
   ) throws -> T {
-    try withAutomaticRecordingForRequiredOperation(
+    try withDiagnosticContextForRequiredOperation(
       messageIdentifier: messageIdentifier(),
       explanation: "We require that `\(String(reflecting: possibleValue))` must be non-nil!",
       attributionNode: attributionNode(),

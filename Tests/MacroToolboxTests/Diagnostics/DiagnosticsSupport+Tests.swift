@@ -60,6 +60,7 @@ func testMacroDiagnosticDomainsCreateDiagnosticsWithExpectedIdentity() throws {
   let defaultID = DefaultDiagnosticDomain.messageID(id: "default")
   let diagnostic = ExampleDiagnosticDomain.diagnostic(
     for: node,
+    at: node.name.positionAfterSkippingLeadingTrivia,
     explanation: "expected diagnostic",
     severity: .warning,
     messageID: "custom",
@@ -101,6 +102,7 @@ func testMacroDiagnosticDomainsCreateDiagnosticsWithExpectedIdentity() throws {
   )
   #expect(String.standardMessageID == "diagnostic")
   #expect(diagnostic.message == "expected diagnostic")
+  #expect(diagnostic.position == node.name.positionAfterSkippingLeadingTrivia)
   #expect(diagnostic.diagMessage.severity == .warning)
   #expect(diagnostic.diagnosticID == customID)
   #expect(diagnostic.highlights == [Syntax(node)])
@@ -193,7 +195,9 @@ func testMacroExpansionFailuresPreserveNestedErrorContext() {
   )
   let prettyPrinted = nested.prettyPrinted(indentation: "--", depth: 1)
   
-  #expect(base.description.contains("base failure @ 12"))
+  #expect(base.description == "base failure")
+  #expect(base.debugDescription.contains("12"))
+  #expect(base.debugDescription.contains("Tests/Diagnostics.swift"))
   #expect(base.debugDescription.contains("MacroExpansionFailure"))
   #expect(nested.explanation == "outer failure")
   #expect(nested.suberrors.count == 2)

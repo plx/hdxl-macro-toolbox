@@ -110,6 +110,7 @@ extension MacroDiagnosticDomain {
   ) -> Diagnostic {
     Diagnostic(
       node: node,
+      position: position,
       message: HDXLMacroDiagnostic(
         message: explanation,
         severity: severity,

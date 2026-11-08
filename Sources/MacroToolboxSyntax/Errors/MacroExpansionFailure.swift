@@ -99,7 +99,7 @@ extension MacroExpansionFailure {
 extension MacroExpansionFailure: CustomStringConvertible {
   
   public var description: String {
-    "\(explanation) @ \(line) in \(function) from \(fileID)"
+    explanation
   }
   
 }

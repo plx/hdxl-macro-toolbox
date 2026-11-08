@@ -27,10 +27,12 @@ explicitly updated; external fixtures use public imports without `@testable`.
 
 ## Allowed dependency direction
 
-- Models → Swift standard library. A future handwritten conformance may use ValueTransflection;
-  no such dependency/witness is introduced by this split.
+- Models → ValueTransflection + Swift standard library. The handwritten VisibilityLevel witness
+  uses only the syntax-free core; its availability does not depend on importing the bridge.
 - Syntax → Models + SwiftSyntax/SwiftParser/SwiftSyntaxBuilder/SwiftBasicFormat.
 - MacroToolbox → Models + Syntax + the SwiftSyntax macro/diagnostic products it uses.
+- MacroToolboxTransflection → MacroToolbox + Models + Syntax + ValueTransflection +
+  ExpansionTimeTransflection + host syntax/macro/diagnostic products. No lower target depends on it.
 - Wrapper → plugin (a macro host-tool edge), and only Models if a future public signature needs it.
 - Plugin → MacroToolbox + Models + Syntax + compiler-plugin products.
 - Ordinary gathering client → wrapper.
@@ -55,3 +57,11 @@ The `FieldAnalysisPublicTests` target imports only public Models/Syntax APIs and
 It has no orchestration/plugin dependency. Its source-shape matrix is compiled as Swift and then
 analyzed from that same source file; malformed/recovery fixtures remain parser-only negatives.
 The graph guard inventories this consumer and rejects reverse or macro-framework dependencies.
+
+The `BridgeTestModels` fixture target imports only Models and ValueTransflection. Its normal
+option witnesses are handwritten; neither it nor the foundations need the derivation generator.
+`TransflectionBridgeTests` exercises public bridge/stage APIs and real SwiftSyntax macro
+expansion. The independent TargetBoundaries package checks the bridge host closure separately
+from Models, Syntax, declaration-wrapper, and ordinary client closures. Models' isolated compiler
+scan has only Models/ValueTransflection available; runtime linker inputs exclude the bridge,
+source-map adapter, and SwiftSyntax diagnostics.
