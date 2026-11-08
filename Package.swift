@@ -32,27 +32,11 @@ let macroPluginDependencies: [Target.Dependency] = [
   )
 ]
 
-let macroLibraryDependencies: [Target.Dependency] = [
-  .product(
-    name: "SwiftSyntax",
-    package: "swift-syntax"
-  ),
-  .product(
-    name: "SwiftParser",
-    package: "swift-syntax"
-  ),
-  .product(
-    name: "SwiftSyntaxBuilder",
-    package: "swift-syntax"
-  ),
-  .product(
-    name: "SwiftSyntaxMacros",
-    package: "swift-syntax"
-  ),
-  .product(
-    name: "SwiftDiagnostics",
-    package: "swift-syntax"
-  )
+let syntaxDependencies: [Target.Dependency] = [
+  .product(name: "SwiftSyntax", package: "swift-syntax"),
+  .product(name: "SwiftParser", package: "swift-syntax"),
+  .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+  .product(name: "SwiftBasicFormat", package: "swift-syntax")
 ]
 
 let macroSupportDependencies: [Target.Dependency] = [
@@ -90,6 +74,8 @@ let package = Package(
     .visionOS(.v27)
   ],
   products: [
+    .library(name: "MacroToolboxModels", targets: ["MacroToolboxModels"]),
+    .library(name: "MacroToolboxSyntax", targets: ["MacroToolboxSyntax"]),
     .library(
       name: "MacroToolbox",
       targets: [
@@ -119,13 +105,17 @@ let package = Package(
     ),
   ],
   targets: [
+    .target(name: "MacroToolboxModels", dependencies: []),
+    .target(name: "MacroToolboxSyntax", dependencies: ["MacroToolboxModels"] + syntaxDependencies),
     .target(
       name: "MacroToolbox",
-      dependencies: [] + macroSupportDependencies
+      dependencies: ["MacroToolboxModels", "MacroToolboxSyntax"] + macroSupportDependencies
     ),
     .testTarget(
       name: "MacroToolboxTests",
       dependencies: [
+        "MacroToolboxModels",
+        "MacroToolboxSyntax",
         "MacroToolbox",
         "MacroToolboxTestSupport"
       ]
@@ -134,20 +124,20 @@ let package = Package(
     .target(
       name: "MacroToolboxMacros",
       dependencies: [
-        "MacroToolbox",
         "MacroToolboxMacrosPlugin"
-      ] + macroLibraryDependencies
+      ]
     ),
     .macro(
       name: "MacroToolboxMacrosPlugin",
       dependencies: [
+        "MacroToolboxModels",
+        "MacroToolboxSyntax",
         "MacroToolbox"
       ] + macroPluginDependencies
     ),
     .executableTarget(
       name: "MacroToolboxMacrosClient",
       dependencies: [
-        "MacroToolbox",
         "MacroToolboxMacros"
       ]
     ),

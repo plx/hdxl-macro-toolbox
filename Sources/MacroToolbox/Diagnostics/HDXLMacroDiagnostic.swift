@@ -1,3 +1,5 @@
+import MacroToolboxModels
+import MacroToolboxSyntax
 import SwiftDiagnostics
 
 public struct HDXLMacroDiagnostic : DiagnosticMessage {

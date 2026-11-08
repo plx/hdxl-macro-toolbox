@@ -1,3 +1,5 @@
+@testable import MacroToolboxModels
+@testable import MacroToolboxSyntax
 import Testing
 import MacroToolboxTestSupport
 @testable import MacroToolbox

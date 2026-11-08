@@ -1,0 +1,632 @@
+[
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLocationDescriptor+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ArgumentLocationDescriptor+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentPositionDescriptor+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ArgumentPositionDescriptor+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/VisibilityLevel+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/VisibilityLevel+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLocationDescriptor.swift",
+    "to": "Sources/MacroToolboxModels/Model/ArgumentLocationDescriptor.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/PerformanceAnnotationDisposition.swift",
+    "to": "Sources/MacroToolboxModels/Model/PerformanceAnnotationDisposition.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/DeclarationArchetype.swift",
+    "to": "Sources/MacroToolboxModels/Model/DeclarationArchetype.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ConcreteDataTypeDeclaration.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ConcreteDataTypeDeclaration.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftDiagnostics",
+      "import SwiftSyntaxMacros"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/TypeDeclarationArchetype.swift",
+    "to": "Sources/MacroToolboxModels/Model/TypeDeclarationArchetype.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/PositionedLabeledExpr.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/PositionedLabeledExpr.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLocationDescriptorStorage.swift",
+    "to": "Sources/MacroToolboxModels/Model/ArgumentLocationDescriptorStorage.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/InlinabilityDisposition.swift",
+    "to": "Sources/MacroToolboxModels/Model/InlinabilityDisposition.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLabelDescriptor.swift",
+    "to": "Sources/MacroToolboxModels/Model/ArgumentLabelDescriptor.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/InlinabilityDisposition+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/InlinabilityDisposition+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxBuilder"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/VisibilityLevel.swift",
+    "to": "Sources/MacroToolboxModels/Model/VisibilityLevel.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLocationDescriptorStorage+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ArgumentLocationDescriptorStorage+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/LabelCriterion+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/LabelCriterion+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ExplicitInlineDisposition.swift",
+    "to": "Sources/MacroToolboxModels/Model/ExplicitInlineDisposition.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentLabelDescriptor+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ArgumentLabelDescriptor+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ConcreteTypeDeclaration.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ConcreteTypeDeclaration.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftDiagnostics",
+      "import SwiftSyntaxMacros"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ConcreteDeclSyntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ConcreteDeclSyntax.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxMacros"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/PerformanceAnnotationAttachmentSite.swift",
+    "to": "Sources/MacroToolboxModels/Model/PerformanceAnnotationAttachmentSite.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/MacroAttachmentRequirement.swift",
+    "to": "Sources/MacroToolboxModels/Model/MacroAttachmentRequirement.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ExportedSpecializationDirective.swift",
+    "to": "Sources/MacroToolboxModels/Model/ExportedSpecializationDirective.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/StoredPropertyDescriptor.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/StoredPropertyDescriptor.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import os"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/DeclarationArchetype+TypeDeclarationArchetype.swift",
+    "to": "Sources/MacroToolboxModels/Model/DeclarationArchetype+TypeDeclarationArchetype.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ExplicitInlineDisposition+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/ExplicitInlineDisposition+Syntax.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/DataTypeFieldStructureDescriptor.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/DataTypeFieldStructureDescriptor.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/TransparentDisposition+Syntax.swift",
+    "to": "Sources/MacroToolboxSyntax/Model/TransparentDisposition+Syntax.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/InlinabilityDisposition+Determinations.swift",
+    "to": "Sources/MacroToolboxModels/Model/InlinabilityDisposition+Determinations.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/MacroAttachmentRequirement+DeclarationArchetypes.swift",
+    "to": "Sources/MacroToolboxModels/Model/MacroAttachmentRequirement+DeclarationArchetypes.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/LabelCriterion.swift",
+    "to": "Sources/MacroToolboxModels/Model/LabelCriterion.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/ArgumentPositionDescriptor.swift",
+    "to": "Sources/MacroToolboxModels/Model/ArgumentPositionDescriptor.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Model/TransparentDisposition.swift",
+    "to": "Sources/MacroToolboxModels/Model/TransparentDisposition.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/Collection+UnlessEmpty.swift",
+    "to": "Sources/MacroToolboxModels/Support/Collection+UnlessEmpty.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/String+TupleStringification.swift",
+    "to": "Sources/MacroToolboxModels/Support/String+TupleStringification.swift",
+    "original_imports": [
+      "import Foundation"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/Sequence+Support.swift",
+    "to": "Sources/MacroToolboxModels/Support/Sequence+Support.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/String+NameManipulation.swift",
+    "to": "Sources/MacroToolboxModels/Support/String+NameManipulation.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/CaseNameAwareEnumeration.swift",
+    "to": "Sources/MacroToolboxModels/Support/CaseNameAwareEnumeration.swift",
+    "original_imports": [
+      "import Foundation"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/Set+MapValues.swift",
+    "to": "Sources/MacroToolboxModels/Support/Set+MapValues.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Support/Optional+Guarantees.swift",
+    "to": "Sources/MacroToolboxModels/Support/Optional+Guarantees.swift",
+    "original_imports": []
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Builders/StoredPropertyDeclaration.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Builders/StoredPropertyDeclaration.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxBuilder"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Builders/DataTypeBuilder.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Builders/DataTypeBuilder.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Builders/ForEach.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Builders/ForEach.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/SyntaxProtocol+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/SyntaxProtocol+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxBuilder"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/GenericWhereClauseSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/GenericWhereClauseSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/SyntaxProtocol+Autoformat.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/SyntaxProtocol+Autoformat.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftBasicFormat"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/Autoformatting.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/Autoformatting.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxMacros",
+      "import SwiftBasicFormat"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/DeclSyntaxProtocol+TypeErasure.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/DeclSyntaxProtocol+TypeErasure.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxBuilder"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/InheritanceClauseSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/InheritanceClauseSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/IdentifierTypeSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/IdentifierTypeSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/InheritedTypeListSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/InheritedTypeListSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/SyntaxProtocol+SourceParsing.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/SyntaxProtocol+SourceParsing.swift",
+    "original_imports": [
+      "import SwiftParser",
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/GenericRequirementSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/GenericRequirementSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/SyntaxCollection+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/SyntaxCollection+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/MemberBlockSyntax+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/MemberBlockSyntax+Generation.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Generation/Support/BasicFormat+Generation.swift",
+    "to": "Sources/MacroToolboxSyntax/Generation/Support/BasicFormat+Generation.swift",
+    "original_imports": [
+      "import SwiftBasicFormat",
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/TokenKind+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/TokenKind+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/AccessorDeclListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/AccessorDeclListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericArgumentListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericArgumentListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/AttributeListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/AttributeListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/StructDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/StructDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericArgumentClauseSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericArgumentClauseSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/VariableDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/VariableDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/EnumCaseElementSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/EnumCaseElementSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/MemberAccessExprSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/MemberAccessExprSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/DeclModifierListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/DeclModifierListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/EnumCaseElementListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/EnumCaseElementListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/SyntaxProtocol+ElementCasts.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/SyntaxProtocol+ElementCasts.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/DeclSyntaxProtocol+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/DeclSyntaxProtocol+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftSyntaxMacros"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/FloatLiteralExprSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/FloatLiteralExprSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/Keyword+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/Keyword+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/AttributeSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/AttributeSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericArgumentSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericArgumentSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/BooleanLiteralExprSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/BooleanLiteralExprSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/AttributeListSyntaxElement+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/AttributeListSyntaxElement+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/ClassDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/ClassDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/DeclGroupSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/DeclGroupSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/IntegerLiteralExprSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/IntegerLiteralExprSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericParameterClauseSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericParameterClauseSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/DeclModifierSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/DeclModifierSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/EnumCaseDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/EnumCaseDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/AccessorDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/AccessorDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/TokenSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/TokenSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/EnumDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/EnumDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/ActorDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/ActorDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/MemberBlockItemListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/MemberBlockItemListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/InitializerDeclSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/InitializerDeclSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/SimpleStringLiteralExprSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/SimpleStringLiteralExprSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftParser"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/FreestandingMacroExpansionSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/FreestandingMacroExpansionSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/MemberBlockSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/MemberBlockSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/SyntaxProtocol+TreeSearch.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/SyntaxProtocol+TreeSearch.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericParameterSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericParameterSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Introspection/Support/GenericParameterListSyntax+Support.swift",
+    "to": "Sources/MacroToolboxSyntax/Introspection/Support/GenericParameterListSyntax+Support.swift",
+    "original_imports": [
+      "import SwiftSyntax"
+    ]
+  },
+  {
+    "from": "Sources/MacroToolbox/Diagnostics/MacroExpansionFailure.swift",
+    "to": "Sources/MacroToolboxSyntax/Errors/MacroExpansionFailure.swift",
+    "original_imports": [
+      "import SwiftSyntax",
+      "import SwiftDiagnostics"
+    ]
+  }
+]

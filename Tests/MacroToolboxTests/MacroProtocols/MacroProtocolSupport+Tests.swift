@@ -1,3 +1,5 @@
+@testable import MacroToolboxModels
+@testable import MacroToolboxSyntax
 import Foundation
 import SwiftDiagnostics
 import SwiftSyntax

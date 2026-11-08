@@ -1,3 +1,5 @@
+import MacroToolboxModels
+import MacroToolboxSyntax
 import SwiftSyntax
 import SwiftDiagnostics
 import SwiftSyntaxMacros

@@ -4,7 +4,23 @@ The ``MacroToolbox`` package provides tools meant to streamline writing Swift ma
 
 ## Overview
 
-``MacroToolbox`` has two major subsystems: (a) the "contextualized-macro" subsystem and (b) the "macro-translection" subsystem.
+`MacroToolbox` provides contextualized expansion, diagnostics and orchestration above two
+focused modules: `MacroToolboxModels` for pure shared policies and `MacroToolboxSyntax` for
+structural navigation, syntax descriptors, construction and formatting. This umbrella re-exports
+both. Import the focused modules when no macro context is needed; moved types have those module
+identities. Models depend only on the standard library and expose no syntax types.
+
+`MacroToolboxSyntax` has no dependency on this contextualized framework. Its existing public
+validation/string-construction helpers use SwiftSyntaxBuilder, which transitively builds
+SwiftDiagnostics and SwiftParserDiagnostics for parser errors. These host-only dependencies
+never belong to Models or the ordinary `MacroToolboxMacros` declaration wrapper. That wrapper
+has only its compiler-host plugin dependency; all four gathering declarations remain published.
+
+Transflection is owned by the separate `hdxl-macro-transflection` package. A future optional
+`MacroToolboxTransflection` bridge will connect it to toolbox diagnostics; it is not a current
+subsystem. Foundational option conformances must be handwritten so toolbox never depends on its
+downstream derivation generator. See the repository README and `Validation/TargetInventory.md`
+for import migration, exact edges, and executable boundary validation.
 
 ### Contextualized-Macros
 
