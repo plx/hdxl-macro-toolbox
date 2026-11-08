@@ -3,7 +3,9 @@ import SwiftSyntax
 
 extension VariableDeclSyntax {
   
-  /// `true` iff this appears to be a stored-property variable-declaration.
+  /// Historical single-binding heuristic; false for multiple bindings, even when all are stored.
+  /// It may accept attributes, lazy storage, and unsupported patterns. Strict struct transformations
+  /// should use `StructMemberAnalysis.validated(using:)` to retain every binding and limitation.
   ///
   /// - warning:
   ///

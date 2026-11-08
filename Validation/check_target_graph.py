@@ -13,6 +13,7 @@ ALLOWED = {
     'MacroToolboxMacrosClient': {'MacroToolboxMacros', 'MacroToolboxModels'},
     'MacroToolboxTestSupport': set(),
     'MacroToolboxTests': {'MacroToolbox', 'MacroToolboxModels', 'MacroToolboxSyntax', 'MacroToolboxTestSupport'},
+    'FieldAnalysisPublicTests': {'MacroToolboxModels', 'MacroToolboxSyntax', 'SwiftSyntax', 'SwiftParser'},
 }
 
 def dependency_name(dependency):
@@ -63,6 +64,7 @@ def self_test(manifest, core):
         'MacroToolboxMacrosClient': ['MacroToolbox','MacroToolboxSyntax','SwiftSyntax'],
         'MacroToolbox': ['MacroTransflectionMacros'],
         'MacroToolboxTests': ['MacroTransflectionMacros'],
+        'FieldAnalysisPublicTests': ['MacroToolbox', 'MacroToolboxMacros', 'SwiftSyntaxMacros', 'MacroTransflectionMacros'],
     }.items():
         for destination in destinations:
             mutated=copy.deepcopy(manifest)

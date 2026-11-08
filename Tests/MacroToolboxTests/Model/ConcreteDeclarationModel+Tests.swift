@@ -238,7 +238,7 @@ func testDataTypeFieldStructureDescriptorsSummarizeStoredFields() throws {
   #expect(firstProperty.storage.nonConfigurationAttributes.count == 1)
   #expect(firstProperty.storage.visibilityLevel == .internal)
   #expect(firstProperty.storage == duplicateFirstPropertyStorage)
-  #expect(!(firstProperty.storage == firstProperty.storage))
+  #expect(firstProperty.storage == firstProperty.storage) // Equality must be reflexive.
   #expect(!(firstProperty.storage == secondProperty.storage))
   #expect(firstProperty.hashValue == firstProperty.hashValue)
   #expect(descriptor.conditionallyMapFields(transformation: \.storage.variableName) { $0.storage.variableName.hasPrefix("s") } == ["second"])

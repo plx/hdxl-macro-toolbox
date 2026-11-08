@@ -1,6 +1,8 @@
 import MacroToolboxModels
 import SwiftSyntax
 
+/// Historical filtered field inventory for structs/classes/actors. It does not certify complete
+/// storage analysis. Struct transformations should use `StructMemberAnalysis.validated(using:)`.
 public struct DataTypeFieldStructureDescriptor {
   
   @usableFromInline

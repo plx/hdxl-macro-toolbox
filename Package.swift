@@ -120,6 +120,15 @@ let package = Package(
         "MacroToolboxTestSupport"
       ]
     ),
+    // Public API consumer: no @testable import or macro-orchestration dependency.
+    .testTarget(
+      name: "FieldAnalysisPublicTests",
+      dependencies: [
+        "MacroToolboxModels", "MacroToolboxSyntax",
+        .product(name: "SwiftSyntax", package: "swift-syntax"),
+        .product(name: "SwiftParser", package: "swift-syntax")
+      ]
+    ),
 
     .target(
       name: "MacroToolboxMacros",

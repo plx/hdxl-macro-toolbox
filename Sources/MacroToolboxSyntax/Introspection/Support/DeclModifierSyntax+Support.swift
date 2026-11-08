@@ -3,10 +3,16 @@ import SwiftSyntax
 
 extension DeclModifierSyntax {
   
-  /// The visibility level represented by this decl-modifier (if there is one).
+  /// Written declaration/read access. Setter-only modifiers such as `private(set)` return nil.
   @inlinable
   public var visibilityLevel: VisibilityLevel? {
-    name.tokenKind.visibilityLevel
+    detail == nil ? name.tokenKind.visibilityLevel : nil
+  }
+
+  /// Written setter access, independent of declaration/read access.
+  @inlinable
+  public var setterVisibilityLevel: VisibilityLevel? {
+    detail?.detail.text == "set" ? name.tokenKind.visibilityLevel : nil
   }
   
 }

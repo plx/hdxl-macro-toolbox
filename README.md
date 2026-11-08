@@ -34,8 +34,9 @@ import MacroToolboxSyntax
 import SwiftSyntax
 
 let declaration = try StructDeclSyntax.onlyParsed(from: "public struct Example { var count: Int }")
-let access = declaration.modifiers.visibilityLevel
-let properties = declaration.storedPropertyDescriptors
+let analysis = declaration.analyzeDirectMembers()
+let access = analysis.enclosingAccess.explicitReadAccess
+let properties = try analysis.validated().bindings
 ```
 
 `MacroToolboxSyntax` has no dependency on `MacroToolbox`, `SwiftSyntaxMacros`, or
@@ -50,6 +51,92 @@ supported umbrella and re-exports the Models and Syntax modules. Focused imports
 when the larger framework is unnecessary. Moved symbols now have their focused module identity;
 module-qualified references such as `MacroToolbox.VisibilityLevel` should migrate to
 `MacroToolboxModels.VisibilityLevel`. No per-symbol forwarding layer is provided.
+
+## Direct struct-member analysis
+
+`StructMemberAnalysis` is a complete syntactic inventory, available from
+`StructDeclSyntax.analyzeDirectMembers()`. `members` retains every direct member in source order,
+including nested types and conditional declarations. `bindings` contains each direct variable
+binding separately, including unsupported patterns whose `identifier` is nil. Neither nested
+type bodies nor conditional branches are flattened into the enclosing fields.
+
+Each `StructBindingDescriptor` exposes its original `VariableDeclSyntax`, `PatternBindingSyntax`,
+pattern/identifier token, written type, initializer expression, let/var token, type-property and
+lazy flags, attributes/modifiers, accessor block and classified shape. Member and binding indices
+are source ordinals. `explicitType == nil` means no annotation was written on that binding; the
+analyzer never infers a type from an initializer or another binding, and a written `TypeSyntax`
+is not resolved type identity. Identifier names retain source spelling, including backticks.
+
+| Source shape | Analysis result |
+| --- | --- |
+| `let value: String` | Immutable instance binding with the original annotation and node |
+| `var a: Int = 1, b: Int = 2` | Two ordered bindings with separate annotations and initializers |
+| `var value = 1` | Initializer retained; `missingTypeAnnotation` finding |
+| `var answer: Int { 42 }`, explicit `get`/`set` | `.computed` accessor shape |
+| `var value: Int = 0 { didSet {} }` | `.observed` shape with original observer block |
+| `static var total: Int = 0` | Type property, distinct from instance state |
+| `public private(set) var value: String` | Public read access and private setter access separately |
+| `lazy var value: String = ""` | Lazy modifier retained with a limitation finding |
+| Attributed/wrapped binding | Every attribute retained and reported; storage semantics are not guessed |
+| `#if ... #endif` | Original conditional member plus a finding; no branch is selected |
+| Destructuring or unfamiliar accessors such as `_read` | Binding retained with unsupported-shape finding |
+| Parser recovery/missing syntax | Malformed finding anchored in the original tree |
+| `struct Nested { var child: Int }` | Nested declaration retained; `child` is not an outer binding |
+
+`WrittenDeclarationAccess` keeps read and setter modifiers separately, including original modifier
+nodes. `explicitReadAccess` and `explicitSetterAccess` report written keywords;
+`localReadAccess` defaults a missing read keyword to `.internal` only. `enclosingAccess` records
+what was written on the attached struct independently. These facts do not compute effective
+access across enclosing scopes, extensions, packages, or protocol/conformance requirements.
+Duplicate/conflicting access modifiers produce findings. Existing `modifiers.visibilityLevel`
+now correctly ignores setter-only modifiers, even when `private(set)` appears first;
+`setterVisibilityLevel` extracts setter access independently.
+
+For transformations, use the strict entry point:
+
+```swift
+let analysis = declaration.analyzeDirectMembers()
+let policy = StructTransformationPolicy(
+  supportedAccessorShapes: [.stored],
+  allowedOtherDeclarations: [.function, .initializer],
+  requiresWrittenTypes: true
+)
+let validated = try analysis.validated(using: policy)
+// Only now plan and emit members using validated.members / validated.bindings.
+```
+
+Validation throws `StructAnalysisRejection` containing **every** rejection's typed `reason`,
+original `anchor`, and optional member/binding indices. It returns no partial validated list.
+A caller can catch it and diagnose every finding before emitting anything. The default policy
+accepts only plain stored bindings with written types and no other declarations. Computed or
+observed bindings, other declaration kinds, missing annotations, attributed bindings, and lazy
+bindings require explicit policy choices. Attribute/lazy opt-ins mean the caller handles those
+preserved semantics; they do not establish them through analysis. Conditional branches,
+macro-expanded members, unsupported patterns, unfamiliar accessors, malformed syntax, and
+conflicting access cannot be waived by this API. Successful validation keeps the complete
+inventory and any deliberately acknowledged limitations in `validated.analysis`.
+
+Static/instance status is a fact, not an acceptance rule. Newtype emptiness, accumulator storage,
+generated-name collisions, nested attachment restrictions, and requested API visibility remain
+consumer planning decisions. This API does not perform compiler semantic validation or prove
+that a declaration is legal Swift merely because its supported syntactic shapes were recognized.
+
+The older `isStoredProperty`, `storedPropertyDescriptors`, and `DataTypeFieldStructureDescriptor`
+conveniences retain their loose single-binding/filtering behavior. They can omit multi-bindings
+and unsupported members and must not certify a complete transformation. `StoredPropertyDescriptor`
+now exposes its original binding/declaration, name, annotation, initializer, attributes/modifiers,
+and written access publicly. Its equality compares original syntax identity and the stored name:
+a descriptor equals itself, a copy, and another descriptor built from the same nodes. Independent
+parses of identical text need not compare equal; caches do not affect equality/hash values.
+`isPlausibleMemberwiseInitializer` remains only a name/count heuristic, never authority to choose
+an initializer or preserve its defaults/invariants.
+
+[`FieldAnalysisPublicTests`](Tests/FieldAnalysisPublicTests/FieldAnalysisTests.swift) imports only
+public model/syntax APIs, with no orchestration dependency or `@testable`. It analyzes the same
+[accepted source file](Tests/FieldAnalysisPublicTests/AcceptedShapes.swift) compiled into the test
+target; the fixture defines its wrapper and uses actor isolation for mutable static state under
+Swift 6. Recovery/destructuring/conflicting-source rejection fixtures are kept separate. Tests
+assert original node identities, independent access facts, all-or-nothing rejection, and equality.
 
 ## Gathering macros
 
@@ -90,6 +177,7 @@ Run `swift package resolve`, `swift package dump-package`,
 `swift package show-dependencies --format json`, `swift build`, and `swift test`.
 
 ```sh
+swiftc -swift-version 6 -typecheck -D FEATURE Tests/FieldAnalysisPublicTests/AcceptedShapes.swift
 python3 Validation/check_target_graph.py --self-test
 python3 IntegrationFixtures/TargetBoundaries/validate.py --output /tmp/toolbox-boundaries
 ```
