@@ -31,12 +31,21 @@ for label, command in [
     ('test', ['swift', 'test', *options])
 ]:
     run(command, label)
+run(['swift', 'run', *options, 'MacroToolboxMacrosClient'], 'smoke')
 shutil.copy2(root / 'Package.resolved', out / 'Package.resolved')
 record['resolved'] = json.loads((root / 'Package.resolved').read_text())
 syntax_pin = next(p for p in record['resolved']['pins'] if p['identity'] == 'swift-syntax')
 assert syntax_pin['state']['version'].split('.')[0] == '604', syntax_pin
-core = out / 'root-build/checkouts/hdxl-macro-transflection'
-assert core.is_dir(), 'Resolved core checkout is required for reverse-edge validation.'
+# Follow the actual resolution, including documented local integration overrides.
+# A hard-coded scratch/checkouts path would inspect the wrong source (or no source)
+# when the coordinated release gate selects one exact sibling revision set.
+dependency_graph = json.loads((out / 'dependencies.log').read_text())
+core_dependencies = [d for d in dependency_graph['dependencies']
+                     if d['identity'] == 'hdxl-macro-transflection']
+assert len(core_dependencies) == 1, core_dependencies
+core = pathlib.Path(core_dependencies[0]['path']).resolve()
+assert (core / 'Package.swift').is_file(), 'Resolved core source is required for reverse-edge validation.'
+record['resolvedCorePath'] = str(core); save()
 run(['swift', 'package', '--package-path', str(core), 'dump-package'], 'core-manifest')
 run(['python3', str(root / 'Validation/check_target_graph.py'), '--self-test',
      '--core-manifest', str(out / 'core-manifest.log'), '--output', str(out / 'target-guard.json')], 'target-guard')

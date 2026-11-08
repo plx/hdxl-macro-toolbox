@@ -1,5 +1,7 @@
 # hdxl-macro-toolbox
 
+[Release readiness](RELEASE_READINESS.md) · [Migration](MIGRATION.md)
+
 Reusable model policies, syntax utilities, and macro expansion support for Swift macro authors.
 The products follow the compiler-host boundary: ordinary code shares pure models, while plugins
 use syntax and expansion contexts.

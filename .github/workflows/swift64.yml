@@ -1,0 +1,42 @@
+name: Swift 6.4 validation
+on:
+  workflow_dispatch:
+    inputs:
+      runner_labels:
+        description: 'JSON labels for an available macOS runner with Swift 6.4 and SDK 27'
+        required: true
+        type: string
+      developer_directory:
+        description: 'Selected Xcode developer directory on that runner'
+        required: true
+        default: '/Applications/Xcode.app/Contents/Developer'
+        type: string
+permissions:
+  contents: read
+jobs:
+  swift64:
+    runs-on: ${{ fromJSON(inputs.runner_labels) }}
+    timeout-minutes: 120
+    env:
+      DEVELOPER_DIR: ${{ inputs.developer_directory }}
+      EVIDENCE_DIR: ${{ runner.temp }}/swift64-validation-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Run the single supported toolchain lane
+        shell: bash
+        run: |
+          python3 Validation/validate_public_consumers.py --output "$EVIDENCE_DIR"
+      - name: Retain validation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: swift64-validation
+          path: |
+            ${{ env.EVIDENCE_DIR }}/
+            !${{ env.EVIDENCE_DIR }}/**/build/**
+            !${{ env.EVIDENCE_DIR }}/**/root-build/**
+            !${{ env.EVIDENCE_DIR }}/**/.build/**
+            !${{ env.EVIDENCE_DIR }}/**/.git/**
+            !${{ env.EVIDENCE_DIR }}/**/*-cache/**

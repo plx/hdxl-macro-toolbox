@@ -1,0 +1,37 @@
+--- a/IntegrationFixtures/PublicMacroConsumer/Package.swift
++++ b/IntegrationFixtures/PublicMacroConsumer/Package.swift
+@@ -11,8 +11,8 @@
+     .executable(name: "FixtureClient", targets: ["FixtureClient"])
+   ],
+   dependencies: [
+-    .package(path: "../.."),
+-    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", revision: "be93e17e023b72e6c72188193ad698d8d13b7d44"),
++    .package(url: "https://github.com/plx/hdxl-macro-toolbox.git", "0.3.0"..<"0.4.0"),
++    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", "0.3.0"..<"0.4.0"),
+     .package(url: "https://github.com/swiftlang/swift-syntax.git", "604.0.0"..<"605.0.0")
+   ],
+   targets: [
+--- a/IntegrationFixtures/TargetBoundaries/Package.swift
++++ b/IntegrationFixtures/TargetBoundaries/Package.swift
+@@ -11,8 +11,8 @@
+     .executable(name: "GatheringClient", targets: ["GatheringClient"])
+   ],
+   dependencies: [
+-    .package(path: "../.."),
+-    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", revision: "be93e17e023b72e6c72188193ad698d8d13b7d44"),
++    .package(url: "https://github.com/plx/hdxl-macro-toolbox.git", "0.3.0"..<"0.4.0"),
++    .package(url: "https://github.com/plx/hdxl-macro-transflection.git", "0.3.0"..<"0.4.0"),
+     .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "604.0.0")
+   ],
+   targets: [
+--- a/IntegrationFixtures/TypedConstructionConsumer/Package.swift
++++ b/IntegrationFixtures/TypedConstructionConsumer/Package.swift
+@@ -6,7 +6,7 @@
+   platforms: [.macOS(.v27), .iOS(.v27), .tvOS(.v27), .watchOS(.v27), .visionOS(.v27), .macCatalyst(.v27)],
+   products: [.executable(name: "Generate", targets: ["Generate"])],
+   dependencies: [
+-    .package(path: "../.."),
++    .package(url: "https://github.com/plx/hdxl-macro-toolbox.git", "0.3.0"..<"0.4.0"),
+     .package(url: "https://github.com/swiftlang/swift-syntax.git", "604.0.0"..<"605.0.0")
+   ],
+   targets: [.executableTarget(name: "Generate", dependencies: [
