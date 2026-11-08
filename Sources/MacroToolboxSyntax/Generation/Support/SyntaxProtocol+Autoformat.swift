@@ -45,7 +45,20 @@ public func autoformattedEquivalents<T>(
 }
 
 extension SyntaxProtocol {
-  
+  /// Format a copy using the supplied formatter, rejecting recovered syntax and any changed
+  /// concrete kind. The input node remains unchanged. This is formatting, not semantic validation.
+  @inlinable
+  public func formattedPreservingSyntaxKind(using formatter: BasicFormat) throws -> Self {
+    _ = try validated()
+    let result = formatted(using: formatter)
+    guard result.kind == Syntax(self).kind, let sameType = result.as(Self.self) else {
+      throw SyntaxFormattingFailure.changedNodeKind(expected: Syntax(self).kind, actual: result.kind)
+    }
+    return try sameType.validated()
+  }
+
+  /// Explicitly format generated output with SwiftBasicFormat and two-space indentation.
+  /// Retains comments and the concrete node kind, validates before/after, and never mutates input.
   @inlinable
   public func autoFormattedForHDXLProject(
     initialIndentation: Trivia = Trivia(),
@@ -55,33 +68,10 @@ extension SyntaxProtocol {
     line: UInt = #line,
     column: UInt = #column
   ) throws -> Self {
-    return self
-    // NOTE: this doesn't work the way I want it to,
-    // b/c the built-in formatter isn't guaranteed
-    // to give you back the same syntax-node type(s) you
-    // started with.
-    //
-    // Would like to get something along these lines working eventually,
-    // b/c without it the larger macro outputs become human-unreadable.
-    //
-    // let result = formatted(
-    //   using: .hdxlProjectFormatting(
-    //     initialIndentation: initialIndentation,
-    //     viewMode: viewMode
-    //   )
-    // )
-    //
-    // guard let sameType = result as? Self else {
-    //   throw MacroExpansionFailure(
-    //     explanation: "autoformatting-failure",
-    //     function: function,
-    //     fileID: fileID,
-    //     line: line,
-    //     column: column
-    //   )
-    // }
-    //
-    // return sameType
+    try formattedPreservingSyntaxKind(using: .hdxlProjectFormatting(
+      initialIndentation: initialIndentation,
+      viewMode: viewMode
+    ))
   }
   
 }

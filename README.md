@@ -138,6 +138,78 @@ target; the fixture defines its wrapper and uses actor isolation for mutable sta
 Swift 6. Recovery/destructuring/conflicting-source rejection fixtures are kept separate. Tests
 assert original node identities, independent access facts, all-or-nothing rejection, and equality.
 
+## Typed construction and formatting
+
+`MacroToolboxSyntax` exposes `SyntaxConstruction`, a small set of constructors over SwiftSyntax
+nodes. It needs no contextualized macro protocol or `MacroToolbox` import. A caller first chooses
+its members, bodies, access, and conformances; construction only renders those decisions.
+
+```swift
+import MacroToolboxModels
+import MacroToolboxSyntax
+import SwiftSyntax
+
+let stringType = TypeSyntax(IdentifierTypeSyntax(name: .identifier("String")))
+let storage = try SyntaxConstruction.storedProperty(
+  name: .identifier("storedValue"), type: stringType, readAccess: .private
+)
+let parameter = try SyntaxConstruction.parameter(localName: .identifier("value"), type: stringType)
+// Parsing source is an explicit escape hatch; malformed or extra syntax throws.
+let assignment = try SyntaxSourceFragment.parse("self.storedValue = value", as: CodeBlockItemSyntax.self)
+let initializer = try SyntaxConstruction.initializer(
+  parameters: [parameter], body: [assignment], access: .public
+)
+```
+
+The surface includes stored `let`/`var` members, read-only computed members, initializers,
+functions (including caller-selected forwarding calls), calls/arguments/parameters, and
+extensions with inheritance and conformance/same-type requirements. Types, expressions, bodies,
+attributes, modifiers, and name tokens are typed inputs. `identifier(_:)` deliberately quotes
+keywords/raw names when needed and rejects invalid identifiers. A nil external parameter name
+means `_ localName`; a matching external/local name emits one token. A nil argument label is
+unlabeled. Compound callees are grouped before applying a call, so `primary ?? fallback`
+becomes `(primary ?? fallback)()`. Empty inheritance/requirement inputs omit their entire clause.
+
+Lists use commas between elements and no final comma. Newly inserted commas carry one trailing
+space; existing comma trivia is retained, and removing a final comma moves its trivia onto the
+final element. Formatting subsequently normalizes whitespace while preserving comments. The
+throwing constructors reject recovered input before punctuation normalization and validate the
+built output; complete declarations/calls also undergo a verification parse and token check.
+The returned value is the built tree, never the verification parse, so typed fragments are not
+replaced via source-string round trips. Source nodes retain their original identity and text.
+
+Read/declaration access and setter access are independent optional inputs. Extra modifiers and
+attributes are kept as supplied. The renderer does not widen access, establish type correctness,
+or decide protocol-witness or inlinability legality. Compiler checks and consumer planning still
+own those decisions. The fixture's forwarding method exercises construction only; it does not
+add an API to either downstream pilot.
+
+`autoFormattedForHDXLProject`, `autoformattedEquivalent(s)`, and `withAutomaticReformatting`
+now actually apply SwiftBasicFormat with two-space indentation. Contextualized macro wrappers
+using them also format their generated output. Callers should update snapshots that depended on
+the former no-op (for example, `func f(){}` becomes `func f() {\n}`). The formatter validates both
+input and output and preserves the concrete node kind, even behind `DeclSyntax` erasure;
+`formattedPreservingSyntaxKind(using:)` throws `SyntaxFormattingFailure.changedNodeKind` when
+a custom formatter substitutes another kind. Missing/unexpected recovery syntax also throws.
+Formatting is explicit and returns a copy; structural inspection does not format source nodes.
+
+The existing `StoredProperty` string adapter and `DataTypeBodyBuilder` remain available.
+`StoredProperty.makeSyntaxRepresentation()` now parses each complete source fragment separately,
+then uses the typed constructor; malformed/extra type, attribute, or initializer syntax throws.
+Migrate `typeName: source` to `type: try SyntaxSourceFragment.parse(source, as: TypeSyntax.self)`,
+initializer strings to `ExprSyntax`, and attributes to `AttributeSyntax`/`AttributeListSyntax`.
+For already typed inputs, pass them directly. The older string-based `forTypeNames`,
+`forInheritedTypeNames`, and `requirement(that:inheritsFrom:)` conveniences still treat names as
+identifier spellings; they are not fragment parsers. Use `SyntaxConstruction.inheritanceClause`,
+`conformanceRequirement`, `sameTypeRequirement`, and `whereClause` for typed/compound types and
+safe empty-clause omission. The low-level legacy `GenericWhereClauseSyntax(requirements:)`
+continues to create a clause even when empty; migrate optional clauses to `whereClause`.
+
+[TypedConstructionConsumer](IntegrationFixtures/TypedConstructionConsumer/README.md) builds
+through public model/syntax imports, emits the actual declarations, and compiles/runs them. It
+also requires the compiler to reject an insufficiently visible conformance witness and a raw
+`String` supplied to a typed type parameter.
+
 ## Gathering macros
 
 Ordinary clients import only `MacroToolboxMacros`:
@@ -180,6 +252,7 @@ Run `swift package resolve`, `swift package dump-package`,
 swiftc -swift-version 6 -typecheck -D FEATURE Tests/FieldAnalysisPublicTests/AcceptedShapes.swift
 python3 Validation/check_target_graph.py --self-test
 python3 IntegrationFixtures/TargetBoundaries/validate.py --output /tmp/toolbox-boundaries
+python3 IntegrationFixtures/TypedConstructionConsumer/validate.py --output /tmp/toolbox-construction
 ```
 
 The graph guard checks each sensitive target's allowed edges and model/syntax/wrapper imports.

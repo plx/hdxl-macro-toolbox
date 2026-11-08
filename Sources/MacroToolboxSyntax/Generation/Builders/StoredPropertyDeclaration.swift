@@ -7,6 +7,9 @@ public enum Isolation {
   case `nonisolated`
 }
 
+/// Legacy source-fragment adapter. Each type, attribute, and initializer is parsed as one
+/// complete fragment when rendered; malformed fragments throw. New callers should use
+/// `SyntaxConstruction.storedProperty` with typed syntax components.
 public struct StoredProperty {
   
   public var name: String
@@ -73,13 +76,18 @@ extension StoredProperty: ConcreteDeclSyntaxDeclaration, DeclSyntaxDeclaration {
   }
   
   public func makeSyntaxRepresentation() throws -> VariableDeclSyntax {
-    let initialValueExpression = initialValueExpression.map { " = \($0)" } ?? ""
-    
-    return try VariableDeclSyntax(
-      """
-      \(raw: attributeDeclaration)
-      \(raw: modifierDeclaration) var \(raw: name): \(raw: typeName)\(raw: initialValueExpression)
-      """
+    let parsedAttributes = try attributes.map {
+      AttributeListSyntax.Element.attribute(try SyntaxSourceFragment.parse($0, as: AttributeSyntax.self)
+        .with(\.trailingTrivia, .newline))
+    }
+    let modifiers: DeclModifierListSyntax = isolation == .nonisolated
+      ? [DeclModifierSyntax(name: .keyword(.nonisolated))] : []
+    return try SyntaxConstruction.storedProperty(
+      name: SyntaxConstruction.identifier(name),
+      type: SyntaxSourceFragment.parse(typeName, as: TypeSyntax.self),
+      initializer: initialValueExpression.map { try SyntaxSourceFragment.parse($0, as: ExprSyntax.self) },
+      readAccess: visibility, setterAccess: setterVisibility,
+      attributes: AttributeListSyntax(parsedAttributes), modifiers: modifiers
     )
   }
   

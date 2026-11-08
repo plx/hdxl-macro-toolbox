@@ -332,7 +332,7 @@ func testContextualizedAttachedMacroExpansionsValidateAndDelegate() throws {
     in: expansionContext
   )
   
-  #expect(accessors.map(\.trimmedDescription) == ["get { value }"])
+  #expect(accessors.map(\.trimmedDescription) == ["get {\n  value\n}"])
   #expect(body.map(\.trimmedDescription) == ["return 1"])
   #expect(members.map(\.trimmedDescription) == ["var generatedMember: Int"])
   #expect(attributes.map(\.trimmedDescription) == ["@usableFromInline"])
@@ -380,7 +380,7 @@ func testFreestandingMacroContextsAndExpansionsPreserveInvocationArguments() thr
   
   #expect(expressionContext.invocationArgumentsAsLabeledExpressionList?.count == 2)
   #expect(expression.trimmedDescription == "42")
-  #expect(declarations.map(\.trimmedDescription) == ["struct GeneratedDeclaration {}"])
+  #expect(declarations.map(\.trimmedDescription) == ["struct GeneratedDeclaration {\n}"])
 }
 
 @Test("Conditional and unconditional conformance macros render expected extensions")
@@ -482,13 +482,13 @@ func testConditionalAndUnconditionalConformanceMacrosRenderExpectedExtensions() 
   )
   
   #expect(conditionalExtensions.map(\.trimmedDescription) == [
-    "extension Box: Sendable where T: Sendable {}"
+    "extension Box: Sendable where T: Sendable {\n}"
   ])
   #expect(TestUnconditionalConformanceMacro.conformedProtocolNames == ["Codable"])
   #expect(try TestUnconditionalConformanceMacro.unconditionalInheritanceClause(in: conditionalContext).trimmedDescription == ": Codable")
   #expect(try TestUnconditionalConformanceMacro.conditionalConformanceDeclarations(in: conditionalContext).isEmpty)
   #expect(unconditionalExtensions.map(\.trimmedDescription) == [
-    "extension Box: Codable {}"
+    "extension Box: Codable {\n}"
   ])
   
   expectMacroExpansionFailure {

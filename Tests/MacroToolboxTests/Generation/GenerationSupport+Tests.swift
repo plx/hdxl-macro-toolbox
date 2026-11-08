@@ -168,9 +168,8 @@ func testGenericWhereClausesCoverCartesianProductGeneration() {
 
 @Test("Autoformatting helpers preserve syntax shape")
 func testAutoformattingHelpersPreserveSyntaxShape() throws {
-  // Hand-written examples: current autoformatting intentionally returns the same
-  // syntax shape, but the wrapper APIs should still call through and preserve
-  // single syntax values and sequences.
+  // Real formatting changes trivia while preserving concrete kinds and original inputs;
+  // wrapper APIs apply the same contract to individual values and sequences.
   let variable = try VariableDeclSyntax("var value: Int")
   let function = try FunctionDeclSyntax("func run(){}")
   let formattedVariable = try autoformattedEquivalent(of: variable)
@@ -193,7 +192,8 @@ func testAutoformattingHelpersPreserveSyntaxShape() throws {
   
   #expect(formattedVariable.trimmedDescription == "var value: Int")
   #expect(validatedVariable.trimmedDescription == "var value: Int")
-  #expect(formattedFunction.trimmedDescription == "func run(){}")
+  #expect(formattedFunction.trimmedDescription == "func run() {\n}")
+  #expect(function.trimmedDescription == "func run(){}")
   #expect(formattedSequence.map(\.trimmedDescription) == ["var first: Int", "var second: String"])
 }
 
