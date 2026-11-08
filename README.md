@@ -167,7 +167,8 @@ extensions with inheritance and conformance/same-type requirements. Types, expre
 attributes, modifiers, and name tokens are typed inputs. `identifier(_:)` deliberately quotes
 keywords/raw names when needed and rejects invalid identifiers. A nil external parameter name
 means `_ localName`; a matching external/local name emits one token. A nil argument label is
-unlabeled. Empty inheritance/requirement inputs omit their entire clause.
+unlabeled. Compound callees are grouped before applying a call, so `primary ?? fallback`
+becomes `(primary ?? fallback)()`. Empty inheritance/requirement inputs omit their entire clause.
 
 Lists use commas between elements and no final comma. Newly inserted commas carry one trailing
 space; existing comma trivia is retained, and removing a final comma moves its trivia onto the

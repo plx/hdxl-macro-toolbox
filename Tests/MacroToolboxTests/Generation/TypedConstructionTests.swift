@@ -8,6 +8,29 @@ import Testing
 
 private typealias Build = SyntaxConstruction
 
+@Test("Compound callees retain grouping when printed and reparsed")
+func compoundCalleeGrouping() throws {
+  for source in ["primary ?? fallback", "condition ? first : second", "try makeClosure()", "await makeClosure()"] {
+    let callee = try SyntaxSourceFragment.parse(source, as: ExprSyntax.self)
+    let original = (callee.id, callee.description)
+    let call = try Build.call(callee: callee, arguments: [])
+    let reparsed = try SyntaxSourceFragment.parse(call.description, as: ExprSyntax.self)
+    let parsedCall = try #require(reparsed.as(FunctionCallExprSyntax.self))
+    let grouped = try #require(parsedCall.calledExpression.as(TupleExprSyntax.self))
+    #expect(grouped.elements.count == 1)
+    #expect(grouped.elements.first?.expression.trimmedDescription == source)
+    #expect(callee.id == original.0 && callee.description == original.1)
+  }
+  let plain = try Build.call(callee: "storage.hasPrefix", arguments: [Build.argument(expression: "prefix")])
+  #expect(plain.trimmedDescription == "storage.hasPrefix(prefix)")
+  // An already malformed nested postfix tree must not pass merely because its tokens match.
+  let nested = MemberAccessExprSyntax(
+    base: try SyntaxSourceFragment.parse("primary ?? fallback", as: ExprSyntax.self),
+    declName: DeclReferenceExprSyntax(baseName: .identifier("method"))
+  )
+  #expect(throws: SyntaxConstructionFailure.self) { try Build.call(callee: ExprSyntax(nested), arguments: []) }
+}
+
 @Test("Typed construction preserves types, expressions, attributes, and independent access")
 func typedProperties() throws {
   let type = try SyntaxSourceFragment.parse("Dictionary<String, Array<Int?>>?", as: TypeSyntax.self)

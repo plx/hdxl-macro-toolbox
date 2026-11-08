@@ -6,6 +6,7 @@ public enum SyntaxConstructionFailure: Error {
   case invalidIdentifier(String)
   case invalidBindingSpecifier(TokenKind)
   case changedDeclarationKind(expected: SyntaxKind, actual: SyntaxKind)
+  case changedExpressionKind(expected: SyntaxKind, actual: SyntaxKind)
   case changedTokenization
 }
 
@@ -135,11 +136,28 @@ public enum SyntaxConstruction {
   public static func call(callee: ExprSyntax, arguments: [LabeledExprSyntax]) throws -> FunctionCallExprSyntax {
     _ = try callee.validated()
     for argument in arguments { _ = try argument.validated() }
+    // A postfix call binds more tightly than operators, try/await, and conditionals.
+    // Group those callees explicitly so printing cannot move the call into a subexpression.
+    let callable: ExprSyntax
+    switch callee.kind {
+    case .declReferenceExpr, .memberAccessExpr, .functionCallExpr, .subscriptCallExpr,
+         .optionalChainingExpr, .forceUnwrapExpr, .genericSpecializationExpr, .tupleExpr:
+      callable = callee
+    default:
+      callable = ExprSyntax(TupleExprSyntax(elements: [LabeledExprSyntax(expression: callee)]))
+    }
     let call = try FunctionCallExprSyntax(
-      calledExpression: callee, leftParen: .leftParenToken(),
+      calledExpression: callable, leftParen: .leftParenToken(),
       arguments: LabeledExprListSyntax(withTrailingCommasInsertedBetween: arguments), rightParen: .rightParenToken()
     ).autoFormattedForHDXLProject()
-    try verifyTokens(call, parsed: SyntaxSourceFragment.parse(call.description, as: ExprSyntax.self))
+    let parsed = try SyntaxSourceFragment.parse(call.description, as: ExprSyntax.self)
+    guard let parsedCall = parsed.as(FunctionCallExprSyntax.self) else {
+      throw SyntaxConstructionFailure.changedExpressionKind(expected: call.kind, actual: parsed.kind)
+    }
+    guard parsedCall.calledExpression.kind == callable.kind else {
+      throw SyntaxConstructionFailure.changedExpressionKind(expected: callable.kind, actual: parsedCall.calledExpression.kind)
+    }
+    try verifyTokens(call, parsed: parsed)
     return call
   }
 

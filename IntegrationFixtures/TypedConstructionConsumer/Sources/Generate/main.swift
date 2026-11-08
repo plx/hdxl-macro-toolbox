@@ -50,6 +50,12 @@ try emit(Build.conformanceExtension(extending: type("Bag"), requirements: [Build
 let joined = try Build.function(name: .identifier("joined"), parameters: [Build.parameter(localName: .identifier("values"), type: type("T"))], returnType: type("String"), body: body("values.joined()"), access: .public)
 try emit(Build.conformanceExtension(extending: type("Bag"), requirements: [Build.conformanceRequirement(type("T"), to: type("Sequence")), Build.sameTypeRequirement(type("T.Element"), as: type("String"))], members: [DeclSyntax(joined)]))
 
+// The call must invoke the selected closure, not bind only to the fallback operand.
+let selectedCall = try Build.call(callee: expr("primary ?? fallback"), arguments: [])
+let selectionBody = try body("let primary: (() -> Int)? = nil\nlet fallback: () -> Int = { 42 }")
+  + [CodeBlockItemSyntax(item: .stmt(StmtSyntax(ReturnStmtSyntax(expression: selectedCall))))]
+try emit(Build.function(name: .identifier("selectedValue"), parameters: [], returnType: type("Int"), body: selectionBody, access: .public))
+
 print("""
 let example = Example("abcdef")
 precondition(example.rawValue == "abcdef" && example.hasPrefix("abc"))
@@ -59,5 +65,6 @@ precondition(shapes.class == nil && shapes.repeat() == 7)
 precondition(shapes.forward0() == 0 && shapes.forward1() == 1)
 precondition(shapes.forward2() == 3 && shapes.forward3() == 6)
 precondition(Bag<[String]>().joined(["a", "b"]) == "ab")
+precondition(selectedValue() == 42)
 print("Generated construction fixture passed")
 """)
